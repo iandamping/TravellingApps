@@ -1,7 +1,8 @@
-package com.junemon.travelingapps
+package com.junemon.travelingapps.feature.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.junemon.travelingapps.R
 
 class MainActivity : AppCompatActivity() {
 

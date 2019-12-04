@@ -1,7 +1,7 @@
 package com.junemon.travelingapps.di
 
 import com.ian.app.helper.di.commonHelperModule
-import com.junemon.travelingapps.PlaceViewModel
+import com.junemon.travelingapps.vm.PlaceViewModel
 import com.junemon.travelingapps.data.di.dataSourceModule
 import com.junemon.travelingapps.data.di.databaseModule
 import com.junemon.travelingapps.data.di.repositoryModules
