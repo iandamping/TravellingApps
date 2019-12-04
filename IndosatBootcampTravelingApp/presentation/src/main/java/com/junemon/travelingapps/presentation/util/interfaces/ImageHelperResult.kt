@@ -12,7 +12,7 @@ import java.io.File
  * Github https://github.com/iandamping
  * Indonesia.
  */
-interface ImageUtilHelper {
+interface ImageHelperResult {
 
     fun getBitmapFromAssets(
         ctx: Context,

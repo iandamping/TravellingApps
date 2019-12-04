@@ -1,7 +1,7 @@
 package com.junemon.travelingapps.presentation.di
 
 import com.junemon.travelingapps.presentation.util.classes.ImageUtil
-import com.junemon.travelingapps.presentation.util.interfaces.ImageUtilHelper
+import com.junemon.travelingapps.presentation.util.interfaces.ImageHelperResult
 import org.koin.dsl.module
 
 /**
@@ -11,5 +11,5 @@ import org.koin.dsl.module
  */
 
 val presentationModule = module {
-    factory { ImageUtil() as ImageUtilHelper }
+    factory { ImageUtil() as ImageHelperResult }
 }

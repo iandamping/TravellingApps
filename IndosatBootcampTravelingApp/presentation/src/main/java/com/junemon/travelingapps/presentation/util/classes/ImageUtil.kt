@@ -19,7 +19,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.storage.StorageReference
 import com.ian.app.helper.interfaces.CommonHelperResult
 import com.junemon.travelingapps.presentation.R
-import com.junemon.travelingapps.presentation.util.interfaces.ImageUtilHelper
+import com.junemon.travelingapps.presentation.util.interfaces.ImageHelperResult
 import org.jetbrains.anko.progressDialog
 import org.koin.core.KoinComponent
 import org.koin.core.inject
@@ -34,7 +34,7 @@ import java.lang.Exception
  * Github https://github.com/iandamping
  * Indonesia.
  */
-internal class ImageUtil : ImageUtilHelper, KoinComponent {
+internal class ImageUtil : ImageHelperResult, KoinComponent {
     private val saveCaptureImagePath = "picture" + System.currentTimeMillis() + ".jpeg"
     private val saveFilterImagePath = "filterImage" + System.currentTimeMillis() + ".jpeg"
     private val helper: CommonHelperResult by inject()
