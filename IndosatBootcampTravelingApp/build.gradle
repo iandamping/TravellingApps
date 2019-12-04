@@ -21,6 +21,7 @@ buildscript {
         firebaseStorageVer = '19.1.0'
         firebaseCoreVer = '17.2.1'
         timberVersion = '4.7.1'
+        anko_version = '0.10.5'
     }
     repositories {
         google()
