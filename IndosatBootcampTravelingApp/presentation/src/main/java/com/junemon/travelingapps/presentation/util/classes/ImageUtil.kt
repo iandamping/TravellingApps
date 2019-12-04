@@ -19,7 +19,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.storage.StorageReference
 import com.ian.app.helper.interfaces.CommonHelperResult
 import com.junemon.travelingapps.presentation.R
-import com.junemon.travelingapps.presentation.util.PresentationConstant.saveFilterImagePath
 import com.junemon.travelingapps.presentation.util.interfaces.ImageUtilHelper
 import org.jetbrains.anko.progressDialog
 import org.koin.core.KoinComponent
@@ -36,7 +35,8 @@ import java.lang.Exception
  * Indonesia.
  */
 internal class ImageUtil : ImageUtilHelper, KoinComponent {
-
+    private val saveCaptureImagePath = "picture" + System.currentTimeMillis() + ".jpeg"
+    private val saveFilterImagePath = "filterImage" + System.currentTimeMillis() + ".jpeg"
     private val helper: CommonHelperResult by inject()
     private val maxWidth = 612
     private val maxHeight = 816
