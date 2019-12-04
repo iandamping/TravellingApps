@@ -22,6 +22,7 @@ buildscript {
         firebaseCoreVer = '17.2.1'
         timberVersion = '4.7.1'
         anko_version = '0.10.5'
+        navigationVer = '2.2.0-rc02'
     }
     repositories {
         google()
@@ -31,6 +32,7 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:3.5.1'
         classpath 'com.google.gms:google-services:4.3.1'
+        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$navigationVer"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
