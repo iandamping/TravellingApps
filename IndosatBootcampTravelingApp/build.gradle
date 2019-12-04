@@ -20,6 +20,7 @@ buildscript {
         firebaseDatabaseVer = '19.2.0'
         firebaseStorageVer = '19.1.0'
         firebaseCoreVer = '17.2.1'
+        timberVersion = '4.7.1'
     }
     repositories {
         google()
