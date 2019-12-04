@@ -30,6 +30,11 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+    buildTypes.each {
+        it.buildConfigField 'String', 'firebaseStorageUrl', firebaseStorageUrl
+        it.resValue 'string', 'firebaseStorageUrl', firebaseStorageUrl
+
+    }
 }
 
 dependencies {
@@ -42,6 +47,9 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutine_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine_version"
+    implementation  "com.google.firebase:firebase-core:$firebaseCoreVer"
+    implementation "com.google.firebase:firebase-storage:$firebaseStorageVer"
+    implementation "com.google.firebase:firebase-database:$firebaseDatabaseVer"
     implementation "androidx.lifecycle:lifecycle-runtime:$livedata_version"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$livedata_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$livedata_version"
