@@ -1,7 +1,9 @@
 package com.junemon.travelingapps.presentation.di
 
 import com.junemon.travelingapps.presentation.util.classes.ImageUtil
+import com.junemon.travelingapps.presentation.util.classes.PermissionUtil
 import com.junemon.travelingapps.presentation.util.interfaces.ImageHelperResult
+import com.junemon.travelingapps.presentation.util.interfaces.PermissionHelperResult
 import org.koin.dsl.module
 
 /**
@@ -12,4 +14,5 @@ import org.koin.dsl.module
 
 val presentationModule = module {
     factory { ImageUtil() as ImageHelperResult }
+    factory { PermissionUtil() as PermissionHelperResult }
 }

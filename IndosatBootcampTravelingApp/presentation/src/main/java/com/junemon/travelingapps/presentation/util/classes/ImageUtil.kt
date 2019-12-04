@@ -1,5 +1,6 @@
 package com.junemon.travelingapps.presentation.util.classes
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.res.AssetManager
@@ -18,16 +19,18 @@ import androidx.core.content.FileProvider
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.storage.StorageReference
 import com.ian.app.helper.interfaces.CommonHelperResult
+import com.junemon.travelingapps.presentation.PresentationConstant.RequestOpenCamera
+import com.junemon.travelingapps.presentation.PresentationConstant.RequestSelectGalleryImage
 import com.junemon.travelingapps.presentation.R
 import com.junemon.travelingapps.presentation.util.interfaces.ImageHelperResult
 import org.jetbrains.anko.progressDialog
 import org.koin.core.KoinComponent
 import org.koin.core.inject
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.InputStream
-import java.lang.Exception
 
 /**
  * Created by Ian Damping on 04,December,2019
@@ -86,7 +89,7 @@ internal class ImageUtil : ImageHelperResult, KoinComponent {
 
     override fun saveImage(views: View, bitmap: Bitmap?) {
         try {
-            requireNotNull(bitmap){
+            requireNotNull(bitmap) {
                 "Bitmap that needs to save is null"
             }
             val pictureDirectory = Environment.getExternalStorageDirectory()
@@ -109,7 +112,7 @@ internal class ImageUtil : ImageHelperResult, KoinComponent {
         lastPathSegment: String?
     ) {
         try {
-            requireNotNull(lastPathSegment){
+            requireNotNull(lastPathSegment) {
                 "Image last path is null"
             }
             val dialogs = views.context.progressDialog(
@@ -137,10 +140,9 @@ internal class ImageUtil : ImageHelperResult, KoinComponent {
             }.addOnFailureListener {
                 helper.timberLogE("local tem file not created ")
             }
-        }catch (e:Exception){
+        } catch (e: Exception) {
             helper.timberLogE(e.message)
         }
-
     }
 
     //decode File into Bitmap and compress it
@@ -223,7 +225,52 @@ internal class ImageUtil : ImageHelperResult, KoinComponent {
         return inSampleSize
     }
 
-   private fun voidCustomMediaScannerConnection(ctx: Context?, paths: String) {
+    override fun bitmapToFile(ctx: Context, bitmap: Bitmap?): File {
+        val f = File(ctx.cacheDir, "image_uploads")
+        f.createNewFile()
+        val byteArrayOutputStream = ByteArrayOutputStream()
+        bitmap?.compress(Bitmap.CompressFormat.PNG, 50, byteArrayOutputStream)
+        val byteArray = byteArrayOutputStream.toByteArray()
+        val fos = FileOutputStream(f)
+        fos.write(byteArray)
+        fos.flush()
+        fos.close()
+        return f
+    }
+
+    override fun openImageFromGallery(activity:Activity) {
+        val intents = Intent(Intent.ACTION_PICK)
+        intents.type = "image/*"
+        activity.startActivityForResult(intents, RequestSelectGalleryImage)
+    }
+
+    override fun openImageFromCamera(activity:Activity) {
+        val pictureUri: Uri = FileProvider.getUriForFile(
+            activity,
+            activity.getString(R.string.package_name),
+            createImageFileFromPhoto(activity)
+        )
+        val intents = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        intents.putExtra(MediaStore.EXTRA_OUTPUT, pictureUri)
+        intents.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+        activity.startActivityForResult(intents, RequestOpenCamera)
+    }
+
+    private fun createImageFileFromPhoto(context: Context): File {
+        return nonVoidCustomMediaScannerConnection(context, saveCaptureImagePath)
+    }
+
+    private fun nonVoidCustomMediaScannerConnection(ctx: Context?, paths: String): File {
+        val directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+        val passingFile = File(directory, paths)
+        MediaScannerConnection.scanFile(ctx, arrayOf(passingFile.toString()), null) { path, uri ->
+            Log.i("ExternalStorage", "Scanned $path:")
+            Log.i("ExternalStorage", "-> uri=$uri")
+        }
+        return passingFile
+    }
+
+    private fun voidCustomMediaScannerConnection(ctx: Context?, paths: String) {
         val directory = Environment.getExternalStorageDirectory()
         val passingFile = File(directory, paths)
         MediaScannerConnection.scanFile(ctx, arrayOf(passingFile.toString()), null) { path, uri ->
@@ -232,3 +279,4 @@ internal class ImageUtil : ImageHelperResult, KoinComponent {
         }
     }
 }
+

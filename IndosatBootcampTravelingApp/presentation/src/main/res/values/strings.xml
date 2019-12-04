@@ -11,4 +11,5 @@
     <string name="lbl_saturation">SATURATION</string>
     <string name="tab_filters">FILTERS</string>
     <string name="tab_edit">EDIT</string>
+    <string name="permission_not_granted">Permissions are not granted!</string>
 </resources>

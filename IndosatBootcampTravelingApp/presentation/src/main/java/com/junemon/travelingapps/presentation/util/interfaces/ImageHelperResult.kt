@@ -1,5 +1,6 @@
 package com.junemon.travelingapps.presentation.util.interfaces
 
+import android.app.Activity
 import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
@@ -21,6 +22,10 @@ interface ImageHelperResult {
         heightImage: Int
     ): Bitmap?
 
+    fun openImageFromGallery(activity: Activity)
+
+    fun openImageFromCamera(activity:Activity)
+
     fun getBitmapFromGallery(ctx: Context, path: Uri): Bitmap?
 
     fun saveImage(views: View, bitmap: Bitmap?)
@@ -32,4 +37,6 @@ interface ImageHelperResult {
     )
 
     fun decodeSampledBitmapFromFile(imageFile: File): Bitmap
+
+    fun bitmapToFile(ctx: Context, bitmap: Bitmap?): File
 }
