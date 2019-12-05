@@ -103,17 +103,16 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/spacing_medium"
-                            android:text="@string/kota_tempat"
+                            android:text="@string/nama_kecamatan"
                             android:textColor="@color/black"
                             android:textStyle="bold" />
 
-                        <EditText
-                            android:id="@+id/etPlaceCity"
+                        <Spinner
+                            android:id="@+id/spPlaceDistrict"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="44dp"
                             android:layout_marginTop="8dp"
-                            android:background="@drawable/et_background"
-                            android:padding="15dp" />
+                            android:background="@drawable/spinner_bg"/>
 
                         <TextView
                             android:layout_width="wrap_content"
