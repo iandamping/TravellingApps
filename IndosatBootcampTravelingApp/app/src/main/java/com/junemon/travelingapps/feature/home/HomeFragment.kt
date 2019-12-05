@@ -15,25 +15,23 @@ import com.junemon.travelingapps.presentation.base.BaseFragment
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class HomeFragment:BaseFragment() {
+class HomeFragment : BaseFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding:FragmentHomeBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_home,container,false)
+        val binding: FragmentHomeBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
         binding.apply {
             initView()
         }
         return binding.root
     }
 
-
-    private fun FragmentHomeBinding.initView(){
+    private fun FragmentHomeBinding.initView() {
         this.apply {
             btnCreate.setOnClickListener { it.findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToUploadFragment()) }
         }
     }
-
 }

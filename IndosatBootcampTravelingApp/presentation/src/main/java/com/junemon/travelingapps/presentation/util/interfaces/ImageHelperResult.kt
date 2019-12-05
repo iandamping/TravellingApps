@@ -1,12 +1,10 @@
 package com.junemon.travelingapps.presentation.util.interfaces
 
-import android.app.Activity
 import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import com.google.firebase.storage.StorageReference
 import java.io.File
 
@@ -42,5 +40,5 @@ interface ImageHelperResult {
 
     fun bitmapToFile(ctx: Context, bitmap: Bitmap?): File
 
-    fun createImageFileFromPhoto(context: Context,uri:(Uri)->Unit): File
+    fun createImageFileFromPhoto(context: Context, uri: (Uri) -> Unit): File
 }

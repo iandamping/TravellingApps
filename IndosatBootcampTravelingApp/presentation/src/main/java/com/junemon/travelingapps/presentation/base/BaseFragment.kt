@@ -21,14 +21,14 @@ import java.lang.Exception
  * Github https://github.com/iandamping
  * Indonesia.
  */
-abstract class BaseFragment:Fragment(), KoinComponent {
+abstract class BaseFragment : Fragment(), KoinComponent {
     private lateinit var alert: AlertDialog
     protected val recyclerViewHelper: RecyclerviewHelper by inject()
     protected val loadingImageHelper: LoadImageResult by inject()
-    protected val viewHelper:ViewHelperResult by inject()
+    protected val viewHelper: ViewHelperResult by inject()
     protected val commonHelper: CommonHelperResult by inject()
-    protected val imageHelper:ImageHelperResult by inject()
-    protected val permissionHelper:PermissionHelperResult by inject()
+    protected val imageHelper: ImageHelperResult by inject()
+    protected val permissionHelper: PermissionHelperResult by inject()
 
     protected fun setBaseDialog() {
         val dialogBuilder = AlertDialog.Builder(context)
@@ -59,7 +59,7 @@ abstract class BaseFragment:Fragment(), KoinComponent {
         }
     }
 
-    protected fun ilegallArgumenCatching(function: () -> Unit){
+    protected fun ilegallArgumenCatching(function: () -> Unit) {
         try {
             function.invoke()
         } catch (e: IllegalArgumentException) {
@@ -67,7 +67,7 @@ abstract class BaseFragment:Fragment(), KoinComponent {
         }
     }
 
-    protected fun ilegallStateCatching(function: () -> Unit){
+    protected fun ilegallStateCatching(function: () -> Unit) {
         try {
             function.invoke()
         } catch (e: IllegalStateException) {
@@ -75,7 +75,7 @@ abstract class BaseFragment:Fragment(), KoinComponent {
         }
     }
 
-    protected fun universalCatching(function: () -> Unit){
+    protected fun universalCatching(function: () -> Unit) {
         try {
             function.invoke()
         } catch (e: Exception) {

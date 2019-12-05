@@ -19,7 +19,7 @@ import org.koin.dsl.module
 fun injectData() = loadFeature
 
 private val loadFeature by lazy {
-    loadKoinModules(listOf(dataSourceModule, repositoryModules, useCaseModule, commonHelperModule,presentationModule,viewmodelModule, databaseModule))
+    loadKoinModules(listOf(dataSourceModule, repositoryModules, useCaseModule, commonHelperModule, presentationModule, viewmodelModule, databaseModule))
 }
 private val viewmodelModule = module {
     viewModel { PlaceViewModel(get()) }
@@ -28,4 +28,3 @@ private val viewmodelModule = module {
 private val useCaseModule = module {
     factory { PlaceUseCase(get()) }
 }
-

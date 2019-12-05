@@ -54,4 +54,3 @@ fun List<PlaceDbEntity>.mapToCacheDomain(): List<PlaceCacheData> = map { it.mapT
 fun List<PlaceRemoteEntity>.mapToRemoteDomain(): List<PlaceRemoteData> = map { it.mapToRemoteDomain() }
 
 fun Flow<List<PlaceDbEntity>>.mapToDomain() = map { it.mapToCacheDomain() }
-

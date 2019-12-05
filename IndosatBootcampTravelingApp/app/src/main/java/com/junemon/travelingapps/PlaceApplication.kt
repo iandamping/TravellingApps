@@ -11,7 +11,7 @@ import timber.log.Timber
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class PlaceApplication: Application() {
+class PlaceApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()

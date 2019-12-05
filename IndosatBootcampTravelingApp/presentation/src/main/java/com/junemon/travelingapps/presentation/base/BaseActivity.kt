@@ -13,7 +13,7 @@ import org.koin.core.inject
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class BaseActivity : AppCompatActivity(),KoinComponent {
+class BaseActivity : AppCompatActivity(), KoinComponent {
 
     protected val recyclerViewHelper: RecyclerviewHelper by inject()
     protected val loadingImageHelper: LoadImageResult by inject()

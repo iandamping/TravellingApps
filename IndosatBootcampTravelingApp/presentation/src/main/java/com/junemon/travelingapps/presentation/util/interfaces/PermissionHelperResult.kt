@@ -9,5 +9,5 @@ import androidx.fragment.app.FragmentActivity
  */
 interface PermissionHelperResult {
 
-    fun getAllPermission(activity: FragmentActivity,isGranted:(Boolean) ->Unit)
+    fun getAllPermission(activity: FragmentActivity, isGranted: (Boolean) -> Unit)
 }

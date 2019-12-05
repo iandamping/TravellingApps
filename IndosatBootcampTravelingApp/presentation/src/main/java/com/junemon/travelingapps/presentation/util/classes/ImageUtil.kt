@@ -32,7 +32,6 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.io.InputStream
 
-
 /**
  * Created by Ian Damping on 04,December,2019
  * Github https://github.com/iandamping
@@ -58,9 +57,9 @@ internal class ImageUtil : ImageHelperResult, KoinComponent {
             options.inJustDecodeBounds = true
 
             inputStreams = assetManager.open(fileName)
-            //calculate sample size
+            // calculate sample size
             options.inSampleSize = calculateSampleSize(options, widthImage, heightImage)
-            //decode bitmpat with samplesize set
+            // decode bitmpat with samplesize set
             options.inJustDecodeBounds = false
             return BitmapFactory.decodeStream(inputStreams, null, options)
         } catch (e: IOException) {
@@ -145,7 +144,7 @@ internal class ImageUtil : ImageHelperResult, KoinComponent {
         }
     }
 
-    //decode File into Bitmap and compress it
+    // decode File into Bitmap and compress it
     override fun decodeSampledBitmapFromFile(imageFile: File): Bitmap {
         // First decode with inJustDecodeBounds=true to check dimensions
         val options = BitmapFactory.Options()
@@ -160,7 +159,7 @@ internal class ImageUtil : ImageHelperResult, KoinComponent {
 
         var scaledBitmap = BitmapFactory.decodeFile(imageFile.absolutePath, options)
 
-        //check the rotation of the image and display it properly
+        // check the rotation of the image and display it properly
         val exif = ExifInterface(imageFile.absolutePath)
         val orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 0)
         val matrix = Matrix()
@@ -244,7 +243,7 @@ internal class ImageUtil : ImageHelperResult, KoinComponent {
         fragment.startActivityForResult(intents, RequestSelectGalleryImage)
     }
 
-    override fun openImageFromCamera(fragment:Fragment) {
+    override fun openImageFromCamera(fragment: Fragment) {
         val pictureUri: Uri = FileProvider.getUriForFile(
             fragment.context!!,
             fragment.getString(R.string.package_name),
@@ -256,15 +255,15 @@ internal class ImageUtil : ImageHelperResult, KoinComponent {
         fragment.startActivityForResult(intents, RequestOpenCamera)
     }
 
-    override fun createImageFileFromPhoto(context: Context,uri:(Uri)->Unit): File {
-        return nonVoidCustomMediaScannerConnection(context, saveCaptureImagePath,uri)
+    override fun createImageFileFromPhoto(context: Context, uri: (Uri) -> Unit): File {
+        return nonVoidCustomMediaScannerConnection(context, saveCaptureImagePath, uri)
     }
 
     private fun createImageFileFromPhoto(context: Context): File {
         return nonVoidCustomMediaScannerConnection(context, saveCaptureImagePath)
     }
 
-    private fun nonVoidCustomMediaScannerConnection(ctx: Context?, paths: String,uriToPassed:(Uri)->Unit): File {
+    private fun nonVoidCustomMediaScannerConnection(ctx: Context?, paths: String, uriToPassed: (Uri) -> Unit): File {
         val directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
         val passingFile = File(directory, paths)
         MediaScannerConnection.scanFile(ctx, arrayOf(passingFile.toString()), null) { path, uri ->
@@ -294,4 +293,3 @@ internal class ImageUtil : ImageHelperResult, KoinComponent {
         }
     }
 }
-
