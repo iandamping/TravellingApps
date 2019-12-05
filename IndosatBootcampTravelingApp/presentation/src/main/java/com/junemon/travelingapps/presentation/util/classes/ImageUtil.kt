@@ -16,6 +16,7 @@ import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import androidx.core.content.FileProvider
+import androidx.fragment.app.FragmentActivity
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.storage.StorageReference
 import com.ian.app.helper.interfaces.CommonHelperResult
@@ -238,13 +239,13 @@ internal class ImageUtil : ImageHelperResult, KoinComponent {
         return f
     }
 
-    override fun openImageFromGallery(activity:Activity) {
+    override fun openImageFromGallery(activity: FragmentActivity) {
         val intents = Intent(Intent.ACTION_PICK)
         intents.type = "image/*"
         activity.startActivityForResult(intents, RequestSelectGalleryImage)
     }
 
-    override fun openImageFromCamera(activity:Activity) {
+    override fun openImageFromCamera(activity:FragmentActivity) {
         val pictureUri: Uri = FileProvider.getUriForFile(
             activity,
             activity.getString(R.string.package_name),

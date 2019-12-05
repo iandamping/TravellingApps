@@ -1,6 +1,7 @@
 package com.junemon.travelingapps.presentation.util.classes
 
 import android.app.Activity
+import androidx.fragment.app.FragmentActivity
 import com.junemon.travelingapps.presentation.util.interfaces.PermissionHelperResult
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
@@ -15,7 +16,7 @@ import com.karumi.dexter.listener.multi.MultiplePermissionsListener
  */
 internal class PermissionUtil: PermissionHelperResult {
 
-    override fun getAllPermission(activity:Activity,isGranted:(Boolean) ->Unit) {
+    override fun getAllPermission(activity: FragmentActivity,isGranted:(Boolean) ->Unit) {
         Dexter.withActivity(activity).withPermissions(
             android.Manifest.permission.READ_EXTERNAL_STORAGE,
             android.Manifest.permission.WRITE_EXTERNAL_STORAGE,

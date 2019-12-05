@@ -1,6 +1,6 @@
 package com.junemon.travelingapps.presentation.util.interfaces
 
-import android.app.Activity
+import androidx.fragment.app.FragmentActivity
 
 /**
  * Created by Ian Damping on 04,December,2019
@@ -9,5 +9,5 @@ import android.app.Activity
  */
 interface PermissionHelperResult {
 
-    fun getAllPermission(activity: Activity,isGranted:(Boolean) ->Unit)
+    fun getAllPermission(activity: FragmentActivity,isGranted:(Boolean) ->Unit)
 }
