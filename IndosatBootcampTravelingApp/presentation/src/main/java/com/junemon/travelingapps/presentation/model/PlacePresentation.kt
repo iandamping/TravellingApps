@@ -1,5 +1,6 @@
 package com.junemon.travelingapps.presentation.model
 
+import com.junemon.travellingapps.domain.model.PlaceCacheData
 import com.junemon.travellingapps.domain.model.PlaceRemoteData
 
 data class PlaceCachePresentation(
@@ -21,7 +22,16 @@ data class PlaceRemotePresentation(
     var placePicture: String?
 )
 
-fun PlaceRemoteData.mapRemoteToCachePresentation(): PlaceCachePresentation = PlaceCachePresentation(
+fun PlaceRemoteData.mapRemoteToPresentation(): PlaceRemotePresentation = PlaceRemotePresentation(
+    placeType,
+    placeName,
+    placeAddres,
+    placeDistrict,
+    placeDetail,
+    placePicture
+)
+
+fun PlaceCacheData.mapCacheToPresentation(): PlaceCachePresentation = PlaceCachePresentation(
     null,
     placeType,
     placeName,
@@ -31,5 +41,8 @@ fun PlaceRemoteData.mapRemoteToCachePresentation(): PlaceCachePresentation = Pla
     placePicture
 )
 
-fun List<PlaceRemoteData>.mapRemoteToCachePresentation(): List<PlaceCachePresentation> =
-    map { it.mapRemoteToCachePresentation() }
+fun List<PlaceRemoteData>.mapRemoteToPresentation(): List<PlaceRemotePresentation> =
+    map { it.mapRemoteToPresentation() }
+
+fun List<PlaceCacheData>.mapCacheToPresentation():List<PlaceCachePresentation> =
+    map { it.mapCacheToPresentation() }

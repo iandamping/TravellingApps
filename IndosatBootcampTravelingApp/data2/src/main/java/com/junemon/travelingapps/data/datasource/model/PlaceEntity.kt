@@ -35,7 +35,11 @@ data class PlaceRemoteEntity(
     var placeDistrict: String?,
     var placeDetail: String?,
     var placePicture: String?
-)
+){
+    constructor() : this(
+         null, null, null, null, null, null
+    )
+}
 
 fun PlaceDbEntity.mapToCacheDomain(): PlaceCacheData = PlaceCacheData(localPlaceID, placeType, placeName, placeAddres, placeDistrict, placeDetail, placePicture)
 

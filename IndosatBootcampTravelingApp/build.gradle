@@ -23,6 +23,7 @@ buildscript {
         timberVersion = '4.7.1'
         anko_version = '0.10.5'
         navigationVer = '2.2.0-rc02'
+        shimmerVer = '0.5.0'
     }
     repositories {
         google()
