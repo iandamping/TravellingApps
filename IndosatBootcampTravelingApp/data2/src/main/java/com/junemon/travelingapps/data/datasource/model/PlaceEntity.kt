@@ -19,7 +19,7 @@ data class PlaceDbEntity(
     @ColumnInfo(name = "place_type") var placeType: String?,
     @ColumnInfo(name = "place_name") var placeName: String?,
     @ColumnInfo(name = "place_address") var placeAddres: String?,
-    @ColumnInfo(name = "place_city") var placeCity: String?,
+    @ColumnInfo(name = "place_city") var placeDistrict: String?,
     @ColumnInfo(name = "place_detail") var placeDetail: String?,
     @ColumnInfo(name = "place_picture") var placePicture: String?
 ) {
@@ -32,18 +32,18 @@ data class PlaceRemoteEntity(
     var placeType: String?,
     var placeName: String?,
     var placeAddres: String?,
-    var placeCity: String?,
+    var placeDistrict: String?,
     var placeDetail: String?,
     var placePicture: String?
 )
 
-fun PlaceDbEntity.mapToCacheDomain(): PlaceCacheData = PlaceCacheData(localPlaceID, placeType, placeName, placeAddres, placeCity, placeDetail, placePicture)
+fun PlaceDbEntity.mapToCacheDomain(): PlaceCacheData = PlaceCacheData(localPlaceID, placeType, placeName, placeAddres, placeDistrict, placeDetail, placePicture)
 
-fun PlaceRemoteEntity.mapToRemoteDomain(): PlaceRemoteData = PlaceRemoteData(placeType, placeName, placeAddres, placeCity, placeDetail, placePicture)
+fun PlaceRemoteEntity.mapToRemoteDomain(): PlaceRemoteData = PlaceRemoteData(placeType, placeName, placeAddres, placeDistrict, placeDetail, placePicture)
 
-fun PlaceRemoteData.mapRemoteToCacheDomain(): PlaceCacheData = PlaceCacheData(null, placeType, placeName, placeAddres, placeCity, placeDetail, placePicture)
+fun PlaceRemoteData.mapRemoteToCacheDomain(): PlaceCacheData = PlaceCacheData(null, placeType, placeName, placeAddres, placeDistrict, placeDetail, placePicture)
 
-fun PlaceCacheData.mapToDatabase(): PlaceDbEntity = PlaceDbEntity(null, placeType, placeName, placeAddres, placeCity, placeDetail, placePicture)
+fun PlaceCacheData.mapToDatabase(): PlaceDbEntity = PlaceDbEntity(null, placeType, placeName, placeAddres, placeDistrict, placeDetail, placePicture)
 
 fun List<PlaceCacheData>.mapToDatabase(): List<PlaceDbEntity> = map { it.mapToDatabase() }
 

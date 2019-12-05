@@ -10,7 +10,7 @@ data class PlaceCacheData(
     var placeType: String?,
     var placeName: String?,
     var placeAddres: String?,
-    var placeCity: String?,
+    var placeDistrict: String?,
     var placeDetail: String?,
     var placePicture: String?
 )
@@ -19,7 +19,7 @@ data class PlaceRemoteData(
     var placeType: String?,
     var placeName: String?,
     var placeAddres: String?,
-    var placeCity: String?,
+    var placeDistrict: String?,
     var placeDetail: String?,
     var placePicture: String?
 )

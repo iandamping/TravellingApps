@@ -7,7 +7,7 @@ data class PlaceCachePresentation(
     var placeType: String?,
     var placeName: String?,
     var placeAddres: String?,
-    var placeCity: String?,
+    var placeDistrict: String?,
     var placeDetail: String?,
     var placePicture: String?
 )
@@ -16,7 +16,7 @@ data class PlaceRemotePresentation(
     var placeType: String?,
     var placeName: String?,
     var placeAddres: String?,
-    var placeCity: String?,
+    var placeDistrict: String?,
     var placeDetail: String?,
     var placePicture: String?
 )
@@ -26,7 +26,7 @@ fun PlaceRemoteData.mapRemoteToCachePresentation(): PlaceCachePresentation = Pla
     placeType,
     placeName,
     placeAddres,
-    placeCity,
+    placeDistrict,
     placeDetail,
     placePicture
 )

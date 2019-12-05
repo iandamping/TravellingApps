@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentActivity
+import androidx.navigation.findNavController
 import com.junemon.travelingapps.R
 import com.junemon.travelingapps.databinding.FragmentUploadBinding
 import com.junemon.travelingapps.presentation.PresentationConstant.RequestSelectGalleryImage
@@ -101,19 +102,25 @@ class UploadFragment : BaseFragment() {
                                 placeType = placeType,
                                 placeName = placeName,
                                 placeAddres = placeAddress,
-                                placeCity = placeCity,
+                                placeDistrict = placeCity,
                                 placeDetail = placeDetail,
                                 placePicture = null
                             ), imageUri = selectedUriForFirebase, success = {
                                 setDialogShow(it)
+                                moveUp()
                             }, failed = { status, throwable ->
                                 setDialogShow(status)
                                 commonHelper.timberLogE(throwable.message)
+                                moveUp()
                             })
                     }
                 }
             }
         }
+    }
+
+    private fun FragmentUploadBinding.moveUp(){
+        this.root.findNavController().navigateUp()
     }
 
     private fun openGalleryAndCamera(status: Boolean) {
