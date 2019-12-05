@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
 import android.view.View
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.google.firebase.storage.StorageReference
 import java.io.File
@@ -23,9 +24,9 @@ interface ImageHelperResult {
         heightImage: Int
     ): Bitmap?
 
-    fun openImageFromGallery(activity: FragmentActivity)
+    fun openImageFromGallery(fragment: Fragment)
 
-    fun openImageFromCamera(activity:FragmentActivity)
+    fun openImageFromCamera(fragment: Fragment)
 
     fun getBitmapFromGallery(ctx: Context, path: Uri): Bitmap?
 
@@ -40,4 +41,6 @@ interface ImageHelperResult {
     fun decodeSampledBitmapFromFile(imageFile: File): Bitmap
 
     fun bitmapToFile(ctx: Context, bitmap: Bitmap?): File
+
+    fun createImageFileFromPhoto(context: Context): File
 }

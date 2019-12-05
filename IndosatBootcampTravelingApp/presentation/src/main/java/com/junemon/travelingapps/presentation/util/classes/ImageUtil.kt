@@ -1,6 +1,5 @@
 package com.junemon.travelingapps.presentation.util.classes
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.res.AssetManager
@@ -16,7 +15,7 @@ import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import androidx.core.content.FileProvider
-import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.storage.StorageReference
 import com.ian.app.helper.interfaces.CommonHelperResult
@@ -32,6 +31,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.InputStream
+
 
 /**
  * Created by Ian Damping on 04,December,2019
@@ -71,8 +71,7 @@ internal class ImageUtil : ImageHelperResult, KoinComponent {
 
     override fun getBitmapFromGallery(ctx: Context, path: Uri): Bitmap? {
         val filePathColum = arrayOf(MediaStore.Images.Media.DATA)
-        val cursor: Cursor? =
-            ctx.applicationContext?.contentResolver?.query(path, filePathColum, null, null, null)
+        val cursor: Cursor? = ctx.applicationContext?.contentResolver?.query(path, filePathColum, null, null, null)
         cursor?.moveToFirst()
 
         val columnIndex: Int? = cursor?.getColumnIndex(filePathColum[0])
@@ -239,25 +238,25 @@ internal class ImageUtil : ImageHelperResult, KoinComponent {
         return f
     }
 
-    override fun openImageFromGallery(activity: FragmentActivity) {
+    override fun openImageFromGallery(fragment: Fragment) {
         val intents = Intent(Intent.ACTION_PICK)
         intents.type = "image/*"
-        activity.startActivityForResult(intents, RequestSelectGalleryImage)
+        fragment.startActivityForResult(intents, RequestSelectGalleryImage)
     }
 
-    override fun openImageFromCamera(activity:FragmentActivity) {
+    override fun openImageFromCamera(fragment:Fragment) {
         val pictureUri: Uri = FileProvider.getUriForFile(
-            activity,
-            activity.getString(R.string.package_name),
-            createImageFileFromPhoto(activity)
+            fragment.context!!,
+            fragment.getString(R.string.package_name),
+            createImageFileFromPhoto(fragment.context!!)
         )
         val intents = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         intents.putExtra(MediaStore.EXTRA_OUTPUT, pictureUri)
         intents.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
-        activity.startActivityForResult(intents, RequestOpenCamera)
+        fragment.startActivityForResult(intents, RequestOpenCamera)
     }
 
-    private fun createImageFileFromPhoto(context: Context): File {
+    override fun createImageFileFromPhoto(context: Context): File {
         return nonVoidCustomMediaScannerConnection(context, saveCaptureImagePath)
     }
 
