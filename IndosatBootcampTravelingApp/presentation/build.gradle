@@ -43,5 +43,6 @@ dependencies {
     implementation "org.koin:koin-android-viewmodel:$koin_version"
     implementation "com.google.firebase:firebase-storage:$firebaseStorageVer"
     implementation "com.google.firebase:firebase-database:$firebaseDatabaseVer"
+    implementation project(':domain')
 
 }

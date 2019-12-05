@@ -256,8 +256,23 @@ internal class ImageUtil : ImageHelperResult, KoinComponent {
         fragment.startActivityForResult(intents, RequestOpenCamera)
     }
 
-    override fun createImageFileFromPhoto(context: Context): File {
+    override fun createImageFileFromPhoto(context: Context,uri:(Uri)->Unit): File {
+        return nonVoidCustomMediaScannerConnection(context, saveCaptureImagePath,uri)
+    }
+
+    private fun createImageFileFromPhoto(context: Context): File {
         return nonVoidCustomMediaScannerConnection(context, saveCaptureImagePath)
+    }
+
+    private fun nonVoidCustomMediaScannerConnection(ctx: Context?, paths: String,uriToPassed:(Uri)->Unit): File {
+        val directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+        val passingFile = File(directory, paths)
+        MediaScannerConnection.scanFile(ctx, arrayOf(passingFile.toString()), null) { path, uri ->
+            Log.i("ExternalStorage", "Scanned $path:")
+            Log.i("ExternalStorage", "-> uri=$uri")
+            uriToPassed(uri)
+        }
+        return passingFile
     }
 
     private fun nonVoidCustomMediaScannerConnection(ctx: Context?, paths: String): File {

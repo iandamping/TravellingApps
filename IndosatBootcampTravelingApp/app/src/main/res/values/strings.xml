@@ -4,4 +4,13 @@
     <string name="detail_lokasi">Detail Lokasi</string>
     <string name="unggah_foto">Unggah Foto</string>
     <string name="unggah">Unggah</string>
+
+    <string name="place_name_checker">Nama tempat tidak boleh kosong</string>
+    <string name="place_description_checker">Deskripsi tempat tidak boleh kosong</string>
+    <string name="place_type_checker">Tipe tempat tidak boleh kosong</string>
+    <string name="place_address_checker">Alamat tempat tidak boleh kosong</string>
+    <string name="place_city_checker">Kota tempat tidak boleh kosong</string>
+    <string name="alamat_tempat">Alamat Tempat</string>
+    <string name="kota_tempat">Kota Tempat</string>
+    <string name="tipe_tempat">Tipe Tempat</string>
 </resources>

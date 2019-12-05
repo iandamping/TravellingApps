@@ -42,5 +42,5 @@ interface ImageHelperResult {
 
     fun bitmapToFile(ctx: Context, bitmap: Bitmap?): File
 
-    fun createImageFileFromPhoto(context: Context): File
+    fun createImageFileFromPhoto(context: Context,uri:(Uri)->Unit): File
 }

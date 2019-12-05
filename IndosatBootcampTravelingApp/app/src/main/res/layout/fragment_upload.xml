@@ -61,13 +61,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <RelativeLayout
+                    <LinearLayout
                         android:layout_width="match_parent"
+                        android:orientation="vertical"
                         android:layout_height="match_parent"
                         android:padding="25dp">
 
                         <TextView
-                            android:id="@+id/tvNamaBarang"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/spacing_medium"
@@ -77,29 +77,73 @@
                             android:textStyle="bold" />
 
                         <EditText
-                            android:id="@+id/etNamaBarang"
+                            android:id="@+id/etPlaceName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/tvNamaBarang"
                             android:layout_marginTop="8dp"
                             android:background="@drawable/et_background"
                             android:padding="15dp" />
 
                         <TextView
-                            android:id="@+id/tvDesBarang"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/etNamaBarang"
+                            android:layout_marginTop="@dimen/spacing_medium"
+                            android:text="@string/tipe_tempat"
+                            android:textColor="@color/black"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/etPlaceType"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:background="@drawable/et_background"
+                            android:padding="15dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_medium"
+                            android:text="@string/kota_tempat"
+                            android:textColor="@color/black"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/etPlaceCity"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:background="@drawable/et_background"
+                            android:padding="15dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_medium"
+                            android:text="@string/alamat_tempat"
+                            android:textColor="@color/black"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/etPlaceAddress"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:background="@drawable/et_background"
+                            android:padding="15dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/spacing_medium"
                             android:text="@string/detail_lokasi"
                             android:textColor="@color/black"
                             android:textStyle="bold" />
 
                         <EditText
-                            android:id="@+id/etDesBarang"
+                            android:id="@+id/etPlaceDetail"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/tvDesBarang"
                             android:layout_marginTop="8dp"
                             android:background="@drawable/et_background"
                             android:padding="15dp" />
@@ -109,14 +153,13 @@
                             android:id="@+id/btnUnggah"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/etDesBarang"
                             android:layout_marginTop="40dp"
                             android:background="@drawable/background_upload_button_blue"
                             android:text="@string/unggah"
                             android:textColor="@color/color_white" />
 
 
-                    </RelativeLayout>
+                    </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
             </LinearLayout>
