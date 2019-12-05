@@ -8,6 +8,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentActivity
 import com.junemon.travelingapps.R
@@ -28,6 +30,7 @@ import kotlin.properties.Delegates
 class UploadFragment : BaseFragment() {
     private var isPermisisonGranted by Delegates.notNull<Boolean>()
     private var selectedUriForFirebase by Delegates.notNull<Uri>()
+    private var placeType by Delegates.notNull<String>()
     private val placeVm: PlaceViewModel by viewModel()
     private lateinit var binders: FragmentUploadBinding
     override fun onAttach(context: Context) {
@@ -58,12 +61,18 @@ class UploadFragment : BaseFragment() {
 
     private fun FragmentUploadBinding.initView() {
         this.apply {
+            val allTypeCategory:Array<String> = context?.resources?.getStringArray(R.array.place_type_items)!!
+            val arraySpinnerAdapter: ArrayAdapter<String>? =  ArrayAdapter(context!!, android.R.layout.simple_spinner_item, allTypeCategory)
+            arraySpinnerAdapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
             btnUnggahFoto.setOnClickListener {
                 openGalleryAndCamera(isPermisisonGranted)
             }
             btnUnggah.setOnClickListener {
                 uploadItem()
             }
+
+            spPlaceType.adapter = arraySpinnerAdapter
         }
     }
 
@@ -71,13 +80,13 @@ class UploadFragment : BaseFragment() {
         apply {
             val placeName = etPlaceName.text.toString()
             val placeDetail = etPlaceDetail.text.toString()
-            val placeType = etPlaceType.text.toString()
             val placeCity = etPlaceCity.text.toString()
+            placeType = spPlaceType.selectedItem.toString()
             val placeAddress = etPlaceAddress.text.toString()
             when {
                 placeName.isBlank() -> viewHelper.run { etPlaceName.requestError(getString(R.string.place_name_checker)) }
                 placeDetail.isBlank() -> viewHelper.run { etPlaceDetail.requestError(getString(R.string.place_description_checker)) }
-                placeType.isBlank() -> viewHelper.run { etPlaceType.requestError(getString(R.string.place_type_checker)) }
+                placeType.isNullOrBlank() -> commonHelper.run { context?.myToast(getString(R.string.place_type_checker)) }
                 placeCity.isBlank() -> viewHelper.run { etPlaceCity.requestError(getString(R.string.place_city_checker)) }
                 placeAddress.isBlank() -> viewHelper.run { etPlaceAddress.requestError(getString(R.string.place_address_checker)) }
                 else -> {

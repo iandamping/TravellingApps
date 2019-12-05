@@ -13,4 +13,11 @@
     <string name="alamat_tempat">Alamat Tempat</string>
     <string name="kota_tempat">Kota Tempat</string>
     <string name="tipe_tempat">Tipe Tempat</string>
+
+
+    <string-array name="place_type_items">
+        <item>Wisata Alam</item>
+        <item>Wisata Budaya</item>
+        <item>Wisata Religi</item>
+    </string-array>
 </resources>
