@@ -87,7 +87,7 @@ class HomeFragment : BaseFragment() {
                 pageSize = if (result.data!!.size > 10) {
                     10
                 } else result.data!!.size
-                vpPlaceRandom.adapter = HomeSliderAdapter(result.data!!.mapCacheToPresentation().shuffled())
+                vpPlaceRandom.adapter = HomeSliderAdapter(result.data!!.mapCacheToPresentation().shuffled().take(10))
                 indicator.setViewPager(vpPlaceRandom)
             }
         }
