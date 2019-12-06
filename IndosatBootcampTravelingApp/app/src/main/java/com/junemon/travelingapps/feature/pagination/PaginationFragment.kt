@@ -1,6 +1,8 @@
 package com.junemon.travelingapps.feature.pagination
 
+import android.content.Context
 import android.os.Bundle
+import android.os.StrictMode
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,6 +29,13 @@ class PaginationFragment : BaseFragment() {
     private val placeVm: PlaceViewModel by viewModel()
     private val paginationType by lazy {
         PaginationFragmentArgs.fromBundle(arguments!!).paginationType
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        // dont use this, but i had to
+        val builder = StrictMode.VmPolicy.Builder()
+        StrictMode.setVmPolicy(builder.build())
     }
 
     override fun onCreateView(
@@ -60,6 +69,7 @@ class PaginationFragment : BaseFragment() {
 
                 recyclerViewHelper.run {
                     recyclerviewCatching {
+                        requireNotNull(result.data)
                         rvPagination.setUpVerticalListAdapter(
                             items = result.data?.mapCacheToPresentation(),
                             diffUtil = placePaginationRvCallback,
