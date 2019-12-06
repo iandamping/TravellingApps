@@ -16,6 +16,8 @@ import android.util.Log
 import android.view.View
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.storage.StorageReference
 import com.ian.app.helper.interfaces.CommonHelperResult
@@ -23,6 +25,10 @@ import com.junemon.travelingapps.presentation.PresentationConstant.RequestOpenCa
 import com.junemon.travelingapps.presentation.PresentationConstant.RequestSelectGalleryImage
 import com.junemon.travelingapps.presentation.R
 import com.junemon.travelingapps.presentation.util.interfaces.ImageHelperResult
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.jetbrains.anko.progressDialog
 import org.koin.core.KoinComponent
 import org.koin.core.inject
@@ -104,6 +110,29 @@ internal class ImageUtil : ImageHelperResult, KoinComponent {
         }
         voidCustomMediaScannerConnection(views.context, saveFilterImagePath)
     }
+
+    override fun Fragment.saveImage(scope: CoroutineScope, views: View, imageUrl: String?) {
+        scope.launch {
+                try {
+                    requireNotNull(imageUrl){
+                        "picture to share is null"
+                    }
+                    withContext(Dispatchers.IO) {
+                        val bitmap = Glide.with(this@saveImage)
+                            .asBitmap()
+                            .load(imageUrl)
+                            .submit(512, 512)
+                            .get()
+                        if (bitmap != null) {
+                            saveImage(views, bitmap)
+                        }
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+        }
+    }
+
 
     override fun saveFirebaseImageToGallery(
         storageReference: StorageReference,

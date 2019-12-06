@@ -52,6 +52,7 @@ dependencies {
     implementation "com.jakewharton.timber:timber:$timberVersion"
     implementation "me.relex:circleindicator:1.2.2@aar"
     implementation "com.facebook.shimmer:shimmer:$shimmerVer"
+    implementation "com.google.code.gson:gson:$gson_version"
     implementation project(':data2')
     implementation project(':domain')
     implementation project(':presentation')

@@ -5,7 +5,9 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import com.google.firebase.storage.StorageReference
+import kotlinx.coroutines.CoroutineScope
 import java.io.File
 
 /**
@@ -29,6 +31,8 @@ interface ImageHelperResult {
     fun getBitmapFromGallery(ctx: Context, path: Uri): Bitmap?
 
     fun saveImage(views: View, bitmap: Bitmap?)
+
+    fun Fragment.saveImage(scope: CoroutineScope, views: View, imageUrl: String?)
 
     fun saveFirebaseImageToGallery(
         storageReference: StorageReference,

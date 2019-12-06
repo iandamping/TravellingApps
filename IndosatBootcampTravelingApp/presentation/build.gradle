@@ -43,6 +43,8 @@ dependencies {
     implementation "org.koin:koin-android-viewmodel:$koin_version"
     implementation "com.google.firebase:firebase-storage:$firebaseStorageVer"
     implementation "com.google.firebase:firebase-database:$firebaseDatabaseVer"
+    implementation 'com.github.bumptech.glide:glide:4.9.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
     implementation project(':domain')
 
 }

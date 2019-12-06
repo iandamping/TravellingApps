@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
+import com.google.gson.Gson
 import com.ian.app.helper.data.ResultToConsume
 import com.junemon.travelingapps.R
 import com.junemon.travelingapps.databinding.FragmentHomeBinding
@@ -26,6 +27,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
  * Indonesia.
  */
 class HomeFragment : BaseFragment() {
+    private val gson = Gson()
     private lateinit var binders: FragmentHomeBinding
     private val placeVm: PlaceViewModel by viewModel()
     private var mHandler: Handler = Handler()
@@ -108,7 +110,9 @@ class HomeFragment : BaseFragment() {
                             tvItemPlaceName.text = it?.placeName
                             tvItemPlaceDistrict.text = it?.placeDistrict
                         },
-                        layoutResId = R.layout.item_recyclerview
+                        layoutResId = R.layout.item_recyclerview,itemClick = {
+                            this@apply.root.findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToDetailFragment(gson.toJson(this)))
+                        }
                     )
                     rvPlaceCultureType.setUpHorizontalListAdapter(
                         items = cultureData, diffUtil = placeRvCallback,
@@ -117,7 +121,9 @@ class HomeFragment : BaseFragment() {
                             tvItemPlaceName.text = it?.placeName
                             tvItemPlaceDistrict.text = it?.placeDistrict
                         },
-                        layoutResId = R.layout.item_recyclerview
+                        layoutResId = R.layout.item_recyclerview,itemClick = {
+                            this@apply.root.findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToDetailFragment(gson.toJson(this)))
+                        }
                     )
                     rvPlaceReligiusType.setUpHorizontalListAdapter(
                         items = religiData, diffUtil = placeRvCallback,
@@ -126,7 +132,9 @@ class HomeFragment : BaseFragment() {
                             tvItemPlaceName.text = it?.placeName
                             tvItemPlaceDistrict.text = it?.placeDistrict
                         },
-                        layoutResId = R.layout.item_recyclerview
+                        layoutResId = R.layout.item_recyclerview,itemClick = {
+                            this@apply.root.findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToDetailFragment(gson.toJson(this)))
+                        }
                     )
                 }
             }
