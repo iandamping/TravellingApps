@@ -94,6 +94,7 @@
                 <TextView
                     android:id="@+id/tvPlaceDetailDistrict"
                     android:layout_width="wrap_content"
+                    android:layout_marginStart="@dimen/spacing_small"
                     android:layout_height="wrap_content"
                     android:text="@{detailData.placeDistrict}"
                     tools:text="@tools:sample/lorem" />
@@ -108,19 +109,21 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:layout_gravity="bottom"
+                    android:layout_gravity="center"
                     android:src="@drawable/ic_map_black_24dp" />
 
-                <TextView
+                <com.junemon.travelingapps.presentation.util.classes.JustifyTextView
                     android:id="@+id/tvPlaceDetailAddress"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+
+                    android:layout_marginStart="@dimen/spacing_small"
                     android:text="@{detailData.placeAddres}"
-                    tools:text="@tools:sample/lorem" />
+                    tools:text="asjdajdoasjdasjidasidasjdpsakdksapofapskfopaskofkas[fka[skf[askf[kas[pfkas[pfk[askf[ask[pfkas[fka[sofkoaskfoa" />
             </LinearLayout>
 
 
-            <TextView
+            <com.junemon.travelingapps.presentation.util.classes.JustifyTextView
                 android:id="@+id/tvPlaceDetailPlace"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

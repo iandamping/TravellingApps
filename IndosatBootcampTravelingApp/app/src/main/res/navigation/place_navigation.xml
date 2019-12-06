@@ -13,14 +13,18 @@
         <action
             android:id="@+id/action_homeFragment_to_uploadFragment"
             app:destination="@id/uploadFragment"
-            app:enterAnim="@anim/fragment_fade_enter"
-            app:popEnterAnim="@anim/fragment_fade_enter"
+            app:enterAnim="@anim/fade_in_activity"
+            app:exitAnim="@anim/fade_out_activity"
+            app:popEnterAnim="@anim/fade_in_activity"
+            app:popExitAnim="@anim/fade_out_activity"
             app:popUpTo="@+id/homeFragment" />
         <action
             android:id="@+id/action_homeFragment_to_detailFragment"
             app:destination="@id/detailFragment"
-            app:enterAnim="@anim/fragment_fade_enter"
-            app:popEnterAnim="@anim/fragment_fade_enter" />
+            app:enterAnim="@anim/fade_in_activity"
+            app:exitAnim="@anim/fade_out_activity"
+            app:popEnterAnim="@anim/fade_in_activity"
+            app:popExitAnim="@anim/fade_out_activity" />
     </fragment>
     <fragment
         android:id="@+id/uploadFragment"
