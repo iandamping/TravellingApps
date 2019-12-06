@@ -15,6 +15,8 @@ interface PlaceRepository {
 
     fun getCache(): LiveData<ResultToConsume<List<PlaceCacheData>>>
 
+    fun getSelectedTypeCache(placeType:String):LiveData<ResultToConsume<List<PlaceCacheData>>>
+
     suspend fun delete()
 
     fun uploadFirebaseData(data: PlaceRemoteData, imageUri: Uri?, success: (Boolean) -> Unit, failed: (Boolean, Throwable) -> Unit)

@@ -41,6 +41,29 @@ class PlaceRepositoryImpl(
         }
     }
 
+    override fun getSelectedTypeCache(placeType: String): LiveData<ResultToConsume<List<PlaceCacheData>>> {
+        return liveData {
+            val disposables = emitSource(cacheDataSource.getSelectedTypeCache(placeType).map {
+                ResultToConsume.loading(it)
+            }.asLiveData())
+            try {
+                val responseStatus = remoteDataSource.getFirebaseData().mapRemoteToCacheDomain()
+                disposables.dispose()
+                check(responseStatus.isNotEmpty())
+                cacheDataSource.setCache(responseStatus)
+                emitSource(cacheDataSource.getSelectedTypeCache(placeType).map {
+                    ResultToConsume.success(
+                        it
+                    )
+                }.asLiveData())
+            } catch (e: Exception) {
+                emitSource(cacheDataSource.getSelectedTypeCache(placeType).map {
+                    ResultToConsume.error(e.message!!, it)
+                }.asLiveData())
+            }
+        }
+    }
+
     override suspend fun delete() {
         cacheDataSource.delete()
     }

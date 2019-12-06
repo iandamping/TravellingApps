@@ -20,6 +20,7 @@ interface PlaceRemoteDataSource {
 interface PlaceCacheDataSource {
 
     fun getCache(): Flow<List<PlaceCacheData>>
+    fun getSelectedTypeCache(placeType:String):Flow<List<PlaceCacheData>>
     suspend fun setCache(data: List<PlaceCacheData>)
     suspend fun delete()
 }
