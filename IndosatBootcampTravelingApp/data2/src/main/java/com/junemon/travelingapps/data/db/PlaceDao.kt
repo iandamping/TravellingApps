@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.Flow
  */
 @Dao
 interface PlaceDao {
-    @Query("SELECT * FROM place_table")
+    @Query("SELECT * FROM place_table LIMIT 10")
     fun loadAllPlace(): Flow<List<PlaceDbEntity>>
 
     @Insert

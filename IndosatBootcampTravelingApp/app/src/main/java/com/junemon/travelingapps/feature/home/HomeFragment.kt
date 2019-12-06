@@ -1,5 +1,6 @@
 package com.junemon.travelingapps.feature.home
 
+import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
+import com.ian.app.helper.data.ResultToConsume
 import com.junemon.travelingapps.R
 import com.junemon.travelingapps.databinding.FragmentHomeBinding
 import com.junemon.travelingapps.feature.home.slideradapter.HomeSliderAdapter
@@ -23,17 +25,23 @@ import org.koin.android.viewmodel.ext.android.viewModel
  */
 class HomeFragment : BaseFragment() {
     private lateinit var binders: FragmentHomeBinding
-    private val placeVm:PlaceViewModel by viewModel()
+    private val placeVm: PlaceViewModel by viewModel()
     private var mHandler: Handler = Handler()
     private var pageSize: Int? = 0
     private var currentPage = 0
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        setBaseDialog()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding: FragmentHomeBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
+        val binding: FragmentHomeBinding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
             binders = this
@@ -44,23 +52,33 @@ class HomeFragment : BaseFragment() {
 
     private fun FragmentHomeBinding.initView() {
         this.apply {
-            btnCreate.setOnClickListener { it.findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToUploadFragment()) }
+            btnCreate.setOnClickListener {
+                it.findNavController()
+                    .navigate(HomeFragmentDirections.actionHomeFragmentToUploadFragment())
+            }
             initViewPager()
         }
     }
 
-    private fun FragmentHomeBinding.initViewPager(){
+    private fun FragmentHomeBinding.initViewPager() {
         apply {
-            placeVm.getCache().observe(viewLifecycleOwner, Observer {
-                pageSize = if (it.size > 10) {
-                    10
-                } else it.size
-
-                vpPlaceRandom.adapter = HomeSliderAdapter(it.mapCacheToPresentation())
-                indicator.setViewPager(vpPlaceRandom)
+            placeVm.getCache().observe(viewLifecycleOwner, Observer { result ->
+                ilegallStateCatching {
+                    checkNotNull(result.data)
+                    pageSize = result.data!!.size
+                    vpPlaceRandom.adapter =
+                        HomeSliderAdapter(result.data!!.mapCacheToPresentation())
+                    indicator.setViewPager(vpPlaceRandom)
+                }
+                when (result.status) {
+                    ResultToConsume.Status.ERROR -> setDialogShow(true)
+                    ResultToConsume.Status.SUCCESS ->  setDialogShow(true)
+                    ResultToConsume.Status.LOADING ->  setDialogShow(false)
+                }
             })
         }
     }
+
     private fun slideRunnable(binding: FragmentHomeBinding) = object : Runnable {
         override fun run() {
             if (currentPage == pageSize) {
@@ -73,7 +91,7 @@ class HomeFragment : BaseFragment() {
 
     override fun onStart() {
         super.onStart()
-        if (::binders.isInitialized) mHandler.postDelayed(slideRunnable(binders),4000L)
+        if (::binders.isInitialized) mHandler.postDelayed(slideRunnable(binders), 4000L)
     }
 
     override fun onStop() {

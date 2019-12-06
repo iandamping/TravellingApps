@@ -3,6 +3,7 @@ package com.junemon.travelingapps.vm
 import android.net.Uri
 import androidx.lifecycle.LiveData
 import com.ian.app.helper.base.BaseViewModel
+import com.ian.app.helper.data.ResultToConsume
 import com.junemon.travellingapps.domain.model.PlaceCacheData
 import com.junemon.travellingapps.domain.model.PlaceRemoteData
 import com.junemon.travellingapps.domain.usecase.PlaceUseCase
@@ -15,13 +16,9 @@ import kotlinx.coroutines.launch
  */
 class PlaceViewModel(private val repository: PlaceUseCase) : BaseViewModel() {
 
-    fun getCache(): LiveData<List<PlaceCacheData>> = repository.getCache()
+    fun getCache(): LiveData<ResultToConsume<List<PlaceCacheData>>> = repository.getCache()
+
     suspend fun delete() = repository.delete()
-    fun setCache(){
-        vmScope.launch {
-            repository.setCache()
-        }
-    }
 
     fun uploadFirebaseData(
         data: PlaceRemoteData,

@@ -2,6 +2,7 @@ package com.junemon.travellingapps.domain.repository
 
 import android.net.Uri
 import androidx.lifecycle.LiveData
+import com.ian.app.helper.data.ResultToConsume
 import com.junemon.travellingapps.domain.model.PlaceCacheData
 import com.junemon.travellingapps.domain.model.PlaceRemoteData
 
@@ -12,11 +13,9 @@ import com.junemon.travellingapps.domain.model.PlaceRemoteData
  */
 interface PlaceRepository {
 
-    fun getCache(): LiveData<List<PlaceCacheData>>
+    fun getCache(): LiveData<ResultToConsume<List<PlaceCacheData>>>
 
     suspend fun delete()
-
-    suspend fun setCache()
 
     fun uploadFirebaseData(data: PlaceRemoteData, imageUri: Uri?, success: (Boolean) -> Unit, failed: (Boolean, Throwable) -> Unit)
 }
