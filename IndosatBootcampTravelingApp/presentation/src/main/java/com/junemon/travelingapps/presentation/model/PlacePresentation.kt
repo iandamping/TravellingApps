@@ -46,3 +46,4 @@ fun List<PlaceRemoteData>.mapRemoteToPresentation(): List<PlaceRemotePresentatio
 
 fun List<PlaceCacheData>.mapCacheToPresentation():List<PlaceCachePresentation> =
     map { it.mapCacheToPresentation() }
+

@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.Flow
 class PlaceCacheDataSourceImpl(private val db: PlaceDatabase) : PlaceCacheDataSource {
 
     override fun getCache(): Flow<List<PlaceCacheData>> {
-        return db.placeDao().loadLimitPlace().mapToDomain()
+        return db.placeDao().loadAllPlace().mapToDomain()
     }
 
     override fun getSelectedTypeCache(placeType: String): Flow<List<PlaceCacheData>> {

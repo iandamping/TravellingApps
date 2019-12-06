@@ -15,10 +15,10 @@ import kotlinx.coroutines.flow.Flow
  */
 @Dao
 interface PlaceDao {
-    @Query("SELECT * FROM place_table LIMIT 10")
-    fun loadLimitPlace(): Flow<List<PlaceDbEntity>>
+    @Query("SELECT * FROM place_table")
+    fun loadAllPlace(): Flow<List<PlaceDbEntity>>
 
-    @Query("SELECT * FROM place_table WHERE place_type")
+    @Query("SELECT * FROM place_table WHERE place_type = :placeType")
     fun loadAllBalanceByMonth(placeType:String): Flow<List<PlaceDbEntity>>
 
     @Insert

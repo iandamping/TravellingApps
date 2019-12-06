@@ -1,6 +1,5 @@
 package com.junemon.travelingapps.feature.home
 
-import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
@@ -13,9 +12,12 @@ import com.ian.app.helper.data.ResultToConsume
 import com.junemon.travelingapps.R
 import com.junemon.travelingapps.databinding.FragmentHomeBinding
 import com.junemon.travelingapps.feature.home.slideradapter.HomeSliderAdapter
+import com.junemon.travelingapps.presentation.PresentationConstant.placeRvCallback
 import com.junemon.travelingapps.presentation.base.BaseFragment
 import com.junemon.travelingapps.presentation.model.mapCacheToPresentation
 import com.junemon.travelingapps.vm.PlaceViewModel
+import com.junemon.travellingapps.domain.model.PlaceCacheData
+import kotlinx.android.synthetic.main.item_recyclerview.view.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 /**
@@ -29,11 +31,6 @@ class HomeFragment : BaseFragment() {
     private var mHandler: Handler = Handler()
     private var pageSize: Int? = 0
     private var currentPage = 0
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        setBaseDialog()
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -56,26 +53,129 @@ class HomeFragment : BaseFragment() {
                 it.findNavController()
                     .navigate(HomeFragmentDirections.actionHomeFragmentToUploadFragment())
             }
-            initViewPager()
+            initData()
         }
     }
 
-    private fun FragmentHomeBinding.initViewPager() {
+    private fun FragmentHomeBinding.initData() {
         apply {
             placeVm.getCache().observe(viewLifecycleOwner, Observer { result ->
-                ilegallStateCatching {
-                    checkNotNull(result.data)
-                    pageSize = result.data!!.size
-                    vpPlaceRandom.adapter =
-                        HomeSliderAdapter(result.data!!.mapCacheToPresentation())
-                    indicator.setViewPager(vpPlaceRandom)
-                }
                 when (result.status) {
-                    ResultToConsume.Status.ERROR -> setDialogShow(true)
-                    ResultToConsume.Status.SUCCESS ->  setDialogShow(true)
-                    ResultToConsume.Status.LOADING ->  setDialogShow(false)
+                    ResultToConsume.Status.ERROR -> {
+                        stopAllShimmer()
+                    }
+                    ResultToConsume.Status.SUCCESS -> {
+                        stopAllShimmer()
+                    }
+                    ResultToConsume.Status.LOADING -> {
+                        startAllShimmer()
+                    }
+
                 }
+                initViewPager(result)
+                initRecyclerView(result)
             })
+        }
+    }
+
+    private fun FragmentHomeBinding.initViewPager(result: ResultToConsume<List<PlaceCacheData>>) {
+        apply {
+            ilegallStateCatching {
+                checkNotNull(result.data)
+                pageSize = if (result.data!!.size > 10) {
+                    10
+                } else result.data!!.size
+                vpPlaceRandom.adapter = HomeSliderAdapter(result.data!!.mapCacheToPresentation().shuffled())
+                indicator.setViewPager(vpPlaceRandom)
+            }
+        }
+    }
+
+    private fun FragmentHomeBinding.initRecyclerView(result: ResultToConsume<List<PlaceCacheData>>) {
+        apply {
+            universalCatching {
+                checkNotNull(result.data)
+                val religiData = result.data!!.mapCacheToPresentation().filter { it.placeType == "Wisata Religi" }
+                val natureData = result.data!!.mapCacheToPresentation().filter { it.placeType == "Wisata Alam" }
+                val cultureData = result.data!!.mapCacheToPresentation().filter { it.placeType == "Wisata Budaya" }
+
+                recyclerViewHelper.run {
+
+                    rvPlaceNatureType.setUpHorizontalListAdapter(
+                        items = natureData, diffUtil = placeRvCallback,
+                        bindHolder = {
+                            loadingImageHelper.run { ivItemPlaceImage.loadWithGlide(it?.placePicture) }
+                            tvItemPlaceName.text = it?.placeName
+                            tvItemPlaceDistrict.text = it?.placeDistrict
+                        },
+                        layoutResId = R.layout.item_recyclerview
+                    )
+                    rvPlaceCultureType.setUpHorizontalListAdapter(
+                        items = cultureData, diffUtil = placeRvCallback,
+                        bindHolder = {
+                            loadingImageHelper.run { ivItemPlaceImage.loadWithGlide(it?.placePicture) }
+                            tvItemPlaceName.text = it?.placeName
+                            tvItemPlaceDistrict.text = it?.placeDistrict
+                        },
+                        layoutResId = R.layout.item_recyclerview
+                    )
+                    rvPlaceReligiusType.setUpHorizontalListAdapter(
+                        items = religiData, diffUtil = placeRvCallback,
+                        bindHolder = {
+                            loadingImageHelper.run { ivItemPlaceImage.loadWithGlide(it?.placePicture) }
+                            tvItemPlaceName.text = it?.placeName
+                            tvItemPlaceDistrict.text = it?.placeDistrict
+                        },
+                        layoutResId = R.layout.item_recyclerview
+                    )
+                }
+            }
+        }
+    }
+
+    private fun FragmentHomeBinding.stopAllShimmer() {
+        apply {
+            viewHelper.run {
+                shimmerSlider.stopShimmer()
+                shimmerSlider.hideShimmer()
+                shimmerSlider.gone()
+                vpPlaceRandom.visible()
+
+
+                shimmerCultureType.stopShimmer()
+                shimmerCultureType.hideShimmer()
+                shimmerCultureType.gone()
+                rvPlaceCultureType.visible()
+
+
+                shimmerNatureType.stopShimmer()
+                shimmerNatureType.hideShimmer()
+                shimmerNatureType.gone()
+                rvPlaceNatureType.visible()
+
+                shimmerReligiusType.stopShimmer()
+                shimmerReligiusType.hideShimmer()
+                shimmerReligiusType.gone()
+                rvPlaceReligiusType.visible()
+            }
+        }
+    }
+
+    private fun FragmentHomeBinding.startAllShimmer() {
+        apply {
+            viewHelper.run {
+                shimmerSlider.visible()
+                shimmerSlider.startShimmer()
+
+                shimmerCultureType.visible()
+                shimmerCultureType.startShimmer()
+
+                shimmerNatureType.visible()
+                shimmerNatureType.startShimmer()
+
+                shimmerReligiusType.visible()
+                shimmerReligiusType.startShimmer()
+            }
         }
     }
 
