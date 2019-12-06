@@ -18,6 +18,8 @@ class PlaceViewModel(private val repository: PlaceUseCase) : BaseViewModel() {
 
     fun getCache(): LiveData<ResultToConsume<List<PlaceCacheData>>> = repository.getCache()
 
+    fun getSelectedTypeCache(placeType:String):LiveData<ResultToConsume<List<PlaceCacheData>>> = repository.getSelectedTypeCache(placeType)
+
     suspend fun delete() = repository.delete()
 
     fun uploadFirebaseData(

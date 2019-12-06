@@ -55,6 +55,15 @@ class HomeFragment : BaseFragment() {
                 it.findNavController()
                     .navigate(HomeFragmentDirections.actionHomeFragmentToUploadFragment())
             }
+            lnSeeAllPlaceCultureType.setOnClickListener {
+                it.findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToPaginationFragment(getString(R.string.place_culture)))
+            }
+            lnSeeAllPlaceNatureType.setOnClickListener {
+                it.findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToPaginationFragment(getString(R.string.place_nature)))
+            }
+            lnSeeAllPlaceReligiusType.setOnClickListener {
+                it.findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToPaginationFragment(getString(R.string.place_religi)))
+            }
             initData()
         }
     }

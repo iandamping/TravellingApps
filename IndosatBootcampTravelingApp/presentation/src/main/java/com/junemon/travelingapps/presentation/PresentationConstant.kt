@@ -21,4 +21,14 @@ object PresentationConstant {
             return oldItem == newItem
         }
     }
+
+    val placePaginationRvCallback = object : DiffUtil.ItemCallback<PlaceCachePresentation>() {
+        override fun areItemsTheSame(oldItem: PlaceCachePresentation, newItem: PlaceCachePresentation): Boolean {
+            return oldItem.localPlaceID == newItem.localPlaceID
+        }
+
+        override fun areContentsTheSame(oldItem: PlaceCachePresentation, newItem: PlaceCachePresentation): Boolean {
+            return oldItem == newItem
+        }
+    }
 }

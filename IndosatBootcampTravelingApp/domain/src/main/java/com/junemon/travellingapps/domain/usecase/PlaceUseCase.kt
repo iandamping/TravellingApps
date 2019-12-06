@@ -15,6 +15,7 @@ import com.junemon.travellingapps.domain.repository.PlaceRepository
 class PlaceUseCase(private val repository: PlaceRepository) {
 
     fun getCache(): LiveData<ResultToConsume<List<PlaceCacheData>>> = repository.getCache()
+    fun getSelectedTypeCache(placeType:String):LiveData<ResultToConsume<List<PlaceCacheData>>> = repository.getSelectedTypeCache(placeType)
     suspend fun delete() = repository.delete()
     fun uploadFirebaseData(data: PlaceRemoteData, imageUri: Uri?, success: (Boolean) -> Unit, failed: (Boolean, Throwable) -> Unit) = repository.uploadFirebaseData(data, imageUri, success, failed)
 }

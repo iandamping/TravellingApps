@@ -14,6 +14,11 @@
     <string name="nama_kecamatan">Nama Kecamatan</string>
     <string name="tipe_tempat">Tipe Tempat</string>
 
+    <string name="place_nature">Wisata Alam</string>
+    <string name="place_culture">Wisata Budaya</string>
+    <string name="place_religi">Wisata Religi</string>
+    <string name="tempat_favorit_mu_ada_disini">Tempat favorit mu ada disini</string>
+
 
     <string-array name="place_type_items">
         <item>Wisata Alam</item>
