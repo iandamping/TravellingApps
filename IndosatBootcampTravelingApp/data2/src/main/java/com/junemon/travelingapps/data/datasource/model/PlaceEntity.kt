@@ -35,26 +35,46 @@ data class PlaceRemoteEntity(
     var placeDistrict: String?,
     var placeDetail: String?,
     var placePicture: String?
-){
+) {
     constructor() : this(
-         null, null, null, null, null, null
+        null, null, null, null, null, null
     )
 }
 
-fun PlaceDbEntity.mapToCacheDomain(): PlaceCacheData = PlaceCacheData(localPlaceID, placeType, placeName, placeAddres, placeDistrict, placeDetail, placePicture)
+fun PlaceDbEntity.mapToCacheDomain(): PlaceCacheData = PlaceCacheData(
+    localPlaceID,
+    placeType,
+    placeName,
+    placeAddres,
+    placeDistrict,
+    placeDetail,
+    placePicture
+)
 
-fun PlaceRemoteEntity.mapToRemoteDomain(): PlaceRemoteData = PlaceRemoteData(placeType, placeName, placeAddres, placeDistrict, placeDetail, placePicture)
+fun PlaceRemoteEntity.mapToRemoteDomain(): PlaceRemoteData =
+    PlaceRemoteData(placeType, placeName, placeAddres, placeDistrict, placeDetail, placePicture)
 
-fun PlaceRemoteData.mapRemoteToCacheDomain(): PlaceCacheData = PlaceCacheData(null, placeType, placeName, placeAddres, placeDistrict, placeDetail, placePicture)
+fun PlaceRemoteData.mapRemoteToCacheDomain(): PlaceCacheData = PlaceCacheData(
+    null,
+    placeType,
+    placeName,
+    placeAddres,
+    placeDistrict,
+    placeDetail,
+    placePicture
+)
 
-fun PlaceCacheData.mapToDatabase(): PlaceDbEntity = PlaceDbEntity(null, placeType, placeName, placeAddres, placeDistrict, placeDetail, placePicture)
+fun PlaceCacheData.mapToDatabase(): PlaceDbEntity =
+    PlaceDbEntity(null, placeType, placeName, placeAddres, placeDistrict, placeDetail, placePicture)
 
 fun List<PlaceCacheData>.mapToDatabase(): List<PlaceDbEntity> = map { it.mapToDatabase() }
 
-fun List<PlaceRemoteData>.mapRemoteToCacheDomain(): List<PlaceCacheData> = map { it.mapRemoteToCacheDomain() }
+fun List<PlaceRemoteData>.mapRemoteToCacheDomain(): List<PlaceCacheData> =
+    map { it.mapRemoteToCacheDomain() }
 
 fun List<PlaceDbEntity>.mapToCacheDomain(): List<PlaceCacheData> = map { it.mapToCacheDomain() }
 
-fun List<PlaceRemoteEntity>.mapToRemoteDomain(): List<PlaceRemoteData> = map { it.mapToRemoteDomain() }
+fun List<PlaceRemoteEntity>.mapToRemoteDomain(): List<PlaceRemoteData> =
+    map { it.mapToRemoteDomain() }
 
 fun Flow<List<PlaceDbEntity>>.mapToDomain() = map { it.mapToCacheDomain() }

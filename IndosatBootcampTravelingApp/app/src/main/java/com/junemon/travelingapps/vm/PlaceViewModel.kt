@@ -7,7 +7,6 @@ import com.ian.app.helper.data.ResultToConsume
 import com.junemon.travellingapps.domain.model.PlaceCacheData
 import com.junemon.travellingapps.domain.model.PlaceRemoteData
 import com.junemon.travellingapps.domain.usecase.PlaceUseCase
-import kotlinx.coroutines.launch
 
 /**
  * Created by Ian Damping on 04,December,2019
@@ -18,7 +17,7 @@ class PlaceViewModel(private val repository: PlaceUseCase) : BaseViewModel() {
 
     fun getCache(): LiveData<ResultToConsume<List<PlaceCacheData>>> = repository.getCache()
 
-    fun getSelectedTypeCache(placeType:String):LiveData<ResultToConsume<List<PlaceCacheData>>> = repository.getSelectedTypeCache(placeType)
+    fun getSelectedTypeCache(placeType: String): LiveData<ResultToConsume<List<PlaceCacheData>>> = repository.getSelectedTypeCache(placeType)
 
     suspend fun delete() = repository.delete()
 

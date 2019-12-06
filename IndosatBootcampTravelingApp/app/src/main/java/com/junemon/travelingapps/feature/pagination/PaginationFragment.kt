@@ -56,7 +56,6 @@ class PaginationFragment : BaseFragment() {
                     ResultToConsume.Status.LOADING -> {
                         startAllShimmer()
                     }
-
                 }
 
                 recyclerViewHelper.run {
@@ -73,20 +72,19 @@ class PaginationFragment : BaseFragment() {
                                     ivFirebaseProfileImage.loadWithGlide(it.placePicture)
                                     ivPaginationImage.loadWithGlide(it.placePicture)
                                 }
-                                ivPaginationSaveImage.setOnClickListener {_ ->
+                                ivPaginationSaveImage.setOnClickListener { _ ->
                                     imageHelper.run {
-                                        this@PaginationFragment.saveImage(lifecycleScope,relativeParent,it.placePicture)
+                                        this@PaginationFragment.saveImage(lifecycleScope, relativeParent, it.placePicture)
                                     }
                                 }
-                                ivPaginationShare.setOnClickListener {_ ->
+                                ivPaginationShare.setOnClickListener { _ ->
                                     intentHelper.run {
-                                        this@PaginationFragment.intentShareImageAndText(placeVm.viewModelScope,it.placeName,it.placeDetail,it.placePicture)
+                                        this@PaginationFragment.intentShareImageAndText(placeVm.viewModelScope, it.placeName, it.placeDetail, it.placePicture)
                                     }
                                 }
                             })
                     }
                 }
-
             })
         }
     }

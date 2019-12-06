@@ -5,9 +5,6 @@ import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import com.junemon.travelingapps.R
 import com.junemon.travelingapps.databinding.ActivityMainBinding
-import com.junemon.travelingapps.databinding.FragmentHomeBinding
-import com.junemon.travelingapps.vm.PlaceViewModel
-import org.koin.android.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

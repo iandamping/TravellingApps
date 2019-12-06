@@ -16,7 +16,6 @@ import android.util.Log
 import android.view.View
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.storage.StorageReference
@@ -114,7 +113,7 @@ internal class ImageUtil : ImageHelperResult, KoinComponent {
     override fun Fragment.saveImage(scope: CoroutineScope, views: View, imageUrl: String?) {
         scope.launch {
                 try {
-                    requireNotNull(imageUrl){
+                    requireNotNull(imageUrl) {
                         "picture to share is null"
                     }
                     withContext(Dispatchers.IO) {
@@ -132,7 +131,6 @@ internal class ImageUtil : ImageHelperResult, KoinComponent {
                 }
         }
     }
-
 
     override fun saveFirebaseImageToGallery(
         storageReference: StorageReference,

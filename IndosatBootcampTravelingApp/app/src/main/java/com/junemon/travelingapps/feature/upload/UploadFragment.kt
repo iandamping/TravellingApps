@@ -62,10 +62,10 @@ class UploadFragment : BaseFragment() {
 
     private fun FragmentUploadBinding.initView() {
         this.apply {
-            val allTypeCategory:Array<String> = context?.resources?.getStringArray(R.array.place_type_items)!!
-            val allDistrictCategory:Array<String> = context?.resources?.getStringArray(R.array.place_districts_items)!!
-            val arrayTypeSpinnerAdapter: ArrayAdapter<String>? =  ArrayAdapter(context!!, android.R.layout.simple_spinner_item, allTypeCategory)
-            val arrayDistrictSpinnerAdapter: ArrayAdapter<String>? =  ArrayAdapter(context!!, android.R.layout.simple_spinner_item, allDistrictCategory)
+            val allTypeCategory: Array<String> = context?.resources?.getStringArray(R.array.place_type_items)!!
+            val allDistrictCategory: Array<String> = context?.resources?.getStringArray(R.array.place_districts_items)!!
+            val arrayTypeSpinnerAdapter: ArrayAdapter<String>? = ArrayAdapter(context!!, android.R.layout.simple_spinner_item, allTypeCategory)
+            val arrayDistrictSpinnerAdapter: ArrayAdapter<String>? = ArrayAdapter(context!!, android.R.layout.simple_spinner_item, allDistrictCategory)
             arrayTypeSpinnerAdapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             arrayDistrictSpinnerAdapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
@@ -84,7 +84,7 @@ class UploadFragment : BaseFragment() {
         apply {
             val placeName = etPlaceName.text.toString()
             val placeDetail = etPlaceDetail.text.toString()
-            placeCity= spPlaceDistrict.selectedItem.toString()
+            placeCity = spPlaceDistrict.selectedItem.toString()
             placeType = spPlaceType.selectedItem.toString()
             val placeAddress = etPlaceAddress.text.toString()
             when {
@@ -119,7 +119,7 @@ class UploadFragment : BaseFragment() {
         }
     }
 
-    private fun FragmentUploadBinding.moveUp(){
+    private fun FragmentUploadBinding.moveUp() {
         this.root.findNavController().navigateUp()
     }
 

@@ -15,7 +15,7 @@ interface PlaceRepository {
 
     fun getCache(): LiveData<ResultToConsume<List<PlaceCacheData>>>
 
-    fun getSelectedTypeCache(placeType:String):LiveData<ResultToConsume<List<PlaceCacheData>>>
+    fun getSelectedTypeCache(placeType: String): LiveData<ResultToConsume<List<PlaceCacheData>>>
 
     suspend fun delete()
 

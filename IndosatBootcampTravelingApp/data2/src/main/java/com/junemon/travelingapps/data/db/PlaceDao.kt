@@ -2,7 +2,6 @@ package com.junemon.travelingapps.data.db
 
 import androidx.room.Dao
 import androidx.room.Insert
-import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import com.junemon.travelingapps.data.datasource.model.PlaceDbEntity
@@ -19,7 +18,7 @@ interface PlaceDao {
     fun loadAllPlace(): Flow<List<PlaceDbEntity>>
 
     @Query("SELECT * FROM place_table WHERE place_type = :placeType")
-    fun loadAllBalanceByMonth(placeType:String): Flow<List<PlaceDbEntity>>
+    fun loadAllBalanceByMonth(placeType: String): Flow<List<PlaceDbEntity>>
 
     @Insert
     suspend fun insertPlace(vararg tagsData: PlaceDbEntity)
@@ -28,7 +27,7 @@ interface PlaceDao {
     suspend fun deleteAllPlace()
 
     @Transaction
-    suspend fun insertAllPlace(vararg tagsData: PlaceDbEntity){
+    suspend fun insertAllPlace(vararg tagsData: PlaceDbEntity) {
         deleteAllPlace()
         insertPlace(*tagsData)
     }

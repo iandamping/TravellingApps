@@ -20,10 +20,10 @@ import kotlin.properties.Delegates
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class DetailFragment: BaseFragment() {
+class DetailFragment : BaseFragment() {
     private val gson = Gson()
     private var isPermisisonGranted by Delegates.notNull<Boolean>()
-    private val passedData by lazy { gson.fromJson(DetailFragmentArgs.fromBundle(arguments!!).detailData,PlaceCachePresentation::class.java) }
+    private val passedData by lazy { gson.fromJson(DetailFragmentArgs.fromBundle(arguments!!).detailData, PlaceCachePresentation::class.java) }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -44,7 +44,7 @@ class DetailFragment: BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding:FragmentDetailBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_detail,container,false)
+        val binding: FragmentDetailBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_detail, container, false)
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
             detailData = passedData
@@ -53,17 +53,17 @@ class DetailFragment: BaseFragment() {
         return binding.root
     }
 
-    private fun FragmentDetailBinding.initView(data:PlaceCachePresentation){
+    private fun FragmentDetailBinding.initView(data: PlaceCachePresentation) {
         apply {
             loadingImageHelper.run { ivDetailMovieImages.loadWithGlide(data.placePicture) }
             ivShare.setOnClickListener {
                 intentHelper.run {
-                    this@DetailFragment.intentShareImageAndText(lifecycleScope,data.placeName,data.placeDetail,data.placePicture)
+                    this@DetailFragment.intentShareImageAndText(lifecycleScope, data.placeName, data.placeDetail, data.placePicture)
                 }
             }
             ivDownload.setOnClickListener {
                 imageHelper.run {
-                    this@DetailFragment.saveImage(lifecycleScope,coordinatorParent,data.placePicture)
+                    this@DetailFragment.saveImage(lifecycleScope, coordinatorParent, data.placePicture)
                 }
             }
         }

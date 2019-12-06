@@ -16,9 +16,9 @@ import org.koin.core.inject
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class HomeSliderAdapter(private val data: List<PlaceCachePresentation>) : PagerAdapter(),KoinComponent {
-    private val viewHelper:ViewHelperResult by inject()
-    private val loadImageHelper:LoadImageResult by inject()
+class HomeSliderAdapter(private val data: List<PlaceCachePresentation>) : PagerAdapter(), KoinComponent {
+    private val viewHelper: ViewHelperResult by inject()
+    private val loadImageHelper: LoadImageResult by inject()
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
 
         val views = viewHelper.run { container.inflates(R.layout.item_slider) }

@@ -81,7 +81,6 @@ class HomeFragment : BaseFragment() {
                     ResultToConsume.Status.LOADING -> {
                         startAllShimmer()
                     }
-
                 }
                 initViewPager(result)
                 initRecyclerView(result)
@@ -119,7 +118,7 @@ class HomeFragment : BaseFragment() {
                             tvItemPlaceName.text = it?.placeName
                             tvItemPlaceDistrict.text = it?.placeDistrict
                         },
-                        layoutResId = R.layout.item_recyclerview,itemClick = {
+                        layoutResId = R.layout.item_recyclerview, itemClick = {
                             this@apply.root.findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToDetailFragment(gson.toJson(this)))
                         }
                     )
@@ -130,7 +129,7 @@ class HomeFragment : BaseFragment() {
                             tvItemPlaceName.text = it?.placeName
                             tvItemPlaceDistrict.text = it?.placeDistrict
                         },
-                        layoutResId = R.layout.item_recyclerview,itemClick = {
+                        layoutResId = R.layout.item_recyclerview, itemClick = {
                             this@apply.root.findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToDetailFragment(gson.toJson(this)))
                         }
                     )
@@ -141,7 +140,7 @@ class HomeFragment : BaseFragment() {
                             tvItemPlaceName.text = it?.placeName
                             tvItemPlaceDistrict.text = it?.placeDistrict
                         },
-                        layoutResId = R.layout.item_recyclerview,itemClick = {
+                        layoutResId = R.layout.item_recyclerview, itemClick = {
                             this@apply.root.findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToDetailFragment(gson.toJson(this)))
                         }
                     )
@@ -158,12 +157,10 @@ class HomeFragment : BaseFragment() {
                 shimmerSlider.gone()
                 vpPlaceRandom.visible()
 
-
                 shimmerCultureType.stopShimmer()
                 shimmerCultureType.hideShimmer()
                 shimmerCultureType.gone()
                 rvPlaceCultureType.visible()
-
 
                 shimmerNatureType.stopShimmer()
                 shimmerNatureType.hideShimmer()
