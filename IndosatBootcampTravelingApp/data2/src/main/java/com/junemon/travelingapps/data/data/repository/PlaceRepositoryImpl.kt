@@ -28,10 +28,15 @@ class PlaceRepositoryImpl(
                 ResultToConsume.loading(it)
             }.asLiveData())
             try {
-                val responseStatus = remoteDataSource.getFirebaseData().mapRemoteToCacheDomain()
+                val responseStatus = remoteDataSource.getFirebaseData()
                 disposables.dispose()
-                check(responseStatus.isNotEmpty())
-                cacheDataSource.setCache(responseStatus)
+                check(responseStatus.status == ResultToConsume.Status.SUCCESS) {
+                    " ${responseStatus.message} "
+                }
+                check(responseStatus.data != null) {
+                    " data is null "
+                }
+                cacheDataSource.setCache(responseStatus.data!!.mapRemoteToCacheDomain())
                 emitSource(cacheDataSource.getCache().map { ResultToConsume.success(it) }.asLiveData())
             } catch (e: Exception) {
                 emitSource(cacheDataSource.getCache().map {
@@ -47,10 +52,15 @@ class PlaceRepositoryImpl(
                 ResultToConsume.loading(it)
             }.asLiveData())
             try {
-                val responseStatus = remoteDataSource.getFirebaseData().mapRemoteToCacheDomain()
+                val responseStatus = remoteDataSource.getFirebaseData()
                 disposables.dispose()
-                check(responseStatus.isNotEmpty())
-                cacheDataSource.setCache(responseStatus)
+                check(responseStatus.status == ResultToConsume.Status.SUCCESS) {
+                    " ${responseStatus.message} "
+                }
+                check(responseStatus.data != null) {
+                    " data is null "
+                }
+                cacheDataSource.setCache(responseStatus.data!!.mapRemoteToCacheDomain())
                 emitSource(cacheDataSource.getSelectedTypeCache(placeType).map {
                     ResultToConsume.success(
                         it

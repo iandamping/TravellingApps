@@ -32,6 +32,13 @@
             app:exitAnim="@anim/fade_out_activity"
             app:popEnterAnim="@anim/fade_in_activity"
             app:popExitAnim="@anim/fade_out_activity" />
+        <action
+            android:id="@+id/action_homeFragment_to_searchFragment"
+            app:destination="@id/searchFragment"
+            app:enterAnim="@anim/fade_in_activity"
+            app:exitAnim="@anim/fade_out_activity"
+            app:popEnterAnim="@anim/fade_in_activity"
+            app:popExitAnim="@anim/fade_out_activity" />
     </fragment>
     <fragment
         android:id="@+id/uploadFragment"
@@ -54,6 +61,15 @@
         android:label="PaginationFragment" >
         <argument
             android:name="paginationType"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/searchFragment"
+        tools:layout="@layout/fragment_search"
+        android:name="com.junemon.travelingapps.feature.search.SearchFragment"
+        android:label="SearchFragment" >
+        <argument
+            android:name="searchItem"
             app:argType="string" />
     </fragment>
 </navigation>

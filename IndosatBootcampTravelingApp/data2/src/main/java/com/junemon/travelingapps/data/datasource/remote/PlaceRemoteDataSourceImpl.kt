@@ -1,6 +1,7 @@
 package com.junemon.travelingapps.data.datasource.remote
 
 import android.net.Uri
+import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -8,6 +9,8 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import com.ian.app.helper.data.ResultToConsume
+import com.ian.app.helper.util.logE
 import com.ian.app.helper.util.timberLogE
 import com.junemon.travelingapps.data.BuildConfig.firebaseStorageUrl
 import com.junemon.travelingapps.data.data.datasource.PlaceRemoteDataSource
@@ -16,6 +19,9 @@ import com.junemon.travelingapps.data.datasource.model.mapToRemoteDomain
 import com.junemon.travelingapps.data.util.Constant.placeNode
 import com.junemon.travellingapps.domain.model.PlaceRemoteData
 import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlin.coroutines.resume
 
 /**
  * Created by Ian Damping on 04,December,2019
@@ -37,23 +43,26 @@ class PlaceRemoteDataSourceImpl : PlaceRemoteDataSource {
         )
     }
 
-    override suspend fun getFirebaseData(): List<PlaceRemoteData> {
-        val results = CompletableDeferred<List<PlaceRemoteData>>()
+    @ExperimentalCoroutinesApi
+    override suspend fun getFirebaseData(): ResultToConsume<List<PlaceRemoteData>> {
         val container: MutableList<PlaceRemoteEntity> = mutableListOf()
-        databasePlaceReference.addValueEventListener(object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError) {
-                timberLogE("Error happen ${p0.message}")
-            }
-
-            override fun onDataChange(p0: DataSnapshot) {
-                p0.children.forEach {
-                    container.add(it.getValue(PlaceRemoteEntity::class.java)!!)
+        return suspendCancellableCoroutine { cancellableContinuation ->
+            databasePlaceReference.addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(p0: DatabaseError) {
+                    cancellableContinuation.resume(error(" ${p0.code} ${p0.message}"))
                 }
-                results.complete(container.mapToRemoteDomain())
-            }
-        })
 
-        return results.await()
+                override fun onDataChange(p0: DataSnapshot) {
+                    p0.children.forEach {
+                        container.add(it.getValue(PlaceRemoteEntity::class.java)!!)
+                    }
+                    cancellableContinuation.resume(ResultToConsume.success(container.mapToRemoteDomain()))
+                }
+            })
+            cancellableContinuation.invokeOnCancellation {
+                cancellableContinuation.resume(error(it?.message ?: it.toString()))
+            }
+        }
     }
 
     override fun setFirebaseData(data: PlaceRemoteData, imageUri: Uri?, success: (Boolean) -> Unit, failed: (Boolean, Throwable) -> Unit) {
@@ -70,5 +79,9 @@ class PlaceRemoteDataSourceImpl : PlaceRemoteDataSource {
                 addOnFailureListener { failed(true, it) }
             }
         } else databasePlaceReference.push().setValue(data)
+    }
+
+    private fun <T> error(message: String): ResultToConsume<T> {
+        return ResultToConsume.error("Network call has failed for a following reason: $message")
     }
 }

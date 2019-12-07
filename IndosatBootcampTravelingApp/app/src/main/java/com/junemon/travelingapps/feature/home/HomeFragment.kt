@@ -64,6 +64,7 @@ class HomeFragment : BaseFragment() {
             lnSeeAllPlaceReligiusType.setOnClickListener {
                 it.findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToPaginationFragment(getString(R.string.place_religi)))
             }
+
             initData()
         }
     }
@@ -81,6 +82,9 @@ class HomeFragment : BaseFragment() {
                     ResultToConsume.Status.LOADING -> {
                         startAllShimmer()
                     }
+                }
+                btnSearchMain.setOnClickListener {
+                    it.findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToSearchFragment(gson.toJson(result.data)))
                 }
                 initViewPager(result)
                 initRecyclerView(result)

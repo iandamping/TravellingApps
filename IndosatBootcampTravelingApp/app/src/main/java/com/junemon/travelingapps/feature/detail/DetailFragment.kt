@@ -22,18 +22,11 @@ import kotlin.properties.Delegates
  */
 class DetailFragment : BaseFragment() {
     private val gson = Gson()
-    private var isPermisisonGranted by Delegates.notNull<Boolean>()
     private val passedData by lazy { gson.fromJson(DetailFragmentArgs.fromBundle(arguments!!).detailData, PlaceCachePresentation::class.java) }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         setBaseDialog()
-        ilegallArgumenCatching {
-            checkNotNull(activity)
-            permissionHelper.getAllPermission(activity!!) {
-                isPermisisonGranted = it
-            }
-        }
         // dont use this, but i had to
         val builder = StrictMode.VmPolicy.Builder()
         StrictMode.setVmPolicy(builder.build())
