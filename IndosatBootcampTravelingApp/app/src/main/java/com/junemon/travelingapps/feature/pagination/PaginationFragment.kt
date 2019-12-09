@@ -10,9 +10,12 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.findNavController
+import com.google.gson.Gson
 import com.ian.app.helper.data.ResultToConsume
 import com.junemon.travelingapps.R
 import com.junemon.travelingapps.databinding.FragmentPaginationBinding
+import com.junemon.travelingapps.feature.home.HomeFragmentDirections
 import com.junemon.travelingapps.presentation.PresentationConstant.placePaginationRvCallback
 import com.junemon.travelingapps.presentation.base.BaseFragment
 import com.junemon.travelingapps.presentation.model.mapCacheToPresentation
@@ -26,6 +29,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
  * Indonesia.
  */
 class PaginationFragment : BaseFragment() {
+    private val gson = Gson()
     private val placeVm: PlaceViewModel by viewModel()
     private val paginationType by lazy {
         PaginationFragmentArgs.fromBundle(arguments!!).paginationType
@@ -92,6 +96,8 @@ class PaginationFragment : BaseFragment() {
                                         this@PaginationFragment.intentShareImageAndText(placeVm.viewModelScope, it.placeName, it.placeDetail, it.placePicture)
                                     }
                                 }
+                            },itemClick = {
+                                this@apply.root.findNavController().navigate(PaginationFragmentDirections.actionPaginationFragmentToDetailFragment(gson.toJson(this)))
                             })
                     }
                 }

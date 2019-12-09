@@ -58,6 +58,7 @@ class PlaceRepositoryImpl(
                 ResultToConsume.loading(it)
             }.asLiveData())
             try {
+
                 val responseStatus = remoteDataSource.getFirebaseData()
                 disposables.dispose()
                 check(responseStatus.status == ResultToConsume.Status.SUCCESS) {

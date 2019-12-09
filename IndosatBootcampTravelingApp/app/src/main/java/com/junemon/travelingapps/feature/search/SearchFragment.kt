@@ -8,8 +8,11 @@ import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.navigation.findNavController
+import com.google.gson.Gson
 import com.junemon.travelingapps.R
 import com.junemon.travelingapps.databinding.FragmentSearchBinding
+import com.junemon.travelingapps.feature.pagination.PaginationFragmentDirections
 import com.junemon.travelingapps.presentation.PresentationConstant.placePaginationRvCallback
 import com.junemon.travelingapps.presentation.base.BaseFragment
 import com.junemon.travelingapps.presentation.model.PlaceCachePresentation
@@ -24,6 +27,7 @@ import org.koin.core.inject
  * Indonesia.
  */
 class SearchFragment : BaseFragment() {
+    private val gson = Gson()
     private val placeVm: PlaceViewModel by inject()
     private lateinit var binders: FragmentSearchBinding
     private var data: List<PlaceCachePresentation> = mutableListOf()
@@ -107,6 +111,9 @@ class SearchFragment : BaseFragment() {
                             loadingImageHelper.run { ivItemPlaceImage.loadWithGlide(it.placePicture) }
                             tvItemPlaceName.text = it.placeName
                             tvItemPlaceDistrict.text = it.placeDistrict
+                        },itemClick = {
+                            this@apply.root.findNavController().navigate(
+                                SearchFragmentDirections.actionSearchFragmentToDetailFragment(gson.toJson(this)))
                         }
                     )
                 }
