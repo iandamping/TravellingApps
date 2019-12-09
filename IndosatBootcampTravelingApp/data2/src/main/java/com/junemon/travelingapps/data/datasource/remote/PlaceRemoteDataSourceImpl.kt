@@ -18,8 +18,13 @@ import com.junemon.travelingapps.data.datasource.model.PlaceRemoteEntity
 import com.junemon.travelingapps.data.datasource.model.mapToRemoteDomain
 import com.junemon.travelingapps.data.util.Constant.placeNode
 import com.junemon.travellingapps.domain.model.PlaceRemoteData
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 
@@ -65,6 +70,26 @@ class PlaceRemoteDataSourceImpl : PlaceRemoteDataSource {
         }
     }
 
+    @ExperimentalCoroutinesApi
+    override fun getFlowFirebaseData(): Flow<ResultToConsume<List<PlaceRemoteData>>> {
+        val container: MutableList<PlaceRemoteEntity> = mutableListOf()
+        return callbackFlow {
+            databasePlaceReference.addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(p0: DatabaseError) {
+                    close(CancellationException("Api Error", cause = p0.toException().cause))
+                }
+
+                override fun onDataChange(p0: DataSnapshot) {
+                    p0.children.forEach {
+                        container.add(it.getValue(PlaceRemoteEntity::class.java)!!)
+                    }
+                    offer(ResultToConsume.success(container.mapToRemoteDomain()))
+                }
+            })
+            awaitClose { cancel() }
+        }
+    }
+
     override fun setFirebaseData(data: PlaceRemoteData, imageUri: Uri?, success: (Boolean) -> Unit, failed: (Boolean, Throwable) -> Unit) {
         if (imageUri != null) {
             val reference = storagePlaceReference.child(imageUri.lastPathSegment!!)
@@ -80,6 +105,7 @@ class PlaceRemoteDataSourceImpl : PlaceRemoteDataSource {
             }
         } else databasePlaceReference.push().setValue(data)
     }
+
 
     private fun <T> error(message: String): ResultToConsume<T> {
         return ResultToConsume.error("Network call has failed for a following reason: $message")

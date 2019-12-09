@@ -13,32 +13,32 @@
         <action
             android:id="@+id/action_homeFragment_to_uploadFragment"
             app:destination="@id/uploadFragment"
-            app:enterAnim="@anim/fade_in_activity"
-            app:exitAnim="@anim/fade_out_activity"
-            app:popEnterAnim="@anim/fade_in_activity"
-            app:popExitAnim="@anim/fade_out_activity"
+            app:enterAnim="@anim/fragment_fade_enter"
+            app:exitAnim="@anim/fragment_fade_exit"
+            app:popEnterAnim="@anim/fragment_fade_enter"
+            app:popExitAnim="@anim/fragment_fade_exit"
             app:popUpTo="@+id/homeFragment" />
         <action
             android:id="@+id/action_homeFragment_to_detailFragment"
             app:destination="@id/detailFragment"
-            app:enterAnim="@anim/fade_in_activity"
-            app:exitAnim="@anim/fade_out_activity"
-            app:popEnterAnim="@anim/fade_in_activity"
-            app:popExitAnim="@anim/fade_out_activity" />
+            app:enterAnim="@anim/fragment_fade_enter"
+            app:exitAnim="@anim/fragment_fade_exit"
+            app:popEnterAnim="@anim/fragment_fade_enter"
+            app:popExitAnim="@anim/fragment_fade_exit" />
         <action
             android:id="@+id/action_homeFragment_to_paginationFragment"
             app:destination="@id/paginationFragment"
-            app:enterAnim="@anim/fade_in_activity"
-            app:exitAnim="@anim/fade_out_activity"
-            app:popEnterAnim="@anim/fade_in_activity"
-            app:popExitAnim="@anim/fade_out_activity" />
+            app:enterAnim="@anim/fragment_fade_enter"
+            app:exitAnim="@anim/fragment_fade_exit"
+            app:popEnterAnim="@anim/fragment_fade_enter"
+            app:popExitAnim="@anim/fragment_fade_exit" />
         <action
             android:id="@+id/action_homeFragment_to_searchFragment"
             app:destination="@id/searchFragment"
-            app:enterAnim="@anim/fade_in_activity"
-            app:exitAnim="@anim/fade_out_activity"
-            app:popEnterAnim="@anim/fade_in_activity"
-            app:popExitAnim="@anim/fade_out_activity" />
+            app:enterAnim="@anim/fragment_fade_enter"
+            app:exitAnim="@anim/fragment_fade_exit"
+            app:popEnterAnim="@anim/fragment_fade_enter"
+            app:popExitAnim="@anim/fragment_fade_exit" />
     </fragment>
     <fragment
         android:id="@+id/uploadFragment"
