@@ -54,7 +54,6 @@ class SearchFragment : BaseFragment() {
 
     private fun FragmentSearchBinding.initView() {
         apply {
-            searchViews.queryHint = " Cari tempat "
             searchViews.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
                 androidx.appcompat.widget.SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {

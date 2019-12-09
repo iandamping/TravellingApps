@@ -76,7 +76,7 @@ class PlaceRemoteDataSourceImpl : PlaceRemoteDataSource {
         return callbackFlow {
             databasePlaceReference.addValueEventListener(object : ValueEventListener {
                 override fun onCancelled(p0: DatabaseError) {
-                    close(CancellationException("Api Error", cause = p0.toException().cause))
+                    close(p0.toException())
                 }
 
                 override fun onDataChange(p0: DataSnapshot) {

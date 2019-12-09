@@ -12,57 +12,37 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbarSearch"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cvSearch"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="6dp"
-                android:background="#ffff"
-                app:contentInsetStartWithNavigation="0dp">
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/spacing_medium"
+                app:cardElevation="4dp"
+                app:cardCornerRadius="8dp">
 
-                <LinearLayout
+                <androidx.appcompat.widget.SearchView
+                    android:id="@+id/searchViews"
+                    app:queryHint=" Cari tempat "
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:inputType="text"/>
 
-                    <androidx.appcompat.widget.SearchView
-                        android:id="@+id/searchViews"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:layout_weight="3"
-                        android:inputType="text"/>
-
-                </LinearLayout>
-
-
-            </androidx.appcompat.widget.Toolbar>
+            </androidx.cardview.widget.CardView>
 
 
             <RelativeLayout
                 android:id="@+id/rlTitle"
-                android:layout_below="@id/toolbarSearch"
+                android:layout_below="@id/cvSearch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
-
-                <TextView
-                    android:id="@+id/textView1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Cari Tempat"
-                    android:layout_margin="@dimen/spacing_medium"
-                    android:textColor="@android:color/black"
-                    android:textSize="30sp"
-                    android:textStyle="bold" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvSearchPlace"
                     android:layout_width="match_parent"
                     android:visibility="gone"
                     android:nestedScrollingEnabled="false"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/textView1" />
+                    android:layout_height="wrap_content" />
 
             </RelativeLayout>
 
