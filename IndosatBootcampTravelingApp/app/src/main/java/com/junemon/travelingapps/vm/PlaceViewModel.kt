@@ -19,10 +19,10 @@ class PlaceViewModel(private val repository: PlaceUseCase) : BaseViewModel() {
 
     private val _searchItem: MutableLiveData<MutableList<PlaceCachePresentation>> = MutableLiveData()
 
-    val searchItem:LiveData<MutableList<PlaceCachePresentation>>
+    val searchItem: LiveData<MutableList<PlaceCachePresentation>>
     get() = _searchItem
 
-    fun setSearchItem(data:MutableList<PlaceCachePresentation>){
+    fun setSearchItem(data: MutableList<PlaceCachePresentation>) {
         this._searchItem.value = data
     }
 

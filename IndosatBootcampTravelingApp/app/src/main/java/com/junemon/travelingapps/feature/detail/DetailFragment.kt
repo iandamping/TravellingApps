@@ -13,7 +13,6 @@ import com.junemon.travelingapps.R
 import com.junemon.travelingapps.databinding.FragmentDetailBinding
 import com.junemon.travelingapps.presentation.base.BaseFragment
 import com.junemon.travelingapps.presentation.model.PlaceCachePresentation
-import kotlin.properties.Delegates
 
 /**
  * Created by Ian Damping on 06,December,2019

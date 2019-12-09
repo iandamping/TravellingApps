@@ -5,6 +5,7 @@ import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
@@ -51,6 +52,7 @@ class HomeFragment : BaseFragment() {
 
     private fun FragmentHomeBinding.initView() {
         this.apply {
+            loadingImageHelper.run { tbImageLogo.loadWithGlide(ContextCompat.getDrawable(this@HomeFragment.context!!, R.drawable.samarinda_logo)!!) }
             btnCreate.setOnClickListener {
                 it.findNavController()
                     .navigate(HomeFragmentDirections.actionHomeFragmentToUploadFragment())
@@ -64,7 +66,9 @@ class HomeFragment : BaseFragment() {
             lnSeeAllPlaceReligiusType.setOnClickListener {
                 it.findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToPaginationFragment(getString(R.string.place_religi)))
             }
-
+            btnSearchMain.setOnClickListener {
+                it.findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToSearchFragment())
+            }
             initData()
         }
     }
@@ -83,9 +87,7 @@ class HomeFragment : BaseFragment() {
                         startAllShimmer()
                     }
                 }
-                btnSearchMain.setOnClickListener {
-                    it.findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToSearchFragment(gson.toJson(result.data)))
-                }
+
                 initViewPager(result)
                 initRecyclerView(result)
             })

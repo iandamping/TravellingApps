@@ -14,13 +14,20 @@
         android:supportsRtl="true"
         android:name=".PlaceApplication"
         android:theme="@style/AppTheme">
-        <activity android:name=".feature.main.MainActivity">
+        <activity android:name=".activity.SplashActivity"
+            android:screenOrientation="portrait"
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".presentation.base.BaseActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".activity.MainActivity"
+            android:screenOrientation="portrait"/>
 
         <provider
             android:authorities="${applicationId}.provider"

@@ -67,9 +67,5 @@
         android:id="@+id/searchFragment"
         tools:layout="@layout/fragment_search"
         android:name="com.junemon.travelingapps.feature.search.SearchFragment"
-        android:label="SearchFragment" >
-        <argument
-            android:name="searchItem"
-            app:argType="string" />
-    </fragment>
+        android:label="SearchFragment"/>
 </navigation>

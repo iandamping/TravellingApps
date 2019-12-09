@@ -44,13 +44,11 @@ class PlaceRepositoryImpl(
                     cacheDataSource.setCache(data.data!!.mapRemoteToCacheDomain())
                     emitSource(cacheDataSource.getCache().map { ResultToConsume.success(it) }.asLiveData())
                 }
-
-            }catch (e: Exception) {
+            } catch (e: Exception) {
                 emitSource(cacheDataSource.getCache().map {
                     ResultToConsume.error(e.message!!, it)
                 }.asLiveData())
             }
-
         }
     }
 

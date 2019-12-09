@@ -1,7 +1,6 @@
 package com.junemon.travelingapps.data.datasource.remote
 
 import android.net.Uri
-import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -10,16 +9,12 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.ian.app.helper.data.ResultToConsume
-import com.ian.app.helper.util.logE
-import com.ian.app.helper.util.timberLogE
 import com.junemon.travelingapps.data.BuildConfig.firebaseStorageUrl
 import com.junemon.travelingapps.data.data.datasource.PlaceRemoteDataSource
 import com.junemon.travelingapps.data.datasource.model.PlaceRemoteEntity
 import com.junemon.travelingapps.data.datasource.model.mapToRemoteDomain
 import com.junemon.travelingapps.data.util.Constant.placeNode
 import com.junemon.travellingapps.domain.model.PlaceRemoteData
-import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.awaitClose
@@ -105,7 +100,6 @@ class PlaceRemoteDataSourceImpl : PlaceRemoteDataSource {
             }
         } else databasePlaceReference.push().setValue(data)
     }
-
 
     private fun <T> error(message: String): ResultToConsume<T> {
         return ResultToConsume.error("Network call has failed for a following reason: $message")

@@ -8,13 +8,12 @@ import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import com.google.gson.Gson
-import com.ian.app.helper.util.fromJsonHelper
 import com.junemon.travelingapps.R
 import com.junemon.travelingapps.databinding.FragmentSearchBinding
 import com.junemon.travelingapps.presentation.PresentationConstant.placePaginationRvCallback
 import com.junemon.travelingapps.presentation.base.BaseFragment
 import com.junemon.travelingapps.presentation.model.PlaceCachePresentation
+import com.junemon.travelingapps.presentation.model.mapCacheToPresentation
 import com.junemon.travelingapps.vm.PlaceViewModel
 import kotlinx.android.synthetic.main.item_recyclerview.view.*
 import org.koin.core.inject
@@ -26,15 +25,8 @@ import org.koin.core.inject
  */
 class SearchFragment : BaseFragment() {
     private val placeVm: PlaceViewModel by inject()
-    private val gson = Gson()
     private lateinit var binders: FragmentSearchBinding
-    private val data by lazy {
-        gson.fromJsonHelper<List<PlaceCachePresentation>>(
-            SearchFragmentArgs.fromBundle(
-                arguments!!
-            ).searchItem
-        )
-    }
+    private var data: List<PlaceCachePresentation> = mutableListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,8 +38,8 @@ class SearchFragment : BaseFragment() {
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
             binders = this
-            initView()
             initData()
+            initView()
         }
         return binding.root
     }
@@ -76,6 +68,7 @@ class SearchFragment : BaseFragment() {
         ilegallStateCatching {
             val tempListData: MutableList<PlaceCachePresentation> = mutableListOf()
             checkNotNull(data)
+            check(data.isNotEmpty())
             data.forEach {
                 if (s?.toLowerCase()?.let { it1 -> it.placeName?.toLowerCase()?.contains(it1) }!!) {
                     tempListData.add(it)
@@ -95,12 +88,15 @@ class SearchFragment : BaseFragment() {
                     }
                 }
             }
-
         }
     }
 
-    private fun FragmentSearchBinding.initData(){
+    private fun FragmentSearchBinding.initData() {
         apply {
+            placeVm.getCache().observe(viewLifecycleOwner, Observer { result ->
+                data = result.data?.mapCacheToPresentation()!!
+            })
+
             placeVm.searchItem.observe(viewLifecycleOwner, Observer {
                 recyclerViewHelper.run {
                     rvSearchPlace.setUpVerticalGridAdapter(

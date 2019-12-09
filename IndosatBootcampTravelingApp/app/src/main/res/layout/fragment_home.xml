@@ -11,7 +11,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            tools:context=".feature.main.MainActivity">
+            tools:context=".activity.MainActivity">
 
             <androidx.appcompat.widget.Toolbar
                 android:layout_width="match_parent"
@@ -24,19 +24,29 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
+                    <ImageView
+                        android:id="@+id/tbImageLogo"
+                        android:padding="@dimen/spacing_small"
+                        android:transitionName="@string/transition_name"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        tools:src="@tools:sample/backgrounds/scenic"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
                     <TextView
                         android:id="@+id/ivMain"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="15dp"
+                        android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="8dp"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:textSize="@dimen/letter_medium"
                         android:text="Wonderful Samarinda"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/letter_medium"
+                        android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/tbImageLogo"
                         app:layout_constraintTop_toTopOf="parent" />
 
 
@@ -272,6 +282,7 @@
             android:id="@+id/btnCreate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:src="@drawable/ic_mode_edit_white_24dp"
             android:layout_gravity="end|bottom"
             android:layout_margin="@dimen/spacing_medium" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
