@@ -49,7 +49,6 @@ class PlaceRemoteDataSourceImpl @Inject constructor() : PlaceRemoteDataSource {
         override suspend fun getFirebaseData(): Results<List<PlaceRemoteData>> {
         val container: MutableList<PlaceRemoteEntity> = mutableListOf()
         return suspendCancellableCoroutine { cancellableContinuation ->
-            cancellableContinuation.resume(Results.Loading)
             databasePlaceReference.addValueEventListener(object : ValueEventListener {
                 override fun onCancelled(p0: DatabaseError) {
                     cancellableContinuation.resume(customError(p0.toException()))
