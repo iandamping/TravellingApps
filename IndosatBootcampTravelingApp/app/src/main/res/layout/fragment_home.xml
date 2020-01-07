@@ -26,13 +26,13 @@
 
                     <ImageView
                         android:id="@+id/tbImageLogo"
-                        android:padding="@dimen/spacing_small"
-                        android:transitionName="@string/transition_name"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        tools:src="@tools:sample/backgrounds/scenic"
+                        android:padding="@dimen/spacing_small"
+                        android:transitionName="@string/transition_name"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:src="@tools:sample/backgrounds/scenic" />
 
                     <TextView
                         android:id="@+id/ivMain"
@@ -82,9 +82,9 @@
 
                         <com.facebook.shimmer.ShimmerFrameLayout
                             android:id="@+id/shimmerSlider"
-                            android:visibility="gone"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent">
+                            android:layout_height="match_parent"
+                            android:visibility="gone">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -100,9 +100,9 @@
 
                         <androidx.viewpager.widget.ViewPager
                             android:id="@+id/vpPlaceRandom"
-                            android:visibility="gone"
                             android:layout_width="match_parent"
-                            android:layout_height="300dp" />
+                            android:layout_height="300dp"
+                            android:visibility="gone" />
 
                         <me.relex.circleindicator.CircleIndicator
                             android:id="@+id/indicator"
@@ -119,32 +119,35 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/slider"
                         android:orientation="vertical">
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="@dimen/spacing_medium"
                             android:orientation="horizontal">
+
                             <TextView
-                                android:layout_weight="1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_weight="1"
                                 android:text="Wisata Alam"
                                 android:textColor="@color/black"
                                 android:textSize="18sp" />
+
                             <TextView
                                 android:id="@+id/lnSeeAllPlaceNatureType"
-                                android:layout_weight="1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_weight="1"
                                 android:gravity="end"
-                                android:text="Lihat Selengkapnya"/>
+                                android:text="Lihat Selengkapnya" />
                         </LinearLayout>
 
                         <com.facebook.shimmer.ShimmerFrameLayout
                             android:id="@+id/shimmerNatureType"
-                            android:visibility="gone"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent">
+                            android:layout_height="match_parent"
+                            android:visibility="gone">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -160,9 +163,9 @@
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rvPlaceNatureType"
-                            android:visibility="gone"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:visibility="gone" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -177,27 +180,29 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="@dimen/spacing_medium"
                             android:orientation="horizontal">
+
                             <TextView
-                                android:layout_weight="1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_weight="1"
                                 android:text="Wisata Budaya"
                                 android:textColor="@color/black"
                                 android:textSize="18sp" />
+
                             <TextView
                                 android:id="@+id/lnSeeAllPlaceCultureType"
-                                android:layout_weight="1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_weight="1"
                                 android:gravity="end"
-                                android:text="Lihat Selengkapnya"/>
+                                android:text="Lihat Selengkapnya" />
                         </LinearLayout>
 
                         <com.facebook.shimmer.ShimmerFrameLayout
                             android:id="@+id/shimmerCultureType"
-                            android:visibility="gone"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent">
+                            android:layout_height="match_parent"
+                            android:visibility="gone">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -213,9 +218,9 @@
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rvPlaceCultureType"
-                            android:visibility="gone"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:visibility="gone" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -230,27 +235,29 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="@dimen/spacing_medium"
                             android:orientation="horizontal">
+
                             <TextView
-                                android:layout_weight="1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_weight="1"
                                 android:text="Wisata Religi"
                                 android:textColor="@color/black"
                                 android:textSize="18sp" />
+
                             <TextView
                                 android:id="@+id/lnSeeAllPlaceReligiusType"
-                                android:layout_weight="1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_weight="1"
                                 android:gravity="end"
-                                android:text="Lihat Selengkapnya"/>
+                                android:text="Lihat Selengkapnya" />
                         </LinearLayout>
 
                         <com.facebook.shimmer.ShimmerFrameLayout
                             android:id="@+id/shimmerReligiusType"
                             android:layout_width="match_parent"
-                            android:visibility="gone"
-                            android:layout_height="match_parent">
+                            android:layout_height="match_parent"
+                            android:visibility="gone">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -266,9 +273,9 @@
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rvPlaceReligiusType"
-                            android:visibility="gone"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:visibility="gone" />
                     </LinearLayout>
 
 
@@ -282,9 +289,9 @@
             android:id="@+id/btnCreate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_mode_edit_white_24dp"
             android:layout_gravity="end|bottom"
-            android:layout_margin="@dimen/spacing_medium" />
+            android:layout_margin="@dimen/spacing_medium"
+            android:src="@drawable/ic_mode_edit_white_24dp" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
 

@@ -15,15 +15,15 @@
             android:layout_gravity="center"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
-            android:src="@drawable/empty_image" />
+            android:src="@drawable/no_data" />
 
 
         <LinearLayout
             android:id="@+id/linear1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/spacing_medium"
             android:orientation="horizontal"
+            android:padding="@dimen/spacing_medium"
             app:layout_constraintBottom_toBottomOf="@+id/ivSliderImage"
             app:layout_constraintStart_toStartOf="@+id/ivSliderImage">
 
@@ -35,13 +35,13 @@
 
             <TextView
                 android:id="@+id/tvPlaceAddress"
-                android:ellipsize="end"
-                android:textSize="12sp"
-                android:maxLines="1"
-                android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:textColor="@color/white"
+                android:textSize="12sp"
                 tools:text="@tools:sample/lorem" />
         </LinearLayout>
 

@@ -1,7 +1,11 @@
 package com.junemon.travelingapps.presentation
 
+import android.content.Context
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
-import com.junemon.travelingapps.presentation.model.PlaceCachePresentation
+import com.junemon.model.presentation.PlaceCachePresentation
 
 /**
  * Created by Ian Damping on 04,December,2019
@@ -31,4 +35,11 @@ object PresentationConstant {
             return oldItem == newItem
         }
     }
+}
+
+inline val Context.layoutInflater: LayoutInflater
+    get() = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+
+internal fun ViewGroup.inflates(layout: Int): View {
+    return LayoutInflater.from(context).inflate(layout, this, false)
 }

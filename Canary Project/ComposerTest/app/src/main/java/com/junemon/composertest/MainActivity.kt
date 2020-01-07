@@ -2,6 +2,7 @@ package com.junemon.composertest
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Gravity
 import androidx.compose.Composable
 import androidx.compose.ambient
 import androidx.compose.unaryPlus
@@ -31,38 +32,51 @@ class MainActivity : AppCompatActivity() {
 
 @Composable
 fun mainView() {
+    val listOfNames = listOf<String>("Jun","Ian","Kentus")
+    val listOfJobs = listOf<String>("Technician","Chef","Cookie")
     MaterialTheme() {
         Column(modifier = Spacing(8.dp)) {
             setImageView()
             //give padding top
             HeightSpacer(height = 16.dp)
-            setTextViewName()
+            listOfNames.forEach {names ->
+                setTextViewName(names)
+
+            }
             Padding(padding = 10.dp) {
                 Divider(color = Color.Black)
             }
-            setTextViewDetail()
+            listOfJobs.forEach { jobs ->
+                setTextViewDetail(jobs)
+            }
             //typography h6 is to set textsize, the lower it get the bigger the textsize
         }
     }
 }
 
 @Composable
-fun setTextViewName() {
+fun setTextViewName(name:String) {
     val typography: MaterialTypography = MaterialTypography()
-    Surface(color = Color.Blue) {
-        Text(text = "Hello Jun", modifier = Spacing(8.dp))
+    Column(modifier = Spacing(8.dp)) {
+        Surface(color = Color.White) {
+            Text(text = "Hello $name", modifier = Spacing(8.dp))
+        }
     }
+
 }
 
 @Composable
-fun setTextViewDetail() {
+fun setTextViewDetail(job:String) {
     val typography: MaterialTypography = MaterialTypography()
-    Text(
-        text = "Im an Android Developer in SPE Docotel and blalbalbalfpldpalpwdlapwlvpapvlpawlpbalbplwpalbp ",
-        maxLines = 2,
-        overflow = TextOverflow.Ellipsis,
-        style = typography.h6
-    )
+    Column(modifier = Spacing(8.dp)) {
+        Text(
+            text = "Im an ${job} in here and there with this and stuff also blalbalbalfpldpalpwdlapwlvpapvlpawlpbalbplwpalbp ",
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
+            style = typography.h6
+        )
+    }
+
 }
 
 @Composable

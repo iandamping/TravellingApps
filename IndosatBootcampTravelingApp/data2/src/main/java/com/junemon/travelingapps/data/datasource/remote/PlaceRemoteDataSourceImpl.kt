@@ -8,19 +8,21 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import com.ian.app.helper.data.ResultToConsume
+import com.junemon.model.data.PlaceRemoteEntity
+import com.junemon.model.data.dto.mapToRemoteDomain
+import com.junemon.model.domain.PlaceRemoteData
+import com.junemon.model.domain.Results
 import com.junemon.travelingapps.data.BuildConfig.firebaseStorageUrl
 import com.junemon.travelingapps.data.data.datasource.PlaceRemoteDataSource
-import com.junemon.travelingapps.data.datasource.model.PlaceRemoteEntity
-import com.junemon.travelingapps.data.datasource.model.mapToRemoteDomain
 import com.junemon.travelingapps.data.util.Constant.placeNode
-import com.junemon.travellingapps.domain.model.PlaceRemoteData
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.suspendCancellableCoroutine
+import java.lang.Exception
+import javax.inject.Inject
 import kotlin.coroutines.resume
 
 /**
@@ -28,7 +30,7 @@ import kotlin.coroutines.resume
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class PlaceRemoteDataSourceImpl : PlaceRemoteDataSource {
+class PlaceRemoteDataSourceImpl @Inject constructor() : PlaceRemoteDataSource {
     private val mFirebaseDatabase: FirebaseDatabase by lazy { FirebaseDatabase.getInstance() }
     private val mFirebaseStorage: FirebaseStorage by lazy { FirebaseStorage.getInstance() }
 
@@ -44,31 +46,34 @@ class PlaceRemoteDataSourceImpl : PlaceRemoteDataSource {
     }
 
     @ExperimentalCoroutinesApi
-    override suspend fun getFirebaseData(): ResultToConsume<List<PlaceRemoteData>> {
+        override suspend fun getFirebaseData(): Results<List<PlaceRemoteData>> {
         val container: MutableList<PlaceRemoteEntity> = mutableListOf()
         return suspendCancellableCoroutine { cancellableContinuation ->
+            cancellableContinuation.resume(Results.Loading)
             databasePlaceReference.addValueEventListener(object : ValueEventListener {
                 override fun onCancelled(p0: DatabaseError) {
-                    cancellableContinuation.resume(error(" ${p0.code} ${p0.message}"))
+                    cancellableContinuation.resume(customError(p0.toException()))
                 }
 
                 override fun onDataChange(p0: DataSnapshot) {
                     p0.children.forEach {
                         container.add(it.getValue(PlaceRemoteEntity::class.java)!!)
                     }
-                    cancellableContinuation.resume(ResultToConsume.success(container.mapToRemoteDomain()))
+
+                    cancellableContinuation.resume(Results.Success(container.mapToRemoteDomain()))
                 }
             })
             cancellableContinuation.invokeOnCancellation {
-                cancellableContinuation.resume(error(it?.message ?: it.toString()))
+                cancellableContinuation.resume(customError(Exception(it)))
             }
         }
     }
 
     @ExperimentalCoroutinesApi
-    override fun getFlowFirebaseData(): Flow<ResultToConsume<List<PlaceRemoteData>>> {
+    override fun getFlowFirebaseData(): Flow<Results<List<PlaceRemoteData>>> {
         val container: MutableList<PlaceRemoteEntity> = mutableListOf()
         return callbackFlow {
+            offer(Results.Loading)
             databasePlaceReference.addValueEventListener(object : ValueEventListener {
                 override fun onCancelled(p0: DatabaseError) {
                     close(p0.toException())
@@ -78,7 +83,7 @@ class PlaceRemoteDataSourceImpl : PlaceRemoteDataSource {
                     p0.children.forEach {
                         container.add(it.getValue(PlaceRemoteEntity::class.java)!!)
                     }
-                    offer(ResultToConsume.success(container.mapToRemoteDomain()))
+                    offer(Results.Success(container.mapToRemoteDomain()))
                 }
             })
             awaitClose { cancel() }
@@ -101,7 +106,7 @@ class PlaceRemoteDataSourceImpl : PlaceRemoteDataSource {
         } else databasePlaceReference.push().setValue(data)
     }
 
-    private fun <T> error(message: String): ResultToConsume<T> {
-        return ResultToConsume.error("Network call has failed for a following reason: $message")
+    private fun <T> customError(exception: Exception): Results<T> {
+        return Results.Error(exception)
     }
 }

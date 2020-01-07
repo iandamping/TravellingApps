@@ -7,6 +7,7 @@ import com.junemon.gamesapi.data.datasource.model.ResultEntity
 import com.junemon.gamesapi.data.datasource.remote.ApiConstant.baseUrl
 import com.junemon.gamesapi.data.datasource.remote.ApiConstant.games
 import com.junemon.gamesapi.data.datasource.remote.ApiConstant.publisher
+import io.reactivex.Single
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.Call
@@ -24,7 +25,7 @@ interface GamesApi {
     suspend fun getGames(): Response<ResultEntity<GamesEntity>>
 
     @GET(publisher)
-    suspend fun getPublisher(): Response<ResultEntity<PublishersEntity>>
+    fun getPublisher(): Single<ResultEntity<PublishersEntity>>
 
 }
 

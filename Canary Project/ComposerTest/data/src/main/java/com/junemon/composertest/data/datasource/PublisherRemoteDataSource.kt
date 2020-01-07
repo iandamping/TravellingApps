@@ -3,6 +3,7 @@ package com.junemon.gamesapi.data.data.datasource
 import com.ian.app.helper.data.ResultToConsume
 import com.junemon.gamesapi.data.datasource.model.PublishersDbEntity
 import com.junemon.gamesapi.domain2.model.PublisherData
+import io.reactivex.Single
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -11,13 +12,13 @@ import kotlinx.coroutines.flow.Flow
  * Indonesia.
  */
 interface PublisherRemoteDataSource {
-    suspend fun get(): ResultToConsume<List<PublisherData>>
+    fun get(): Single<List<PublisherData>>
 }
 
 
 interface PublisherCacheDataSource {
 
-    suspend fun set(data: List<PublishersDbEntity>)
+    fun set(data: List<PublishersDbEntity>)
 
-    fun get(): Flow<List<PublisherData>>
+    fun get(): Single<List<PublisherData>>
 }

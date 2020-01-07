@@ -1,5 +1,6 @@
 package com.junemon.travelingapps.feature.home
 
+import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
@@ -7,20 +8,26 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.google.gson.Gson
-import com.ian.app.helper.data.ResultToConsume
+import com.junemon.model.domain.PlaceCacheData
+import com.junemon.model.domain.Results
+import com.junemon.model.presentation.dto.mapCacheToPresentation
 import com.junemon.travelingapps.R
+import com.junemon.travelingapps.activity.MainActivity
 import com.junemon.travelingapps.databinding.FragmentHomeBinding
 import com.junemon.travelingapps.feature.home.slideradapter.HomeSliderAdapter
 import com.junemon.travelingapps.presentation.PresentationConstant.placeRvCallback
 import com.junemon.travelingapps.presentation.base.BaseFragment
-import com.junemon.travelingapps.presentation.model.mapCacheToPresentation
+import com.junemon.travelingapps.presentation.util.interfaces.LoadImageHelper
+import com.junemon.travelingapps.presentation.util.interfaces.RecyclerHelper
+import com.junemon.travelingapps.presentation.util.interfaces.ViewHelper
 import com.junemon.travelingapps.vm.PlaceViewModel
-import com.junemon.travellingapps.domain.model.PlaceCacheData
 import kotlinx.android.synthetic.main.item_recyclerview.view.*
-import org.koin.android.viewmodel.ext.android.viewModel
+import javax.inject.Inject
 
 /**
  * Created by Ian Damping on 04,December,2019
@@ -28,12 +35,32 @@ import org.koin.android.viewmodel.ext.android.viewModel
  * Indonesia.
  */
 class HomeFragment : BaseFragment() {
-    private val gson = Gson()
+    private val gson by lazy { Gson() }
+
+    @Inject
+    lateinit var viewHelper: ViewHelper
+
+    @Inject
+    lateinit var loadingImageHelper: LoadImageHelper
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    @Inject
+    lateinit var recyclerViewHelper: RecyclerHelper
+
     private lateinit var binders: FragmentHomeBinding
-    private val placeVm: PlaceViewModel by viewModel()
+    private val placeVm: PlaceViewModel by viewModels { viewModelFactory }
     private var mHandler: Handler = Handler()
     private var pageSize: Int? = 0
     private var currentPage = 0
+
+    override fun onAttach(context: Context) {
+        // inject dagger
+        (activity as MainActivity).activityComponent.getFeatureComponent()
+            .create().inject(this)
+        super.onAttach(context)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,22 +79,36 @@ class HomeFragment : BaseFragment() {
 
     private fun FragmentHomeBinding.initView() {
         this.apply {
-            loadingImageHelper.run { tbImageLogo.loadWithGlide(ContextCompat.getDrawable(this@HomeFragment.context!!, R.drawable.samarinda_logo)!!) }
+            loadingImageHelper.run {
+                tbImageLogo.loadWithGlide(
+                    ContextCompat.getDrawable(
+                        this@HomeFragment.context!!,
+                        R.drawable.samarinda_logo
+                    )!!
+                )
+            }
             btnCreate.setOnClickListener {
                 it.findNavController()
                     .navigate(HomeFragmentDirections.actionHomeFragmentToUploadFragment())
             }
             lnSeeAllPlaceCultureType.setOnClickListener {
-                it.findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToPaginationFragment(getString(R.string.place_culture)))
+                it.findNavController().navigate(
+                    HomeFragmentDirections.actionHomeFragmentToPaginationFragment(getString(R.string.place_culture))
+                )
             }
             lnSeeAllPlaceNatureType.setOnClickListener {
-                it.findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToPaginationFragment(getString(R.string.place_nature)))
+                it.findNavController().navigate(
+                    HomeFragmentDirections.actionHomeFragmentToPaginationFragment(getString(R.string.place_nature))
+                )
             }
             lnSeeAllPlaceReligiusType.setOnClickListener {
-                it.findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToPaginationFragment(getString(R.string.place_religi)))
+                it.findNavController().navigate(
+                    HomeFragmentDirections.actionHomeFragmentToPaginationFragment(getString(R.string.place_religi))
+                )
             }
             btnSearchMain.setOnClickListener {
-                it.findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToSearchFragment())
+                it.findNavController()
+                    .navigate(HomeFragmentDirections.actionHomeFragmentToSearchFragment())
             }
             initData()
         }
@@ -76,44 +117,51 @@ class HomeFragment : BaseFragment() {
     private fun FragmentHomeBinding.initData() {
         apply {
             placeVm.getCache().observe(viewLifecycleOwner, Observer { result ->
-                when (result.status) {
-                    ResultToConsume.Status.ERROR -> {
+                when (result) {
+                    is Results.Success -> {
+                        stopAllShimmer()
+                        initViewPager(result.data)
+                        initRecyclerView(result.data)
+                    }
+                    is Results.Error -> {
                         stopAllShimmer()
                     }
-                    ResultToConsume.Status.SUCCESS -> {
-                        stopAllShimmer()
-                    }
-                    ResultToConsume.Status.LOADING -> {
+                    is Results.Loading -> {
                         startAllShimmer()
                     }
                 }
-
-                initViewPager(result)
-                initRecyclerView(result)
             })
         }
     }
 
-    private fun FragmentHomeBinding.initViewPager(result: ResultToConsume<List<PlaceCacheData>>) {
+    private fun FragmentHomeBinding.initViewPager(result: List<PlaceCacheData>) {
         apply {
             ilegallStateCatching {
-                checkNotNull(result.data)
-                pageSize = if (result.data!!.size > 10) {
+                check(result.isNotEmpty())
+                pageSize = if (result.size > 10) {
                     10
-                } else result.data!!.size
-                vpPlaceRandom.adapter = HomeSliderAdapter(result.data!!.mapCacheToPresentation().shuffled().take(10))
+                } else result.size
+                vpPlaceRandom.adapter =
+                    HomeSliderAdapter(
+                        data = result.mapCacheToPresentation().shuffled().take(10),
+                        viewHelper = viewHelper,
+                        loadImageHelper = loadingImageHelper
+                    )
                 indicator.setViewPager(vpPlaceRandom)
             }
         }
     }
 
-    private fun FragmentHomeBinding.initRecyclerView(result: ResultToConsume<List<PlaceCacheData>>) {
+    private fun FragmentHomeBinding.initRecyclerView(result: List<PlaceCacheData>) {
         apply {
             universalCatching {
-                checkNotNull(result.data)
-                val religiData = result.data!!.mapCacheToPresentation().filter { it.placeType == "Wisata Religi" }
-                val natureData = result.data!!.mapCacheToPresentation().filter { it.placeType == "Wisata Alam" }
-                val cultureData = result.data!!.mapCacheToPresentation().filter { it.placeType == "Wisata Budaya" }
+                check(result.isNotEmpty())
+                val religiData = result.mapCacheToPresentation()
+                    .filter { it.placeType == "Wisata Religi" }
+                val natureData =
+                    result.mapCacheToPresentation().filter { it.placeType == "Wisata Alam" }
+                val cultureData = result.mapCacheToPresentation()
+                    .filter { it.placeType == "Wisata Budaya" }
 
                 recyclerViewHelper.run {
 
@@ -125,7 +173,13 @@ class HomeFragment : BaseFragment() {
                             tvItemPlaceDistrict.text = it?.placeDistrict
                         },
                         layoutResId = R.layout.item_recyclerview, itemClick = {
-                            this@apply.root.findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToDetailFragment(gson.toJson(this)))
+                            this@apply.root.findNavController().navigate(
+                                HomeFragmentDirections.actionHomeFragmentToDetailFragment(
+                                    gson.toJson(
+                                        this
+                                    )
+                                )
+                            )
                         }
                     )
                     rvPlaceCultureType.setUpHorizontalListAdapter(
@@ -136,7 +190,13 @@ class HomeFragment : BaseFragment() {
                             tvItemPlaceDistrict.text = it?.placeDistrict
                         },
                         layoutResId = R.layout.item_recyclerview, itemClick = {
-                            this@apply.root.findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToDetailFragment(gson.toJson(this)))
+                            this@apply.root.findNavController().navigate(
+                                HomeFragmentDirections.actionHomeFragmentToDetailFragment(
+                                    gson.toJson(
+                                        this
+                                    )
+                                )
+                            )
                         }
                     )
                     rvPlaceReligiusType.setUpHorizontalListAdapter(
@@ -147,7 +207,13 @@ class HomeFragment : BaseFragment() {
                             tvItemPlaceDistrict.text = it?.placeDistrict
                         },
                         layoutResId = R.layout.item_recyclerview, itemClick = {
-                            this@apply.root.findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToDetailFragment(gson.toJson(this)))
+                            this@apply.root.findNavController().navigate(
+                                HomeFragmentDirections.actionHomeFragmentToDetailFragment(
+                                    gson.toJson(
+                                        this
+                                    )
+                                )
+                            )
                         }
                     )
                 }

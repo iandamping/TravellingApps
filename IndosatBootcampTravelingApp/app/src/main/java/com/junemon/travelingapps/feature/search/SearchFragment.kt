@@ -1,25 +1,32 @@
 package com.junemon.travelingapps.feature.search
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.google.gson.Gson
+import com.junemon.model.domain.Results
+import com.junemon.model.presentation.PlaceCachePresentation
+import com.junemon.model.presentation.dto.mapCacheToPresentation
 import com.junemon.travelingapps.R
+import com.junemon.travelingapps.activity.MainActivity
 import com.junemon.travelingapps.databinding.FragmentSearchBinding
-import com.junemon.travelingapps.feature.pagination.PaginationFragmentDirections
 import com.junemon.travelingapps.presentation.PresentationConstant.placePaginationRvCallback
 import com.junemon.travelingapps.presentation.base.BaseFragment
-import com.junemon.travelingapps.presentation.model.PlaceCachePresentation
-import com.junemon.travelingapps.presentation.model.mapCacheToPresentation
+import com.junemon.travelingapps.presentation.util.interfaces.LoadImageHelper
+import com.junemon.travelingapps.presentation.util.interfaces.RecyclerHelper
+import com.junemon.travelingapps.presentation.util.interfaces.ViewHelper
 import com.junemon.travelingapps.vm.PlaceViewModel
 import kotlinx.android.synthetic.main.item_recyclerview.view.*
-import org.koin.core.inject
+import javax.inject.Inject
 
 /**
  * Created by Ian Damping on 06,December,2019
@@ -28,9 +35,23 @@ import org.koin.core.inject
  */
 class SearchFragment : BaseFragment() {
     private val gson = Gson()
-    private val placeVm: PlaceViewModel by inject()
+    @Inject
+    lateinit var viewHelper: ViewHelper
+    @Inject
+    lateinit var recyclerViewHelper: RecyclerHelper
+    @Inject
+    lateinit var loadingImageHelper: LoadImageHelper
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private val placeVm: PlaceViewModel by viewModels { viewModelFactory }
     private lateinit var binders: FragmentSearchBinding
     private var data: List<PlaceCachePresentation> = mutableListOf()
+
+    override fun onAttach(context: Context) {
+        (activity as MainActivity).activityComponent.getFeatureComponent()
+            .create().inject(this)
+        super.onAttach(context)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -71,7 +92,6 @@ class SearchFragment : BaseFragment() {
     private fun searchPlace(s: String?) {
         ilegallStateCatching {
             val tempListData: MutableList<PlaceCachePresentation> = mutableListOf()
-            checkNotNull(data)
             check(data.isNotEmpty())
             data.forEach {
                 if (s?.toLowerCase()?.let { it1 -> it.placeName?.toLowerCase()?.contains(it1) }!!) {
@@ -98,7 +118,11 @@ class SearchFragment : BaseFragment() {
     private fun FragmentSearchBinding.initData() {
         apply {
             placeVm.getCache().observe(viewLifecycleOwner, Observer { result ->
-                data = result.data?.mapCacheToPresentation()!!
+                when (result) {
+                    is Results.Success -> {
+                        data = result.data.mapCacheToPresentation()
+                    }
+                }
             })
 
             placeVm.searchItem.observe(viewLifecycleOwner, Observer {
@@ -111,9 +135,14 @@ class SearchFragment : BaseFragment() {
                             loadingImageHelper.run { ivItemPlaceImage.loadWithGlide(it.placePicture) }
                             tvItemPlaceName.text = it.placeName
                             tvItemPlaceDistrict.text = it.placeDistrict
-                        },itemClick = {
+                        }, itemClick = {
                             this@apply.root.findNavController().navigate(
-                                SearchFragmentDirections.actionSearchFragmentToDetailFragment(gson.toJson(this)))
+                                SearchFragmentDirections.actionSearchFragmentToDetailFragment(
+                                    gson.toJson(
+                                        this
+                                    )
+                                )
+                            )
                         }
                     )
                 }

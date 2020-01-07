@@ -1,39 +1,29 @@
 package com.junemon.travelingapps.data.di
 
-import androidx.room.Room
+import com.junemon.cache.di.DatabaseHelperModule
 import com.junemon.travelingapps.data.data.datasource.PlaceCacheDataSource
 import com.junemon.travelingapps.data.data.datasource.PlaceRemoteDataSource
 import com.junemon.travelingapps.data.data.repository.PlaceRepositoryImpl
 import com.junemon.travelingapps.data.datasource.cache.PlaceCacheDataSourceImpl
 import com.junemon.travelingapps.data.datasource.remote.PlaceRemoteDataSourceImpl
-import com.junemon.travelingapps.data.db.PlaceDatabase
 import com.junemon.travellingapps.domain.repository.PlaceRepository
-import org.koin.dsl.module
+import dagger.Binds
+import dagger.Module
 
 /**
- * Created by Ian Damping on 04,December,2019
+ * Created by Ian Damping on 06,January,2020
  * Github https://github.com/iandamping
  * Indonesia.
  */
+@Module(includes = [DatabaseHelperModule::class])
+abstract class DataModule {
 
-val databaseModule = module {
-    single {
-        Room.databaseBuilder(get(), PlaceDatabase::class.java, "Place Database")
-            .fallbackToDestructiveMigration().build()
-    }
-    single { get<PlaceDatabase>().placeDao() }
-}
+    @Binds
+    abstract fun bindsPlaceRemoteDataSource(remoteDataSource: PlaceRemoteDataSourceImpl): PlaceRemoteDataSource
 
-val dataSourceModule = module {
-    single { PlaceCacheDataSourceImpl(get()) as PlaceCacheDataSource }
-    single { PlaceRemoteDataSourceImpl() as PlaceRemoteDataSource }
-}
+    @Binds
+    abstract fun bindsPlaceCacheDataSource(cacheDataSource: PlaceCacheDataSourceImpl): PlaceCacheDataSource
 
-val repositoryModules = module {
-    single {
-        PlaceRepositoryImpl(
-            remoteDataSource = get(),
-            cacheDataSource = get()
-        ) as PlaceRepository
-    }
+    @Binds
+    abstract fun bindsPlaceRepository(placeRepositoryImpl: PlaceRepositoryImpl): PlaceRepository
 }

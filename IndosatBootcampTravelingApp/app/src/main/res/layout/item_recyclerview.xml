@@ -22,19 +22,19 @@
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:layout_gravity="center"
-            android:src="@drawable/empty_image"
             android:adjustViewBounds="true"
-            android:scaleType="centerCrop" />
+            android:scaleType="centerCrop"
+            android:src="@drawable/no_data" />
 
 
         <TextView
             android:id="@+id/tvItemPlaceName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/spacing_medium"
             android:ellipsize="end"
             android:fontFamily="@font/lato"
             android:maxLines="1"
-            android:layout_margin="@dimen/spacing_medium"
             android:textColor="@color/black"
             android:textSize="@dimen/letter_small"
             tools:text="Islamic Center" />
@@ -57,9 +57,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:fontFamily="@font/lato"
+                android:textColor="@color/black"
                 android:textSize="@dimen/letter_xxsmall"
-                tools:text="Kota Yogyakarta, DIY"
-                android:textColor="@color/black" />
+                tools:text="Kota Yogyakarta, DIY" />
 
         </LinearLayout>
 

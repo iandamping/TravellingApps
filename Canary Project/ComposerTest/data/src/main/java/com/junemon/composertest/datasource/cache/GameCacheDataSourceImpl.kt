@@ -6,6 +6,7 @@ import com.junemon.gamesapi.data.datasource.model.mapToDomain
 import com.junemon.gamesapi.data.db.GameDatabase
 import com.junemon.gamesapi.domain2.model.GameData
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 /**
  * Created by Ian Damping on 31,October,2019
@@ -19,6 +20,6 @@ class GameCacheDataSourceImpl(private val db: GameDatabase) : GameCacheDataSourc
     }
 
     override fun get(): Flow<List<GameData>> {
-        return db.gameDao().loadGame().mapToDomain()
+        return db.gameDao().loadGame().map { it.mapToDomain() }
     }
 }

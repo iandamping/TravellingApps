@@ -1,9 +1,9 @@
 package com.junemon.travelingapps
 
+import android.app.Activity
 import android.app.Application
-import com.junemon.travelingapps.di.injectData
-import org.koin.android.ext.koin.androidContext
-import org.koin.core.context.startKoin
+import com.junemon.travelingapps.di.component.AppComponent
+import com.junemon.travelingapps.di.component.DaggerAppComponent
 import timber.log.Timber
 
 /**
@@ -13,14 +13,23 @@ import timber.log.Timber
  */
 class PlaceApplication : Application() {
 
+    val appComponent: AppComponent by lazy {
+        initializeComponent()
+    }
+
     override fun onCreate() {
         super.onCreate()
-        startKoin {
-            androidContext(this@PlaceApplication)
-            injectData()
-        }
+
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
         }
     }
+
+    private fun initializeComponent(): AppComponent {
+        // Creates an instance of AppComponent using its Factory constructor
+        // We pass the application that will be used as Context in the graph
+        return DaggerAppComponent.factory().injectApplication(this)
+    }
 }
+
+fun Activity.coreComponent() = (application as PlaceApplication).appComponent

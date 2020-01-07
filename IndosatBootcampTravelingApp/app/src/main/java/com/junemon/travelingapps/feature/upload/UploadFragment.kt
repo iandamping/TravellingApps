@@ -11,15 +11,22 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import com.junemon.model.domain.PlaceRemoteData
 import com.junemon.travelingapps.R
+import com.junemon.travelingapps.activity.MainActivity
 import com.junemon.travelingapps.databinding.FragmentUploadBinding
 import com.junemon.travelingapps.presentation.PresentationConstant.RequestSelectGalleryImage
 import com.junemon.travelingapps.presentation.base.BaseFragment
+import com.junemon.travelingapps.presentation.util.interfaces.CommonHelper
+import com.junemon.travelingapps.presentation.util.interfaces.ImageHelper
+import com.junemon.travelingapps.presentation.util.interfaces.PermissionHelper
+import com.junemon.travelingapps.presentation.util.interfaces.ViewHelper
 import com.junemon.travelingapps.vm.PlaceViewModel
-import com.junemon.travellingapps.domain.model.PlaceRemoteData
 import kotlinx.android.synthetic.main.fragment_upload.*
-import org.koin.android.viewmodel.ext.android.viewModel
+import javax.inject.Inject
 import kotlin.properties.Delegates
 
 /**
@@ -28,13 +35,27 @@ import kotlin.properties.Delegates
  * Indonesia.
  */
 class UploadFragment : BaseFragment() {
+    @Inject
+    lateinit var viewHelper: ViewHelper
+    @Inject
+    lateinit var imageHelper: ImageHelper
+    @Inject
+    lateinit var commonHelper: CommonHelper
+    @Inject
+    lateinit var permissionHelper: PermissionHelper
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private val placeVm: PlaceViewModel by viewModels { viewModelFactory }
+
     private var isPermisisonGranted by Delegates.notNull<Boolean>()
     private var selectedUriForFirebase by Delegates.notNull<Uri>()
     private var placeType by Delegates.notNull<String>()
     private var placeCity by Delegates.notNull<String>()
-    private val placeVm: PlaceViewModel by viewModel()
     private lateinit var binders: FragmentUploadBinding
+
     override fun onAttach(context: Context) {
+        (activity as MainActivity).activityComponent.getFeatureComponent()
+            .create().inject(this)
         super.onAttach(context)
         setBaseDialog()
         ilegallArgumenCatching {
@@ -62,10 +83,14 @@ class UploadFragment : BaseFragment() {
 
     private fun FragmentUploadBinding.initView() {
         this.apply {
-            val allTypeCategory: Array<String> = context?.resources?.getStringArray(R.array.place_type_items)!!
-            val allDistrictCategory: Array<String> = context?.resources?.getStringArray(R.array.place_districts_items)!!
-            val arrayTypeSpinnerAdapter: ArrayAdapter<String>? = ArrayAdapter(context!!, android.R.layout.simple_spinner_item, allTypeCategory)
-            val arrayDistrictSpinnerAdapter: ArrayAdapter<String>? = ArrayAdapter(context!!, android.R.layout.simple_spinner_item, allDistrictCategory)
+            val allTypeCategory: Array<String> =
+                context?.resources?.getStringArray(R.array.place_type_items)!!
+            val allDistrictCategory: Array<String> =
+                context?.resources?.getStringArray(R.array.place_districts_items)!!
+            val arrayTypeSpinnerAdapter: ArrayAdapter<String>? =
+                ArrayAdapter(context!!, android.R.layout.simple_spinner_item, allTypeCategory)
+            val arrayDistrictSpinnerAdapter: ArrayAdapter<String>? =
+                ArrayAdapter(context!!, android.R.layout.simple_spinner_item, allDistrictCategory)
             arrayTypeSpinnerAdapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             arrayDistrictSpinnerAdapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
@@ -88,11 +113,11 @@ class UploadFragment : BaseFragment() {
             placeType = spPlaceType.selectedItem.toString()
             val placeAddress = etPlaceAddress.text.toString()
             when {
-                placeName.isBlank() -> viewHelper.run { etPlaceName.requestError(getString(R.string.place_name_checker)) }
-                placeDetail.isBlank() -> viewHelper.run { etPlaceDetail.requestError(getString(R.string.place_description_checker)) }
+                placeName.isBlank() -> commonHelper.run { etPlaceName.requestError(getString(R.string.place_name_checker)) }
+                placeDetail.isBlank() -> commonHelper.run { etPlaceDetail.requestError(getString(R.string.place_description_checker)) }
                 placeType.isBlank() -> commonHelper.run { context?.myToast(getString(R.string.place_type_checker)) }
                 placeCity.isBlank() -> commonHelper.run { context?.myToast(getString(R.string.place_district_checker)) }
-                placeAddress.isBlank() -> viewHelper.run { etPlaceAddress.requestError(getString(R.string.place_address_checker)) }
+                placeAddress.isBlank() -> commonHelper.run { etPlaceAddress.requestError(getString(R.string.place_address_checker)) }
                 else -> {
                     ilegallStateCatching {
                         checkNotNull(selectedUriForFirebase)
@@ -108,9 +133,8 @@ class UploadFragment : BaseFragment() {
                             ), imageUri = selectedUriForFirebase, success = {
                                 setDialogShow(it)
                                 moveUp()
-                            }, failed = { status, throwable ->
+                            }, failed = { status, _ ->
                                 setDialogShow(status)
-                                commonHelper.timberLogE(throwable.message)
                                 moveUp()
                             })
                     }

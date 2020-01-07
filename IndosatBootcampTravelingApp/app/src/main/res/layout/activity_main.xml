@@ -11,7 +11,6 @@
         tools:context=".MainActivity">
 
 
-
         <fragment
             android:id="@+id/financialNavHostFragment"
             android:name="androidx.navigation.fragment.NavHostFragment"

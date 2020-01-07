@@ -57,6 +57,7 @@ dependencies {
     implementation "com.github.iandamping:CommonHelper:$commonHelper_version"
     implementation "com.github.iandamping:RecyclerViewHelper:$recyclerhelper_version"
     implementation 'com.jakewharton.timber:timber:4.7.1'
+    implementation "io.reactivex.rxjava2:rxandroid:$rxjava2Ver"
     //composer
     implementation 'androidx.ui:ui-tooling:0.1.0-dev02'
     implementation 'androidx.ui:ui-layout:0.1.0-dev02'

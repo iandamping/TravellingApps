@@ -3,32 +3,35 @@ package com.junemon.travelingapps.vm
 import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.ian.app.helper.base.BaseViewModel
-import com.ian.app.helper.data.ResultToConsume
-import com.junemon.travelingapps.presentation.model.PlaceCachePresentation
-import com.junemon.travellingapps.domain.model.PlaceCacheData
-import com.junemon.travellingapps.domain.model.PlaceRemoteData
+import androidx.lifecycle.ViewModel
+import com.junemon.model.domain.PlaceCacheData
+import com.junemon.model.domain.PlaceRemoteData
+import com.junemon.model.domain.Results
+import com.junemon.model.presentation.PlaceCachePresentation
 import com.junemon.travellingapps.domain.usecase.PlaceUseCase
+import javax.inject.Inject
 
 /**
  * Created by Ian Damping on 04,December,2019
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class PlaceViewModel(private val repository: PlaceUseCase) : BaseViewModel() {
+class PlaceViewModel @Inject constructor(private val repository: PlaceUseCase) : ViewModel() {
 
-    private val _searchItem: MutableLiveData<MutableList<PlaceCachePresentation>> = MutableLiveData()
+    private val _searchItem: MutableLiveData<MutableList<PlaceCachePresentation>> =
+        MutableLiveData()
 
     val searchItem: LiveData<MutableList<PlaceCachePresentation>>
-    get() = _searchItem
+        get() = _searchItem
 
     fun setSearchItem(data: MutableList<PlaceCachePresentation>) {
         this._searchItem.value = data
     }
 
-    fun getCache(): LiveData<ResultToConsume<List<PlaceCacheData>>> = repository.getCache()
+    fun getCache(): LiveData<Results<List<PlaceCacheData>>> = repository.getCache()
 
-    fun getSelectedTypeCache(placeType: String): LiveData<ResultToConsume<List<PlaceCacheData>>> = repository.getSelectedTypeCache(placeType)
+    fun getSelectedTypeCache(placeType: String): LiveData<Results<List<PlaceCacheData>>> =
+        repository.getSelectedTypeCache(placeType)
 
     suspend fun delete() = repository.delete()
 

@@ -8,6 +8,7 @@ import com.junemon.gamesapi.data.data.datasource.PublisherRemoteDataSource
 import com.junemon.gamesapi.data.datasource.model.mapToDatabase
 import com.junemon.gamesapi.domain2.model.PublisherData
 import com.junemon.gamesapi.domain2.repository.PublisherRepository
+import io.reactivex.Single
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
@@ -20,12 +21,7 @@ class PublisherRepositoryImpl(
     private val remoteDataSource: PublisherRemoteDataSource,
     private val cacheDataSource: PublisherCacheDataSource
 ) : PublisherRepository,KoinComponent {
-    private val cachingResult: ExtractResultHelper by inject()
-    override fun get(): LiveData<ResultToConsume<List<PublisherData>>> {
-        return cachingResult.ssotLiveDataResult(
-            databaseQuery = { cacheDataSource.get() },
-            networkCall = { remoteDataSource.get() },
-            saveCallResult = { cacheDataSource.set(it.mapToDatabase()) }
-        )
+    override fun get(): Single<List<PublisherData>> {
+        return remoteDataSource.get().map { cacheDataSource.set(it.mapToDatabase()) }.flatMap { cacheDataSource.get() }
     }
 }

@@ -1,32 +1,33 @@
 package com.junemon.travelingapps.data.datasource.cache
 
+import com.junemon.cache.util.dto.mapToDatabase
+import com.junemon.cache.util.dto.mapToDomain
+import com.junemon.cache.util.interfaces.PlacesDaoHelper
+import com.junemon.model.domain.PlaceCacheData
 import com.junemon.travelingapps.data.data.datasource.PlaceCacheDataSource
-import com.junemon.travelingapps.data.datasource.model.mapToDatabase
-import com.junemon.travelingapps.data.datasource.model.mapToDomain
-import com.junemon.travelingapps.data.db.PlaceDatabase
-import com.junemon.travellingapps.domain.model.PlaceCacheData
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
 /**
  * Created by Ian Damping on 04,December,2019
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class PlaceCacheDataSourceImpl(private val db: PlaceDatabase) : PlaceCacheDataSource {
+class PlaceCacheDataSourceImpl @Inject constructor(private val placeDao: PlacesDaoHelper) : PlaceCacheDataSource {
 
     override fun getCache(): Flow<List<PlaceCacheData>> {
-        return db.placeDao().loadAllPlace().mapToDomain()
+        return placeDao.loadAllPlace().mapToDomain()
     }
 
     override fun getSelectedTypeCache(placeType: String): Flow<List<PlaceCacheData>> {
-        return db.placeDao().loadAllBalanceByMonth(placeType).mapToDomain()
+        return placeDao.loadAllBalanceByMonth(placeType).mapToDomain()
     }
 
     override suspend fun setCache(data: List<PlaceCacheData>) {
-        db.placeDao().insertAllPlace(*data.mapToDatabase().toTypedArray())
+        placeDao.insertAllPlace(*data.mapToDatabase().toTypedArray())
     }
 
     override suspend fun delete() {
-        db.placeDao().deleteAllPlace()
+        placeDao.deleteAllPlace()
     }
 }

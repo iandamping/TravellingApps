@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.junemon.gamesapi.data.datasource.model.PublishersDbEntity
+import io.reactivex.Single
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -15,10 +16,10 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface PublisherDao {
     @Query("SELECT * FROM publishers_entity")
-    fun loadGame(): Flow<List<PublishersDbEntity>>
+    fun loadGame(): Single<List<PublishersDbEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertGame(vararg gameData: PublishersDbEntity)
+    fun insertGame(vararg gameData: PublishersDbEntity)
 
     @Query("DELETE FROM publishers_entity")
     suspend fun deleteAllGame()

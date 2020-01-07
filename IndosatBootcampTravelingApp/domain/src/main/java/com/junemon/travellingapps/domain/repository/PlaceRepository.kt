@@ -2,9 +2,9 @@ package com.junemon.travellingapps.domain.repository
 
 import android.net.Uri
 import androidx.lifecycle.LiveData
-import com.ian.app.helper.data.ResultToConsume
-import com.junemon.travellingapps.domain.model.PlaceCacheData
-import com.junemon.travellingapps.domain.model.PlaceRemoteData
+import com.junemon.model.domain.PlaceCacheData
+import com.junemon.model.domain.PlaceRemoteData
+import com.junemon.model.domain.Results
 
 /**
  * Created by Ian Damping on 04,December,2019
@@ -13,9 +13,9 @@ import com.junemon.travellingapps.domain.model.PlaceRemoteData
  */
 interface PlaceRepository {
 
-    fun getCache(): LiveData<ResultToConsume<List<PlaceCacheData>>>
+    fun getCache(): LiveData<Results<List<PlaceCacheData>>>
 
-    fun getSelectedTypeCache(placeType: String): LiveData<ResultToConsume<List<PlaceCacheData>>>
+    fun getSelectedTypeCache(placeType: String): LiveData<Results<List<PlaceCacheData>>>
 
     suspend fun delete()
 

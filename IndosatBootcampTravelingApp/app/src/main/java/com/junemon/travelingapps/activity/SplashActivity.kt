@@ -3,28 +3,41 @@ package com.junemon.travelingapps.activity
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
 import com.junemon.travelingapps.R
-import com.junemon.travelingapps.presentation.base.BaseActivity
+import com.junemon.travelingapps.coreComponent
+import com.junemon.travelingapps.presentation.util.interfaces.LoadImageHelper
 import kotlinx.android.synthetic.main.activity_splash.*
+import javax.inject.Inject
 
 /**
  * Created by Ian Damping on 09,December,2019
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class SplashActivity : BaseActivity() {
-    private var mDelayHandler: Handler? = null
+class SplashActivity : AppCompatActivity() {
 
+    @Inject
+    lateinit var loadImageHelper: LoadImageHelper
+
+    private val mDelayHandler: Handler by lazy { Handler() }
+
+    private val activityComponent by lazy { coreComponent().getActivityComponent().create() }
     override fun onCreate(savedInstanceState: Bundle?) {
+        activityComponent.inject(this)
         super.onCreate(savedInstanceState)
-        viewHelper.run { this@SplashActivity.fullScreenAnimation() }
         setContentView(R.layout.activity_splash)
-        loadingImageHelper.run {
-            splashImage.loadWithGlide(ContextCompat.getDrawable(this@SplashActivity, R.drawable.samarinda_logo)!!) }
-        mDelayHandler = Handler()
-        mDelayHandler!!.postDelayed(mRunnable, 3000L)
+        loadImageHelper.run {
+            splashImage.loadWithGlide(
+                ContextCompat.getDrawable(
+                    this@SplashActivity,
+                    R.drawable.samarinda_logo
+                )!!
+            )
+        }
+        mDelayHandler.postDelayed(mRunnable, 3000L)
     }
 
     private val mRunnable: Runnable = Runnable {
@@ -41,6 +54,6 @@ class SplashActivity : BaseActivity() {
 
     public override fun onDestroy() {
         super.onDestroy()
-        mDelayHandler?.removeCallbacks(mRunnable)
+        mDelayHandler.removeCallbacks(mRunnable)
     }
 }
