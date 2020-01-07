@@ -1,6 +1,7 @@
 package com.junemon.travelingapps.data.di
 
 import com.junemon.cache.di.DatabaseHelperModule
+import com.junemon.remote.RemoteHelperModule
 import com.junemon.travelingapps.data.data.datasource.PlaceCacheDataSource
 import com.junemon.travelingapps.data.data.datasource.PlaceRemoteDataSource
 import com.junemon.travelingapps.data.data.repository.PlaceRepositoryImpl
@@ -15,7 +16,7 @@ import dagger.Module
  * Github https://github.com/iandamping
  * Indonesia.
  */
-@Module(includes = [DatabaseHelperModule::class])
+@Module(includes = [DatabaseHelperModule::class,RemoteHelperModule::class])
 abstract class DataModule {
 
     @Binds

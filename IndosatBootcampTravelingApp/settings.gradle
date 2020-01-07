@@ -1,2 +1,2 @@
-include ':app', ':data2', ':domain', ':presentation', ':model', ':cache'
+include ':app', ':data2', ':domain', ':presentation', ':model', ':cache', ':remote'
 rootProject.name='TravelingApps'

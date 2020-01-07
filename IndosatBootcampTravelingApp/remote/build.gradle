@@ -23,17 +23,18 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    buildTypes.each {
+        it.buildConfigField 'String', 'firebaseStorageUrl', firebaseStorageUrl
+        it.buildConfigField 'String', 'placeNode', placeNode
+        it.resValue 'string', 'firebaseStorageUrl', firebaseStorageUrl
+
+    }
     kotlinOptions {
         jvmTarget = "1.8"
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
-    }
-    buildTypes.each {
-        it.buildConfigField 'String', 'firebaseStorageUrl', firebaseStorageUrl
-        it.resValue 'string', 'firebaseStorageUrl', firebaseStorageUrl
-
     }
 }
 
@@ -45,19 +46,12 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutine_version"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine_version"
 
-
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$livedata_version"
-    implementation "com.google.code.gson:gson:$gson_version"
+    api  "com.google.firebase:firebase-core:$firebaseCoreVer"
+    api "com.google.firebase:firebase-storage:$firebaseStorageVer"
+    api "com.google.firebase:firebase-database:$firebaseDatabaseVer"
 
     //dagger
     implementation "com.google.dagger:dagger:$dagger_version"
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
-
-    implementation project(':domain')
-    implementation project(':cache')
-    implementation project(':remote')
-    implementation project(':model')
 }

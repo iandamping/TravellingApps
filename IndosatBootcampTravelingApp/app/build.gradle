@@ -65,6 +65,7 @@ dependencies {
     implementation project(':presentation')
     implementation project(':model')
     implementation project(':cache')
+    implementation project(':remote')
 
     //dagger
     implementation "com.google.dagger:dagger:$dagger_version"

@@ -19,6 +19,7 @@ import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import com.junemon.remote.RemoteHelper
 import com.junemon.travelingapps.presentation.BuildConfig.firebaseStorageUrl
 import com.junemon.travelingapps.presentation.PresentationConstant.RequestOpenCamera
 import com.junemon.travelingapps.presentation.PresentationConstant.RequestSelectGalleryImage
@@ -42,13 +43,8 @@ import javax.inject.Inject
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class ImageUtilImpl @Inject constructor() : ImageHelper {
-    private val mFirebaseStorage: FirebaseStorage by lazy { FirebaseStorage.getInstance() }
-    private val storagePlaceReference: StorageReference by lazy {
-        mFirebaseStorage.getReferenceFromUrl(
-            firebaseStorageUrl
-        )
-    }
+class ImageUtilImpl @Inject constructor(private val remoteHelper: RemoteHelper) : ImageHelper {
+
     private val saveCaptureImagePath = "picture" + System.currentTimeMillis() + ".jpeg"
     private val saveFilterImagePath = "filterImage" + System.currentTimeMillis() + ".jpeg"
     private val maxWidth = 612
@@ -149,7 +145,7 @@ class ImageUtilImpl @Inject constructor() : ImageHelper {
                 views.context.resources?.getString(R.string.please_wait),
                 views.context.resources?.getString(R.string.downloading_image)
             )
-            val spaceRef = storagePlaceReference.child(lastPathSegment)
+            val spaceRef = remoteHelper.getFirebaseStorageReference().child(lastPathSegment)
             val pictureDirectory = Environment.getExternalStorageDirectory()
             val imageFile = File(pictureDirectory, saveFilterImagePath)
             /*
