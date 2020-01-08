@@ -10,7 +10,10 @@ import com.junemon.model.domain.PlaceRemoteData
 import com.junemon.model.domain.Results
 import com.junemon.travelingapps.data.data.datasource.PlaceCacheDataSource
 import com.junemon.travelingapps.data.data.datasource.PlaceRemoteDataSource
+import com.junemon.travelingapps.data.di.DefaultDispatcher
+import com.junemon.travelingapps.data.di.IoDispatcher
 import com.junemon.travellingapps.domain.repository.PlaceRepository
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -21,11 +24,12 @@ import javax.inject.Inject
  * Indonesia.
  */
 class PlaceRepositoryImpl @Inject constructor(
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
     private val remoteDataSource: PlaceRemoteDataSource,
     private val cacheDataSource: PlaceCacheDataSource
 ) : PlaceRepository {
     override fun getCache(): LiveData<Results<List<PlaceCacheData>>> {
-        return liveData {
+        return liveData(ioDispatcher) {
             try {
                 val responseStatus = remoteDataSource.getFlowFirebaseData()
                 responseStatus.collect { data ->
@@ -58,7 +62,7 @@ class PlaceRepositoryImpl @Inject constructor(
     }
 
     override fun getSelectedTypeCache(placeType: String): LiveData<Results<List<PlaceCacheData>>> {
-        return liveData {
+        return liveData(ioDispatcher) {
 
             try {
                 when (val responseStatus = remoteDataSource.getFirebaseData()) {

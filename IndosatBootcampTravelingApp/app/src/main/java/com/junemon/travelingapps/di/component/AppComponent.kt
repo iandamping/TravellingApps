@@ -5,6 +5,7 @@ import com.junemon.cache.di.DatabaseModule
 import com.junemon.daggerinyourface.di.scope.ApplicationScope
 import com.junemon.remote.RemoteModule
 import com.junemon.travelingapps.activity.component.ActivityComponent
+import com.junemon.travelingapps.data.di.CoroutineModule
 import com.junemon.travelingapps.data.di.DataModule
 import com.junemon.travelingapps.presentation.di.PresentationModule
 import com.junemon.travellingapps.domain.di.DomainModule
@@ -18,7 +19,9 @@ import dagger.Component
  */
 @ApplicationScope
 @Component(
-    modules = [DatabaseModule::class,
+    modules = [
+        CoroutineModule::class,
+        DatabaseModule::class,
         RemoteModule::class,
         DataModule::class,
         DomainModule::class,

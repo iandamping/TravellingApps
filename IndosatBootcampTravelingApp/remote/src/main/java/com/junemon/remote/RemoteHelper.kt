@@ -1,7 +1,9 @@
 package com.junemon.remote
 
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.storage.StorageReference
+import android.net.Uri
+import com.junemon.model.domain.PlaceRemoteData
+import com.junemon.model.domain.Results
+import kotlinx.coroutines.flow.Flow
 
 /**
  * Created by Ian Damping on 07,January,2020
@@ -10,7 +12,14 @@ import com.google.firebase.storage.StorageReference
  */
 interface RemoteHelper {
 
-    fun getFirebaseStorageReference(): StorageReference
+    suspend fun getFirebaseData(): Results<List<PlaceRemoteData>>
 
-    fun getFirebaseDatabaseReference(): DatabaseReference
+    fun getFlowFirebaseData(): Flow<Results<List<PlaceRemoteData>>>
+
+    fun uploadFirebaseData(
+        data: PlaceRemoteData,
+        imageUri: Uri?,
+        success: (Boolean) -> Unit,
+        failed: (Boolean, Throwable) -> Unit
+    )
 }

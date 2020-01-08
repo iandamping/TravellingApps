@@ -17,10 +17,8 @@ import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.junemon.remote.RemoteHelper
-import com.junemon.travelingapps.presentation.BuildConfig.firebaseStorageUrl
 import com.junemon.travelingapps.presentation.PresentationConstant.RequestOpenCamera
 import com.junemon.travelingapps.presentation.PresentationConstant.RequestSelectGalleryImage
 import com.junemon.travelingapps.presentation.R
@@ -43,7 +41,7 @@ import javax.inject.Inject
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class ImageUtilImpl @Inject constructor(private val remoteHelper: RemoteHelper) : ImageHelper {
+class ImageUtilImpl @Inject constructor(private val storagePlaceReference: StorageReference) : ImageHelper {
 
     private val saveCaptureImagePath = "picture" + System.currentTimeMillis() + ".jpeg"
     private val saveFilterImagePath = "filterImage" + System.currentTimeMillis() + ".jpeg"
@@ -145,7 +143,7 @@ class ImageUtilImpl @Inject constructor(private val remoteHelper: RemoteHelper) 
                 views.context.resources?.getString(R.string.please_wait),
                 views.context.resources?.getString(R.string.downloading_image)
             )
-            val spaceRef = remoteHelper.getFirebaseStorageReference().child(lastPathSegment)
+            val spaceRef = storagePlaceReference.child(lastPathSegment)
             val pictureDirectory = Environment.getExternalStorageDirectory()
             val imageFile = File(pictureDirectory, saveFilterImagePath)
             /*

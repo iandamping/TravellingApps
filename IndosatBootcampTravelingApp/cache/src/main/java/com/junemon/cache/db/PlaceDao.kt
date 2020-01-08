@@ -2,6 +2,7 @@ package com.junemon.cache.db
 
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import com.junemon.cache.model.PlaceDbEntity
@@ -20,7 +21,7 @@ interface PlaceDao {
     @Query("SELECT * FROM place_table WHERE place_type = :placeType")
     fun loadAllBalanceByMonth(placeType: String): Flow<List<PlaceDbEntity>>
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPlace(vararg tagsData: PlaceDbEntity)
 
     @Query("DELETE FROM place_table")
