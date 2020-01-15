@@ -39,4 +39,5 @@
         <item>Sungai Kunjang</item>
         <item>Sungai Pinang</item>
     </string-array>
+    <string name="title_places">Feature Place</string>
 </resources>
