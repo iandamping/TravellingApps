@@ -116,7 +116,7 @@
                 android:layout_gravity="top"
                 android:src="@drawable/ic_map_black_24dp" />
 
-            <com.junemon.travelingapps.presentation.util.classes.JustifyTextView
+            <com.junemon.core.presentation.util.classes.JustifyTextView
                 android:id="@+id/tvPaginationAddress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -112,7 +112,7 @@
                     android:layout_gravity="center"
                     android:src="@drawable/ic_map_black_24dp" />
 
-                <com.junemon.travelingapps.presentation.util.classes.JustifyTextView
+                <com.junemon.core.presentation.util.classes.JustifyTextView
                     android:id="@+id/tvPlaceDetailAddress"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -123,7 +123,7 @@
             </LinearLayout>
 
 
-            <com.junemon.travelingapps.presentation.util.classes.JustifyTextView
+            <com.junemon.core.presentation.util.classes.JustifyTextView
                 android:id="@+id/tvPlaceDetailPlace"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
