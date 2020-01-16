@@ -1,11 +1,11 @@
-package com.junemon.travellingapps.domain.usecase
+package com.junemon.core.domain.usecase
 
 import android.net.Uri
 import androidx.lifecycle.LiveData
 import com.junemon.model.domain.PlaceCacheData
 import com.junemon.model.domain.PlaceRemoteData
 import com.junemon.model.domain.Results
-import com.junemon.travellingapps.domain.repository.PlaceRepository
+import com.junemon.core.domain.repository.PlaceRepository
 import javax.inject.Inject
 
 /**

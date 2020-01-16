@@ -1,4 +1,4 @@
-package com.junemon.travelingapps.presentation.util.classes
+package com.junemon.core.presentation.util.classes
 
 import android.view.View
 import androidx.annotation.NonNull

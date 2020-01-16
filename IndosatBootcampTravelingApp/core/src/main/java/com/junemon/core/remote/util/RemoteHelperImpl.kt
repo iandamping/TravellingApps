@@ -1,4 +1,4 @@
-package com.junemon.remote
+package com.junemon.core.remote.util
 
 import android.net.Uri
 import com.google.firebase.database.DataSnapshot

@@ -1,11 +1,11 @@
-package com.junemon.travelingapps.presentation.util.interfaces
+package com.junemon.core.presentation.util.interfaces
 
 import android.view.View
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.junemon.daggerinyourface.presentation.base.adapter.BaseKotlinListAdapter
+import com.junemon.core.presentation.base.adapter.BaseKotlinListAdapter
 
 interface RecyclerHelper {
 

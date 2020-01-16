@@ -1,5 +1,7 @@
 apply plugin: 'com.android.dynamic-feature'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'androidx.navigation.safeargs'
 apply plugin: 'kotlin-kapt'
 android {
     compileSdkVersion 29
@@ -13,6 +15,16 @@ android {
         versionName "1.0"
 
     }
+    dataBinding {
+        enabled = true
+    }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 
 
 }
@@ -20,6 +32,23 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':app')
+    implementation project(':core')
+    implementation project(':model')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.core:core-ktx:1.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    implementation 'com.google.android.material:material:1.2.0-alpha02'
+    implementation "androidx.navigation:navigation-fragment-ktx:$navigationVer"
+    implementation "androidx.navigation:navigation-ui-ktx:$navigationVer"
+    implementation "com.jakewharton.timber:timber:$timberVersion"
+    implementation "me.relex:circleindicator:1.2.2@aar"
+    implementation "com.facebook.shimmer:shimmer:$shimmerVer"
+    implementation "com.google.code.gson:gson:$gson_version"
+    implementation 'com.mikhaellopez:circularimageview:4.1.0'
     implementation "com.google.dagger:dagger:$dagger_version"
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
 }

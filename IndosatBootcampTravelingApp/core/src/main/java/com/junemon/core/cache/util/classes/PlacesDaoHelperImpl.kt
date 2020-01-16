@@ -1,8 +1,8 @@
-package com.junemon.cache.util.classes
+package com.junemon.core.cache.util.classes
 
-import com.junemon.cache.db.PlaceDao
-import com.junemon.cache.model.PlaceDbEntity
-import com.junemon.cache.util.interfaces.PlacesDaoHelper
+import com.junemon.core.cache.db.PlaceDao
+import com.junemon.core.cache.model.PlaceDbEntity
+import com.junemon.core.cache.util.interfaces.PlacesDaoHelper
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

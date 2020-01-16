@@ -1,4 +1,4 @@
-package com.junemon.travelingapps.presentation.util.interfaces
+package com.junemon.core.presentation.util.interfaces
 
 import androidx.fragment.app.FragmentActivity
 

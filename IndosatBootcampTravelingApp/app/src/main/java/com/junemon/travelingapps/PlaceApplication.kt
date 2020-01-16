@@ -2,6 +2,9 @@ package com.junemon.travelingapps
 
 import android.app.Activity
 import android.app.Application
+import com.junemon.core.di.component.CoreComponent
+import com.junemon.core.di.component.DaggerCoreComponent
+import com.junemon.travelingapps.activity.MainActivity
 import com.junemon.travelingapps.di.component.AppComponent
 import com.junemon.travelingapps.di.component.DaggerAppComponent
 import timber.log.Timber
@@ -17,6 +20,10 @@ class PlaceApplication : Application() {
         initializeComponent()
     }
 
+    val coreComponent: CoreComponent by lazy {
+        DaggerCoreComponent.factory().injectApplication(this)
+    }
+
     override fun onCreate() {
         super.onCreate()
 
@@ -28,8 +35,9 @@ class PlaceApplication : Application() {
     private fun initializeComponent(): AppComponent {
         // Creates an instance of AppComponent using its Factory constructor
         // We pass the application that will be used as Context in the graph
-        return DaggerAppComponent.factory().injectApplication(this)
+        return DaggerAppComponent.factory().coreComponent(coreComponent)
     }
 }
 
-fun Activity.coreComponent() = (application as PlaceApplication).appComponent
+fun Activity.appComponent() = (application as PlaceApplication).appComponent
+

@@ -1,4 +1,4 @@
-package com.junemon.travelingapps.presentation
+package com.junemon.core.presentation
 
 import android.content.Context
 import android.view.LayoutInflater

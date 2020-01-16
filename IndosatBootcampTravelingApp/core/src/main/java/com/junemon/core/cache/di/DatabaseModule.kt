@@ -1,9 +1,9 @@
-package com.junemon.cache.di
+package com.junemon.core.cache.di
 
 import android.app.Application
 import androidx.room.Room
-import com.junemon.cache.db.PlaceDao
-import com.junemon.cache.db.PlaceDatabase
+import com.junemon.core.cache.db.PlaceDao
+import com.junemon.core.cache.db.PlaceDatabase
 import dagger.Module
 import dagger.Provides
 

@@ -1,11 +1,11 @@
-package com.junemon.travelingapps.presentation.base.adapter
+package com.junemon.core.presentation.base.adapter
 
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.junemon.travelingapps.presentation.inflates
+import com.junemon.core.presentation.inflates
 import kotlinx.android.extensions.LayoutContainer
 
 /**

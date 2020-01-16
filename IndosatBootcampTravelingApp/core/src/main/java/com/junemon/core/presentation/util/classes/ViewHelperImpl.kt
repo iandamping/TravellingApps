@@ -1,9 +1,9 @@
-package com.junemon.travelingapps.presentation.util.classes
+package com.junemon.core.presentation.util.classes
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.junemon.travelingapps.presentation.util.interfaces.ViewHelper
+import com.junemon.core.presentation.util.interfaces.ViewHelper
 import javax.inject.Inject
 
 /**

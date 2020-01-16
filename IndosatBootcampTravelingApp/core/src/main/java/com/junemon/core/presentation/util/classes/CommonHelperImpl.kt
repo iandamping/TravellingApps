@@ -1,9 +1,9 @@
-package com.junemon.travelingapps.presentation.util.classes
+package com.junemon.core.presentation.util.classes
 
 import android.content.Context
 import android.widget.EditText
 import android.widget.Toast
-import com.junemon.travelingapps.presentation.util.interfaces.CommonHelper
+import com.junemon.core.presentation.util.interfaces.CommonHelper
 import javax.inject.Inject
 
 /**

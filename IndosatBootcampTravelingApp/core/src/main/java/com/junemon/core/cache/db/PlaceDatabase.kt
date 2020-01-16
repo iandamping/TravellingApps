@@ -1,8 +1,8 @@
-package com.junemon.cache.db
+package com.junemon.core.cache.db
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.junemon.cache.model.PlaceDbEntity
+import com.junemon.core.cache.model.PlaceDbEntity
 
 /**
  * Created by Ian Damping on 04,December,2019

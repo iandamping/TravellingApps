@@ -1,4 +1,4 @@
-package com.junemon.travelingapps.feature.detail
+package com.junemon.places.feature.detail
 
 import android.content.Context
 import android.os.Bundle
@@ -10,12 +10,12 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import com.google.gson.Gson
 import com.junemon.model.presentation.PlaceCachePresentation
-import com.junemon.travelingapps.R
-import com.junemon.travelingapps.activity.MainActivity
-import com.junemon.travelingapps.databinding.FragmentDetailBinding
-import com.junemon.travelingapps.presentation.base.BaseFragment
-import com.junemon.travelingapps.presentation.util.interfaces.ImageHelper
-import com.junemon.travelingapps.presentation.util.interfaces.IntentHelper
+import com.junemon.places.R
+import com.junemon.places.databinding.FragmentDetailBinding
+import com.junemon.places.di.sharedPlaceComponent
+import com.junemon.core.presentation.base.BaseFragment
+import com.junemon.core.presentation.util.interfaces.ImageHelper
+import com.junemon.core.presentation.util.interfaces.IntentHelper
 import com.junemon.core.presentation.util.interfaces.LoadImageHelper
 import javax.inject.Inject
 
@@ -43,8 +43,8 @@ class DetailFragment : BaseFragment() {
 
     override fun onAttach(context: Context) {
         // inject dagger
-        (activity as MainActivity).activityComponent.getFeatureComponent()
-            .create().inject(this)
+        sharedPlaceComponent().inject(this)
+
         super.onAttach(context)
         setBaseDialog()
         // dont use this, but i had to

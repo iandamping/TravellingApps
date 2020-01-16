@@ -6,9 +6,9 @@ import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
+import com.junemon.core.presentation.util.interfaces.LoadImageHelper
 import com.junemon.travelingapps.R
-import com.junemon.travelingapps.coreComponent
-import com.junemon.travelingapps.presentation.util.interfaces.LoadImageHelper
+import com.junemon.travelingapps.appComponent
 import kotlinx.android.synthetic.main.activity_splash.*
 import javax.inject.Inject
 
@@ -24,9 +24,8 @@ class SplashActivity : AppCompatActivity() {
 
     private val mDelayHandler: Handler by lazy { Handler() }
 
-    private val activityComponent by lazy { coreComponent().getActivityComponent().create() }
     override fun onCreate(savedInstanceState: Bundle?) {
-        activityComponent.inject(this)
+        appComponent().inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
         loadImageHelper.run {

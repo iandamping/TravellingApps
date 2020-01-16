@@ -1,4 +1,4 @@
-package com.junemon.travelingapps.data.di
+package com.junemon.core.data.di
 
 import dagger.Module
 import dagger.Provides

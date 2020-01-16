@@ -1,11 +1,11 @@
-package com.junemon.cache.db
+package com.junemon.core.cache.db
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
-import com.junemon.cache.model.PlaceDbEntity
+import com.junemon.core.cache.model.PlaceDbEntity
 import kotlinx.coroutines.flow.Flow
 
 /**

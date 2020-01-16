@@ -1,4 +1,4 @@
-package com.junemon.travelingapps.presentation.util.classes
+package com.junemon.core.presentation.util.classes
 
 import android.app.Activity
 import android.content.Intent
@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.bumptech.glide.Glide
 import com.junemon.core.R
-import com.junemon.travelingapps.presentation.util.interfaces.IntentHelper
+import com.junemon.core.presentation.util.interfaces.IntentHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

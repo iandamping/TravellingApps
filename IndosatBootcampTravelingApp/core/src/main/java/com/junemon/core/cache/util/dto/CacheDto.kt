@@ -1,6 +1,6 @@
-package com.junemon.cache.util.dto
+package com.junemon.core.cache.util.dto
 
-import com.junemon.cache.model.PlaceDbEntity
+import com.junemon.core.cache.model.PlaceDbEntity
 import com.junemon.model.domain.PlaceCacheData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

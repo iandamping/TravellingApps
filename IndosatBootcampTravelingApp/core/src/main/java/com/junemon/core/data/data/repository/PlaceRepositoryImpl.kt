@@ -1,4 +1,4 @@
-package com.junemon.travelingapps.data.data.repository
+package com.junemon.core.data.data.repository
 
 import android.net.Uri
 import androidx.lifecycle.LiveData
@@ -8,10 +8,10 @@ import com.junemon.model.data.dto.mapRemoteToCacheDomain
 import com.junemon.model.domain.PlaceCacheData
 import com.junemon.model.domain.PlaceRemoteData
 import com.junemon.model.domain.Results
-import com.junemon.travelingapps.data.data.datasource.PlaceCacheDataSource
-import com.junemon.travelingapps.data.data.datasource.PlaceRemoteDataSource
-import com.junemon.travelingapps.data.di.IoDispatcher
-import com.junemon.travellingapps.domain.repository.PlaceRepository
+import com.junemon.core.data.data.datasource.PlaceCacheDataSource
+import com.junemon.core.data.data.datasource.PlaceRemoteDataSource
+import com.junemon.core.data.di.IoDispatcher
+import com.junemon.core.domain.repository.PlaceRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map

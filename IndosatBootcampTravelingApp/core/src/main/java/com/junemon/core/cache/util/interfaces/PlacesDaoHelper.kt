@@ -1,6 +1,6 @@
-package com.junemon.cache.util.interfaces
+package com.junemon.core.cache.util.interfaces
 
-import com.junemon.cache.model.PlaceDbEntity
+import com.junemon.core.cache.model.PlaceDbEntity
 import kotlinx.coroutines.flow.Flow
 
 /**

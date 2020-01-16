@@ -1,10 +1,10 @@
-package com.junemon.travelingapps.data.datasource.cache
+package com.junemon.core.data.datasource.cache
 
-import com.junemon.cache.util.dto.mapToDatabase
-import com.junemon.cache.util.dto.mapToDomain
-import com.junemon.cache.util.interfaces.PlacesDaoHelper
+import com.junemon.core.cache.util.dto.mapToDatabase
+import com.junemon.core.cache.util.dto.mapToDomain
+import com.junemon.core.cache.util.interfaces.PlacesDaoHelper
 import com.junemon.model.domain.PlaceCacheData
-import com.junemon.travelingapps.data.data.datasource.PlaceCacheDataSource
+import com.junemon.core.data.data.datasource.PlaceCacheDataSource
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
@@ -13,7 +13,8 @@ import javax.inject.Inject
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class PlaceCacheDataSourceImpl @Inject constructor(private val placeDao: PlacesDaoHelper) : PlaceCacheDataSource {
+class PlaceCacheDataSourceImpl @Inject constructor(private val placeDao: PlacesDaoHelper) :
+    PlaceCacheDataSource {
 
     override fun getCache(): Flow<List<PlaceCacheData>> {
         return placeDao.loadAllPlace().mapToDomain()

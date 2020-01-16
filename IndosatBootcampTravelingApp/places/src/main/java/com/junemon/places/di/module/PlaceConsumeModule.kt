@@ -2,7 +2,7 @@ package com.junemon.places.di.module
 
 import androidx.lifecycle.ViewModel
 import com.junemon.places.vm.PlaceViewModel
-import com.junemon.travelingapps.presentation.di.factory.ViewModelKey
+import com.junemon.core.presentation.di.factory.ViewModelKey
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap

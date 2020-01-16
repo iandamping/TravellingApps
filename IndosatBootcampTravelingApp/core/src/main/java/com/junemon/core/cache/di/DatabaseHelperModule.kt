@@ -1,7 +1,7 @@
-package com.junemon.cache.di
+package com.junemon.core.cache.di
 
-import com.junemon.cache.util.classes.PlacesDaoHelperImpl
-import com.junemon.cache.util.interfaces.PlacesDaoHelper
+import com.junemon.core.cache.util.classes.PlacesDaoHelperImpl
+import com.junemon.core.cache.util.interfaces.PlacesDaoHelper
 import dagger.Binds
 import dagger.Module
 

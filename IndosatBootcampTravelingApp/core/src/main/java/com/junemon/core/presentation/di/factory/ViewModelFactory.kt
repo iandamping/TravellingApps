@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.junemon.travelingapps.presentation.di.factory
+package com.junemon.core.presentation.di.factory
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

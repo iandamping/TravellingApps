@@ -1,4 +1,4 @@
-package com.junemon.travelingapps.feature.pagination
+package com.junemon.places.feature.pagination
 
 import android.content.Context
 import android.os.Bundle
@@ -7,26 +7,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.findNavController
 import com.google.gson.Gson
 import com.junemon.model.domain.Results
 import com.junemon.model.presentation.dto.mapCacheToPresentation
-import com.junemon.travelingapps.R
-import com.junemon.travelingapps.activity.MainActivity
-import com.junemon.travelingapps.databinding.FragmentPaginationBinding
-import com.junemon.travelingapps.presentation.PresentationConstant.placePaginationRvCallback
-import com.junemon.travelingapps.presentation.base.BaseFragment
-import com.junemon.travelingapps.presentation.util.interfaces.ImageHelper
-import com.junemon.travelingapps.presentation.util.interfaces.IntentHelper
+import com.junemon.places.R
+import com.junemon.places.databinding.FragmentPaginationBinding
+import com.junemon.places.di.sharedPlaceComponent
+import com.junemon.places.vm.PlaceViewModel
+import com.junemon.core.presentation.PresentationConstant.placePaginationRvCallback
+import com.junemon.core.presentation.base.BaseFragment
+import com.junemon.core.presentation.util.interfaces.ImageHelper
+import com.junemon.core.presentation.util.interfaces.IntentHelper
 import com.junemon.core.presentation.util.interfaces.LoadImageHelper
-import com.junemon.travelingapps.presentation.util.interfaces.RecyclerHelper
-import com.junemon.travelingapps.presentation.util.interfaces.ViewHelper
-import com.junemon.travelingapps.vm.PlaceViewModel
+import com.junemon.core.presentation.util.interfaces.RecyclerHelper
+import com.junemon.core.presentation.util.interfaces.ViewHelper
 import kotlinx.android.synthetic.main.item_pagination_recyclerview.view.*
 import javax.inject.Inject
 
@@ -36,7 +34,6 @@ import javax.inject.Inject
  * Indonesia.
  */
 class PaginationFragment : BaseFragment() {
-    private val gson = Gson()
     @Inject
     lateinit var viewHelper: ViewHelper
     @Inject
@@ -48,16 +45,17 @@ class PaginationFragment : BaseFragment() {
     @Inject
     lateinit var intentHelper: IntentHelper
     @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-    private val placeVm: PlaceViewModel by viewModels { viewModelFactory }
+    lateinit var placeVm: PlaceViewModel
+
+    private val gson = Gson()
 
     private val paginationType by lazy {
         PaginationFragmentArgs.fromBundle(arguments!!).paginationType
     }
 
     override fun onAttach(context: Context) {
-        (activity as MainActivity).activityComponent.getFeatureComponent()
-            .create().inject(this)
+        //inject Dagger
+        sharedPlaceComponent().inject(this)
         super.onAttach(context)
         // dont use this, but i had to
         val builder = StrictMode.VmPolicy.Builder()

@@ -109,7 +109,7 @@
 
             android:background="@color/placeholder_bg" />
 
-        <com.junemon.travelingapps.presentation.util.classes.JustifyTextView
+        <TextView
             android:id="@+id/tvPaginationAddress"
             android:layout_width="200dp"
             android:layout_height="wrap_content"

@@ -1,4 +1,4 @@
-package com.junemon.travelingapps.feature.home
+package com.junemon.places.feature.home
 
 import android.content.Context
 import android.os.Bundle
@@ -8,24 +8,22 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.google.gson.Gson
+import com.junemon.core.presentation.PresentationConstant.placeRvCallback
+import com.junemon.core.presentation.base.BaseFragment
+import com.junemon.core.presentation.util.interfaces.LoadImageHelper
+import com.junemon.core.presentation.util.interfaces.RecyclerHelper
+import com.junemon.core.presentation.util.interfaces.ViewHelper
 import com.junemon.model.domain.PlaceCacheData
 import com.junemon.model.domain.Results
 import com.junemon.model.presentation.dto.mapCacheToPresentation
-import com.junemon.travelingapps.R
-import com.junemon.travelingapps.activity.MainActivity
-import com.junemon.travelingapps.databinding.FragmentHomeBinding
-import com.junemon.travelingapps.feature.home.slideradapter.HomeSliderAdapter
-import com.junemon.travelingapps.presentation.PresentationConstant.placeRvCallback
-import com.junemon.travelingapps.presentation.base.BaseFragment
-import com.junemon.core.presentation.util.interfaces.LoadImageHelper
-import com.junemon.travelingapps.presentation.util.interfaces.RecyclerHelper
-import com.junemon.travelingapps.presentation.util.interfaces.ViewHelper
-import com.junemon.travelingapps.vm.PlaceViewModel
+import com.junemon.places.R
+import com.junemon.places.databinding.FragmentHomeBinding
+import com.junemon.places.di.sharedPlaceComponent
+import com.junemon.places.feature.home.slideradapter.HomeSliderAdapter
+import com.junemon.places.vm.PlaceViewModel
 import kotlinx.android.synthetic.main.item_recyclerview.view.*
 import javax.inject.Inject
 
@@ -35,30 +33,23 @@ import javax.inject.Inject
  * Indonesia.
  */
 class HomeFragment : BaseFragment() {
-    private val gson by lazy { Gson() }
-
     @Inject
     lateinit var viewHelper: ViewHelper
-
     @Inject
     lateinit var loadingImageHelper: LoadImageHelper
-
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-
     @Inject
     lateinit var recyclerViewHelper: RecyclerHelper
+    @Inject
+    lateinit var placeVm: PlaceViewModel
 
+    private val gson by lazy { Gson() }
     private lateinit var binders: FragmentHomeBinding
-    private val placeVm: PlaceViewModel by viewModels { viewModelFactory }
     private var mHandler: Handler = Handler()
     private var pageSize: Int? = 0
     private var currentPage = 0
-
     override fun onAttach(context: Context) {
         // inject dagger
-        (activity as MainActivity).activityComponent.getFeatureComponent()
-            .create().inject(this)
+        sharedPlaceComponent().inject(this)
         super.onAttach(context)
     }
 

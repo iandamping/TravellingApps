@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.junemon.travelingapps.data.di
+package com.junemon.core.data.di
 
 import javax.inject.Qualifier
 

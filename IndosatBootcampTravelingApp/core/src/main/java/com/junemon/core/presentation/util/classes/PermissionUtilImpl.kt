@@ -1,7 +1,7 @@
-package com.junemon.travelingapps.presentation.util.classes
+package com.junemon.core.presentation.util.classes
 
 import androidx.fragment.app.FragmentActivity
-import com.junemon.travelingapps.presentation.util.interfaces.PermissionHelper
+import com.junemon.core.presentation.util.interfaces.PermissionHelper
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken

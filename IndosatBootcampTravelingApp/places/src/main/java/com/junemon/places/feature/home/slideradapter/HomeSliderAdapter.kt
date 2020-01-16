@@ -1,12 +1,12 @@
-package com.junemon.travelingapps.feature.home.slideradapter
+package com.junemon.places.feature.home.slideradapter
 
 import android.view.View
 import android.view.ViewGroup
 import androidx.viewpager.widget.PagerAdapter
-import com.junemon.model.presentation.PlaceCachePresentation
-import com.junemon.travelingapps.R
 import com.junemon.core.presentation.util.interfaces.LoadImageHelper
-import com.junemon.travelingapps.presentation.util.interfaces.ViewHelper
+import com.junemon.core.presentation.util.interfaces.ViewHelper
+import com.junemon.model.presentation.PlaceCachePresentation
+import com.junemon.places.R
 import kotlinx.android.synthetic.main.item_slider.view.*
 
 /**

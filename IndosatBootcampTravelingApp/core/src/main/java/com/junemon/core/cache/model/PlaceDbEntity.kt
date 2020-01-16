@@ -1,4 +1,4 @@
-package com.junemon.cache.model
+package com.junemon.core.cache.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

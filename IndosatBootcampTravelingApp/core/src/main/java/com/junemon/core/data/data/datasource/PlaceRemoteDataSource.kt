@@ -1,4 +1,4 @@
-package com.junemon.travelingapps.data.data.datasource
+package com.junemon.core.data.data.datasource
 
 import android.net.Uri
 import com.junemon.model.domain.PlaceCacheData

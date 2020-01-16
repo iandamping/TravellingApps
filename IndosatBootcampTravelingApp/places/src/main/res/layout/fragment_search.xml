@@ -79,7 +79,7 @@
 
         <variable
             name="placeViewModel"
-            type="com.junemon.travelingapps.vm.PlaceViewModel" />
+            type="com.junemon.places.vm.PlaceViewModel" />
     </data>
 
 </layout>

@@ -1,4 +1,4 @@
-package com.junemon.travellingapps.domain.repository
+package com.junemon.core.domain.repository
 
 import android.net.Uri
 import androidx.lifecycle.LiveData

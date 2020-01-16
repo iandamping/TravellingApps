@@ -1,8 +1,7 @@
-package com.junemon.daggerinyourface.presentation.base.adapter
+package com.junemon.core.presentation.base.adapter
 
 import android.view.View
 import androidx.recyclerview.widget.DiffUtil
-import com.junemon.travelingapps.presentation.base.adapter.BaseListAdapter
 
 /**
  *

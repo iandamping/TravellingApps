@@ -1,4 +1,4 @@
-package com.junemon.remote
+package com.junemon.core.remote.util
 
 import android.net.Uri
 import com.junemon.model.domain.PlaceRemoteData

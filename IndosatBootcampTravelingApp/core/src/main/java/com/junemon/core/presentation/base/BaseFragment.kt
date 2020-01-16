@@ -1,4 +1,4 @@
-package com.junemon.travelingapps.presentation.base
+package com.junemon.core.presentation.base
 
 import android.app.AlertDialog
 import android.graphics.Color

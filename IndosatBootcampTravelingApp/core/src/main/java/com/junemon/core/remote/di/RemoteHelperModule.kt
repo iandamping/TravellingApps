@@ -1,5 +1,7 @@
-package com.junemon.remote
+package com.junemon.core.remote.di
 
+import com.junemon.core.remote.util.RemoteHelper
+import com.junemon.core.remote.util.RemoteHelperImpl
 import dagger.Binds
 import dagger.Module
 

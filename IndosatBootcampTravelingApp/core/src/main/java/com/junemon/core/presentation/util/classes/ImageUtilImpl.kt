@@ -1,4 +1,4 @@
-package com.junemon.travelingapps.presentation.util.classes
+package com.junemon.core.presentation.util.classes
 
 import android.content.Context
 import android.content.Intent
@@ -19,9 +19,9 @@ import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.storage.StorageReference
 import com.junemon.core.R
-import com.junemon.travelingapps.presentation.PresentationConstant.RequestOpenCamera
-import com.junemon.travelingapps.presentation.PresentationConstant.RequestSelectGalleryImage
-import com.junemon.travelingapps.presentation.util.interfaces.ImageHelper
+import com.junemon.core.presentation.PresentationConstant.RequestOpenCamera
+import com.junemon.core.presentation.PresentationConstant.RequestSelectGalleryImage
+import com.junemon.core.presentation.util.interfaces.ImageHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -40,7 +40,8 @@ import javax.inject.Inject
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class ImageUtilImpl @Inject constructor(private val storagePlaceReference: StorageReference) : ImageHelper {
+class ImageUtilImpl @Inject constructor(private val storagePlaceReference: StorageReference) :
+    ImageHelper {
 
     private val saveCaptureImagePath = "picture" + System.currentTimeMillis() + ".jpeg"
     private val saveFilterImagePath = "filterImage" + System.currentTimeMillis() + ".jpeg"

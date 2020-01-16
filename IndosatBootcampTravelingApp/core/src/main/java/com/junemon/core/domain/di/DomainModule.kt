@@ -1,7 +1,7 @@
-package com.junemon.travellingapps.domain.di
+package com.junemon.core.domain.di
 
-import com.junemon.travellingapps.domain.repository.PlaceRepository
-import com.junemon.travellingapps.domain.usecase.PlaceUseCase
+import com.junemon.core.domain.repository.PlaceRepository
+import com.junemon.core.domain.usecase.PlaceUseCase
 import dagger.Module
 import dagger.Provides
 

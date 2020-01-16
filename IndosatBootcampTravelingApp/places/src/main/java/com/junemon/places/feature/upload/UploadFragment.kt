@@ -1,4 +1,4 @@
-package com.junemon.travelingapps.feature.upload
+package com.junemon.places.feature.upload
 
 import android.app.AlertDialog
 import android.content.Context
@@ -11,20 +11,18 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import com.junemon.core.presentation.PresentationConstant.RequestSelectGalleryImage
+import com.junemon.core.presentation.base.BaseFragment
+import com.junemon.core.presentation.util.interfaces.CommonHelper
+import com.junemon.core.presentation.util.interfaces.ImageHelper
+import com.junemon.core.presentation.util.interfaces.PermissionHelper
+import com.junemon.core.presentation.util.interfaces.ViewHelper
 import com.junemon.model.domain.PlaceRemoteData
-import com.junemon.travelingapps.R
-import com.junemon.travelingapps.activity.MainActivity
-import com.junemon.travelingapps.databinding.FragmentUploadBinding
-import com.junemon.travelingapps.presentation.PresentationConstant.RequestSelectGalleryImage
-import com.junemon.travelingapps.presentation.base.BaseFragment
-import com.junemon.travelingapps.presentation.util.interfaces.CommonHelper
-import com.junemon.travelingapps.presentation.util.interfaces.ImageHelper
-import com.junemon.travelingapps.presentation.util.interfaces.PermissionHelper
-import com.junemon.travelingapps.presentation.util.interfaces.ViewHelper
-import com.junemon.travelingapps.vm.PlaceViewModel
+import com.junemon.places.R
+import com.junemon.places.databinding.FragmentUploadBinding
+import com.junemon.places.di.sharedPlaceComponent
+import com.junemon.places.vm.PlaceViewModel
 import kotlinx.android.synthetic.main.fragment_upload.*
 import javax.inject.Inject
 import kotlin.properties.Delegates
@@ -43,10 +41,9 @@ class UploadFragment : BaseFragment() {
     lateinit var commonHelper: CommonHelper
     @Inject
     lateinit var permissionHelper: PermissionHelper
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-    private val placeVm: PlaceViewModel by viewModels { viewModelFactory }
 
+    @Inject
+    lateinit var placeVm: PlaceViewModel
     private var isPermisisonGranted by Delegates.notNull<Boolean>()
     private var selectedUriForFirebase by Delegates.notNull<Uri>()
     private var placeType by Delegates.notNull<String>()
@@ -54,8 +51,7 @@ class UploadFragment : BaseFragment() {
     private lateinit var binders: FragmentUploadBinding
 
     override fun onAttach(context: Context) {
-        (activity as MainActivity).activityComponent.getFeatureComponent()
-            .create().inject(this)
+        sharedPlaceComponent().inject(this)
         super.onAttach(context)
         setBaseDialog()
         ilegallArgumenCatching {

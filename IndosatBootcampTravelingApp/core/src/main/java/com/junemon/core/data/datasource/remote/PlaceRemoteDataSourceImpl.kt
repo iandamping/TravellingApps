@@ -1,10 +1,10 @@
-package com.junemon.travelingapps.data.datasource.remote
+package com.junemon.core.data.datasource.remote
 
 import android.net.Uri
 import com.junemon.model.domain.PlaceRemoteData
 import com.junemon.model.domain.Results
-import com.junemon.remote.RemoteHelper
-import com.junemon.travelingapps.data.data.datasource.PlaceRemoteDataSource
+import com.junemon.core.remote.util.RemoteHelper
+import com.junemon.core.data.data.datasource.PlaceRemoteDataSource
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject

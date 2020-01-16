@@ -1,4 +1,4 @@
-package com.junemon.travelingapps.feature.search
+package com.junemon.places.feature.search
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -8,23 +8,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.google.gson.Gson
+import com.junemon.core.presentation.PresentationConstant.placePaginationRvCallback
+import com.junemon.core.presentation.base.BaseFragment
+import com.junemon.core.presentation.util.interfaces.LoadImageHelper
+import com.junemon.core.presentation.util.interfaces.RecyclerHelper
+import com.junemon.core.presentation.util.interfaces.ViewHelper
 import com.junemon.model.domain.Results
 import com.junemon.model.presentation.PlaceCachePresentation
 import com.junemon.model.presentation.dto.mapCacheToPresentation
-import com.junemon.travelingapps.R
-import com.junemon.travelingapps.activity.MainActivity
-import com.junemon.travelingapps.databinding.FragmentSearchBinding
-import com.junemon.travelingapps.presentation.PresentationConstant.placePaginationRvCallback
-import com.junemon.travelingapps.presentation.base.BaseFragment
-import com.junemon.core.presentation.util.interfaces.LoadImageHelper
-import com.junemon.travelingapps.presentation.util.interfaces.RecyclerHelper
-import com.junemon.travelingapps.presentation.util.interfaces.ViewHelper
-import com.junemon.travelingapps.vm.PlaceViewModel
+import com.junemon.places.R
+import com.junemon.places.databinding.FragmentSearchBinding
+import com.junemon.places.di.sharedPlaceComponent
+import com.junemon.places.vm.PlaceViewModel
 import kotlinx.android.synthetic.main.item_recyclerview.view.*
 import javax.inject.Inject
 
@@ -42,14 +40,14 @@ class SearchFragment : BaseFragment() {
     @Inject
     lateinit var loadingImageHelper: LoadImageHelper
     @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-    private val placeVm: PlaceViewModel by viewModels { viewModelFactory }
+    lateinit var placeVm: PlaceViewModel
+
     private lateinit var binders: FragmentSearchBinding
     private var data: List<PlaceCachePresentation> = mutableListOf()
 
     override fun onAttach(context: Context) {
-        (activity as MainActivity).activityComponent.getFeatureComponent()
-            .create().inject(this)
+        //inject Dagger
+        sharedPlaceComponent().inject(this)
         super.onAttach(context)
     }
 

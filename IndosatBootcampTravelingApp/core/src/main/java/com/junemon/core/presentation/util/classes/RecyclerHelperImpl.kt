@@ -1,10 +1,10 @@
-package com.junemon.travelingapps.presentation.util.classes
+package com.junemon.core.presentation.util.classes
 
 import android.view.View
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.junemon.daggerinyourface.presentation.base.adapter.BaseKotlinListAdapter
-import com.junemon.travelingapps.presentation.util.interfaces.RecyclerHelper
+import com.junemon.core.presentation.base.adapter.BaseKotlinListAdapter
+import com.junemon.core.presentation.util.interfaces.RecyclerHelper
 import javax.inject.Inject
 
 class RecyclerHelperImpl @Inject constructor() :

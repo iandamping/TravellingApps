@@ -8,7 +8,7 @@ import com.junemon.model.domain.PlaceCacheData
 import com.junemon.model.domain.PlaceRemoteData
 import com.junemon.model.domain.Results
 import com.junemon.model.presentation.PlaceCachePresentation
-import com.junemon.travellingapps.domain.usecase.PlaceUseCase
+import com.junemon.core.domain.usecase.PlaceUseCase
 import javax.inject.Inject
 
 class PlaceViewModel @Inject constructor(private val repository: PlaceUseCase) : ViewModel() {

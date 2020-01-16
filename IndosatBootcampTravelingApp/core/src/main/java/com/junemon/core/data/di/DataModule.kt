@@ -1,15 +1,15 @@
-package com.junemon.travelingapps.data.di
+package com.junemon.core.data.di
 
-import com.junemon.cache.di.DatabaseHelperModule
-import com.junemon.cache.di.DatabaseModule
-import com.junemon.remote.RemoteHelperModule
-import com.junemon.remote.RemoteModule
-import com.junemon.travelingapps.data.data.datasource.PlaceCacheDataSource
-import com.junemon.travelingapps.data.data.datasource.PlaceRemoteDataSource
-import com.junemon.travelingapps.data.data.repository.PlaceRepositoryImpl
-import com.junemon.travelingapps.data.datasource.cache.PlaceCacheDataSourceImpl
-import com.junemon.travelingapps.data.datasource.remote.PlaceRemoteDataSourceImpl
-import com.junemon.travellingapps.domain.repository.PlaceRepository
+import com.junemon.core.cache.di.DatabaseHelperModule
+import com.junemon.core.cache.di.DatabaseModule
+import com.junemon.core.remote.di.RemoteHelperModule
+import com.junemon.core.remote.di.RemoteModule
+import com.junemon.core.data.data.datasource.PlaceCacheDataSource
+import com.junemon.core.data.data.datasource.PlaceRemoteDataSource
+import com.junemon.core.data.data.repository.PlaceRepositoryImpl
+import com.junemon.core.data.datasource.cache.PlaceCacheDataSourceImpl
+import com.junemon.core.data.datasource.remote.PlaceRemoteDataSourceImpl
+import com.junemon.core.domain.repository.PlaceRepository
 import dagger.Binds
 import dagger.Module
 

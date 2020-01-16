@@ -1,13 +1,9 @@
 package com.junemon.travelingapps.di.component
 
-import android.app.Application
-import com.junemon.daggerinyourface.di.scope.ApplicationScope
-import com.junemon.travelingapps.activity.component.ActivityComponent
-import com.junemon.travelingapps.data.di.CoroutineModule
-import com.junemon.travelingapps.data.di.DataModule
-import com.junemon.travelingapps.presentation.di.PresentationModule
-import com.junemon.travellingapps.domain.di.DomainModule
-import dagger.BindsInstance
+import com.junemon.core.di.component.CoreComponent
+import com.junemon.travelingapps.activity.MainActivity
+import com.junemon.travelingapps.activity.SplashActivity
+import com.junemon.travelingapps.di.scope.ApplicationScope
 import dagger.Component
 
 /**
@@ -16,20 +12,15 @@ import dagger.Component
  * Indonesia.
  */
 @ApplicationScope
-@Component(
-    modules = [
-        CoroutineModule::class,
-        DataModule::class,
-        DomainModule::class,
-        PresentationModule::class,
-        AppSubComponent::class]
-)
+@Component(dependencies = [CoreComponent::class])
 interface AppComponent {
 
-    fun getActivityComponent(): ActivityComponent.Factory
+    fun inject(activity: SplashActivity)
+
+    fun inject(activity: MainActivity)
 
     @Component.Factory
     interface Factory {
-        fun injectApplication(@BindsInstance application: Application): AppComponent
+        fun coreComponent(coreComponent: CoreComponent): AppComponent
     }
 }
