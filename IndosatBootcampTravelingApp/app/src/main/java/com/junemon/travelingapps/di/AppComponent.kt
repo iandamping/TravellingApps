@@ -1,9 +1,9 @@
-package com.junemon.travelingapps.di.component
+package com.junemon.travelingapps.di
 
 import com.junemon.core.di.component.CoreComponent
+import com.junemon.core.di.scope.ApplicationScope
 import com.junemon.travelingapps.activity.MainActivity
 import com.junemon.travelingapps.activity.SplashActivity
-import com.junemon.travelingapps.di.scope.ApplicationScope
 import dagger.Component
 
 /**

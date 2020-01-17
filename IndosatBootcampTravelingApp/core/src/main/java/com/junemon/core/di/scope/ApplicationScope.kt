@@ -1,4 +1,4 @@
-package com.junemon.travelingapps.di.scope
+package com.junemon.core.di.scope
 
 import javax.inject.Scope
 

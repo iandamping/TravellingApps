@@ -4,9 +4,8 @@ import android.app.Activity
 import android.app.Application
 import com.junemon.core.di.component.CoreComponent
 import com.junemon.core.di.component.DaggerCoreComponent
-import com.junemon.travelingapps.activity.MainActivity
-import com.junemon.travelingapps.di.component.AppComponent
-import com.junemon.travelingapps.di.component.DaggerAppComponent
+import com.junemon.travelingapps.di.AppComponent
+import com.junemon.travelingapps.di.DaggerAppComponent
 import timber.log.Timber
 
 /**
