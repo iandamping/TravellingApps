@@ -8,19 +8,28 @@ import com.junemon.core.presentation.util.interfaces.ViewHelper
 import com.junemon.model.presentation.PlaceCachePresentation
 import com.junemon.places.R
 import kotlinx.android.synthetic.main.item_slider.view.*
+import javax.inject.Inject
 
 /**
  * Created by Ian Damping on 05,December,2019
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class HomeSliderAdapter(
-    private val data: List<PlaceCachePresentation>,
+class HomeSliderAdapter @Inject constructor(
+    // private val data: List<PlaceCachePresentation>,
     private val viewHelper: ViewHelper,
     private val loadImageHelper: LoadImageHelper
 ) : PagerAdapter() {
+    private var data:List<PlaceCachePresentation> = mutableListOf()
+    private lateinit var views:View
+
+
+    fun addData(passedData: List<PlaceCachePresentation>){
+        data = passedData.toMutableList()
+    }
+
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
-        val views = viewHelper.run { container.inflates(R.layout.item_slider) }
+        views = viewHelper.run { container.inflates(R.layout.item_slider) }
         loadImageHelper.run { views.ivSliderImage.loadWithGlide(data[position].placePicture) }
         views.tvPlaceName.text = data[position].placeName
         views.tvPlaceAddress.text = data[position].placeAddres
@@ -39,5 +48,5 @@ class HomeSliderAdapter(
         return view == `object`
     }
 
-    override fun getCount() = data.size
+    override fun getCount() = data.size ?: 0
 }

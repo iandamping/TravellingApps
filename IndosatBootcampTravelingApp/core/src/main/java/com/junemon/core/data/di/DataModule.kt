@@ -18,7 +18,7 @@ import dagger.Module
  * Github https://github.com/iandamping
  * Indonesia.
  */
-@Module(includes = [DatabaseModule::class, RemoteModule::class, DatabaseHelperModule::class, RemoteHelperModule::class])
+@Module
 abstract class DataModule {
 
     @Binds

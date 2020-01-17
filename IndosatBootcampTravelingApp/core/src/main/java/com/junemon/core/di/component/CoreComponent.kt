@@ -1,6 +1,8 @@
 package com.junemon.core.di.component
 
 import android.app.Application
+import com.junemon.core.cache.di.DatabaseHelperModule
+import com.junemon.core.cache.di.DatabaseModule
 import com.junemon.core.cache.util.interfaces.PlacesDaoHelper
 import com.junemon.core.data.data.datasource.PlaceCacheDataSource
 import com.junemon.core.data.data.datasource.PlaceRemoteDataSource
@@ -16,6 +18,8 @@ import com.junemon.core.presentation.util.interfaces.LoadImageHelper
 import com.junemon.core.presentation.util.interfaces.PermissionHelper
 import com.junemon.core.presentation.util.interfaces.RecyclerHelper
 import com.junemon.core.presentation.util.interfaces.ViewHelper
+import com.junemon.core.remote.di.RemoteHelperModule
+import com.junemon.core.remote.di.RemoteModule
 import com.junemon.core.remote.util.RemoteHelper
 import dagger.BindsInstance
 import dagger.Component
@@ -28,9 +32,13 @@ import javax.inject.Singleton
  */
 
 @Component(
-    modules = [CoroutineModule::class,
+    modules = [DatabaseModule::class,
+        CoroutineModule::class,
         DataModule::class,
         DomainModule::class,
+        RemoteModule::class,
+        DatabaseHelperModule::class,
+        RemoteHelperModule::class,
         PresentationModule::class]
 )
 @Singleton

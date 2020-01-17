@@ -12,4 +12,4 @@ import com.junemon.core.presentation.base.BaseFragment
  */
 
 fun BaseFragment.sharedPlaceComponent(): PlacesComponent =
-    DaggerPlacesComponent.factory().create((this.activity as MainActivity).coreComponent)
+    DaggerPlacesComponent.factory().create((this.activity as MainActivity).activityComponent)

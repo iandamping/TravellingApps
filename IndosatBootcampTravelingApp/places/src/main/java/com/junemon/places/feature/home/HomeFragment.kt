@@ -34,6 +34,8 @@ import javax.inject.Inject
  */
 class HomeFragment : BaseFragment() {
     @Inject
+    lateinit var viewAdapter:HomeSliderAdapter
+    @Inject
     lateinit var viewHelper: ViewHelper
     @Inject
     lateinit var loadingImageHelper: LoadImageHelper
@@ -132,12 +134,9 @@ class HomeFragment : BaseFragment() {
                 pageSize = if (result.size > 10) {
                     10
                 } else result.size
-                vpPlaceRandom.adapter =
-                    HomeSliderAdapter(
-                        data = result.mapCacheToPresentation().shuffled().take(10),
-                        viewHelper = viewHelper,
-                        loadImageHelper = loadingImageHelper
-                    )
+                viewAdapter.addData(result.mapCacheToPresentation().shuffled().take(10))
+                vpPlaceRandom.adapter = viewAdapter
+
                 indicator.setViewPager(vpPlaceRandom)
             }
         }

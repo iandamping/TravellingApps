@@ -50,7 +50,6 @@
                 android:layout_height="300dp"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
-                app:layout_collapseMode="parallax"
                 tools:src="@tools:sample/backgrounds/scenic" />
 
             <LinearLayout
