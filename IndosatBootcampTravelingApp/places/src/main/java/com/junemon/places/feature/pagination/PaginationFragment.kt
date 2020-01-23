@@ -25,6 +25,7 @@ import com.junemon.core.presentation.util.interfaces.IntentHelper
 import com.junemon.core.presentation.util.interfaces.LoadImageHelper
 import com.junemon.core.presentation.util.interfaces.RecyclerHelper
 import com.junemon.core.presentation.util.interfaces.ViewHelper
+import com.junemon.model.domain.PlaceCacheData
 import kotlinx.android.synthetic.main.item_pagination_recyclerview.view.*
 import javax.inject.Inject
 
@@ -82,58 +83,65 @@ class PaginationFragment : BaseFragment() {
                 when (result) {
                     is Results.Error -> {
                         stopAllShimmer()
+                        inflateRecyclerView(result.cache)
                     }
                     is Results.Success -> {
                         stopAllShimmer()
-                        recyclerViewHelper.run {
-                            recyclerviewCatching {
-                                requireNotNull(result.data)
-                                rvPagination.setUpVerticalListAdapter(
-                                    items = result.data.mapCacheToPresentation(),
-                                    diffUtil = placePaginationRvCallback,
-                                    layoutResId = R.layout.item_pagination_recyclerview,
-                                    bindHolder = {
-                                        tvPaginationName.text = it.placeName
-                                        tvPaginationAddress.text = it.placeAddres
-                                        tvPaginationDistrict.text = it.placeDistrict
-                                        loadingImageHelper.run {
-                                            ivFirebaseProfileImage.loadWithGlide(it.placePicture)
-                                            ivPaginationImage.loadWithGlide(it.placePicture)
-                                        }
-                                        ivPaginationSaveImage.setOnClickListener { _ ->
-                                            imageHelper.run {
-                                                this@PaginationFragment.saveImage(
-                                                    lifecycleScope,
-                                                    relativeParent,
-                                                    it.placePicture
-                                                )
-                                            }
-                                        }
-                                        ivPaginationShare.setOnClickListener { _ ->
-                                            intentHelper.run {
-                                                this@PaginationFragment.intentShareImageAndText(
-                                                    placeVm.viewModelScope,
-                                                    it.placeName,
-                                                    it.placeDetail,
-                                                    it.placePicture
-                                                )
-                                            }
-                                        }
-                                    }, itemClick = {
-                                        this@apply.root.findNavController().navigate(
-                                            PaginationFragmentDirections.actionPaginationFragmentToDetailFragment(
-                                                gson.toJson(this)
-                                            )
-                                        )
-                                    })
-                            }
-                        }
+                        inflateRecyclerView(result.data)
+
                     }
                     is Results.Loading -> {
                         startAllShimmer()
                     }
                 }
             })
+        }
+    }
+
+    private fun FragmentPaginationBinding.inflateRecyclerView(data:List<PlaceCacheData>?){
+        recyclerViewHelper.run {
+            recyclerviewCatching {
+                checkNotNull(data)
+                check(data.isNotEmpty())
+                rvPagination.setUpVerticalListAdapter(
+                    items = data.mapCacheToPresentation(),
+                    diffUtil = placePaginationRvCallback,
+                    layoutResId = R.layout.item_pagination_recyclerview,
+                    bindHolder = {
+                        tvPaginationName.text = it.placeName
+                        tvPaginationAddress.text = it.placeAddres
+                        tvPaginationDistrict.text = it.placeDistrict
+                        loadingImageHelper.run {
+                            ivFirebaseProfileImage.loadWithGlide(it.placePicture)
+                            ivPaginationImage.loadWithGlide(it.placePicture)
+                        }
+                        ivPaginationSaveImage.setOnClickListener { _ ->
+                            imageHelper.run {
+                                this@PaginationFragment.saveImage(
+                                    lifecycleScope,
+                                    relativeParent,
+                                    it.placePicture
+                                )
+                            }
+                        }
+                        ivPaginationShare.setOnClickListener { _ ->
+                            intentHelper.run {
+                                this@PaginationFragment.intentShareImageAndText(
+                                    placeVm.viewModelScope,
+                                    it.placeName,
+                                    it.placeDetail,
+                                    it.placePicture
+                                )
+                            }
+                        }
+                    }, itemClick = {
+                        this@inflateRecyclerView.root.findNavController().navigate(
+                            PaginationFragmentDirections.actionPaginationFragmentToDetailFragment(
+                                gson.toJson(this)
+                            )
+                        )
+                    })
+            }
         }
     }
 

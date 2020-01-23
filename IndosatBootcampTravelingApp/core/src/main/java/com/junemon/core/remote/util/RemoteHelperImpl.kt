@@ -8,6 +8,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.StorageReference
 import com.junemon.model.data.PlaceRemoteEntity
 import com.junemon.model.data.dto.mapToRemoteDomain
+import com.junemon.model.domain.DataHelper
 import com.junemon.model.domain.PlaceRemoteData
 import com.junemon.model.domain.Results
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -29,7 +30,7 @@ class RemoteHelperImpl @Inject constructor(
     private val databasePlaceReference: DatabaseReference
 ) : RemoteHelper {
 
-    override suspend fun getFirebaseData(): Results<List<PlaceRemoteData>> {
+    override suspend fun getFirebaseData(): DataHelper<List<PlaceRemoteData>> {
         val container: MutableList<PlaceRemoteEntity> = mutableListOf()
         return suspendCancellableCoroutine { cancellableContinuation ->
             databasePlaceReference.addValueEventListener(object : ValueEventListener {
@@ -44,7 +45,7 @@ class RemoteHelperImpl @Inject constructor(
                         container.add(it.getValue(PlaceRemoteEntity::class.java)!!)
                     }
 
-                    cancellableContinuation.resume(Results.Success(container.mapToRemoteDomain()))
+                    cancellableContinuation.resume(customSuccess(container.mapToRemoteDomain()))
                 }
             })
             cancellableContinuation.invokeOnCancellation {
@@ -54,10 +55,9 @@ class RemoteHelperImpl @Inject constructor(
     }
 
     @ExperimentalCoroutinesApi
-    override fun getFlowFirebaseData(): Flow<Results<List<PlaceRemoteData>>> {
+    override fun getFlowFirebaseData(): Flow<DataHelper<List<PlaceRemoteData>>> {
         val container: MutableList<PlaceRemoteEntity> = mutableListOf()
         return callbackFlow {
-            offer(Results.Loading)
             databasePlaceReference.addValueEventListener(object : ValueEventListener {
                 override fun onCancelled(p0: DatabaseError) {
                     close(p0.toException())
@@ -68,7 +68,7 @@ class RemoteHelperImpl @Inject constructor(
                         container.add(it.getValue(PlaceRemoteEntity::class.java)!!)
                     }
                     if (!this@callbackFlow.channel.isClosedForSend) {
-                        offer(Results.Success(container.mapToRemoteDomain()))
+                        offer(customSuccess(container.mapToRemoteDomain()))
                     }
                 }
             })
@@ -97,7 +97,11 @@ class RemoteHelperImpl @Inject constructor(
         } else databasePlaceReference.push().setValue(data)
     }
 
-    private fun <T> customError(exception: Exception): Results<T> {
-        return Results.Error(exception)
+    private fun <T> customError(exception: Exception): DataHelper<T> {
+        return DataHelper.RemoteSourceError(exception)
+    }
+
+    private fun <T> customSuccess(data: T): DataHelper<T> {
+        return DataHelper.RemoteSourceValue(data)
     }
 }

@@ -1,6 +1,7 @@
 package com.junemon.core.data.data.datasource
 
 import android.net.Uri
+import com.junemon.model.domain.DataHelper
 import com.junemon.model.domain.PlaceCacheData
 import com.junemon.model.domain.PlaceRemoteData
 import com.junemon.model.domain.Results
@@ -13,9 +14,9 @@ import kotlinx.coroutines.flow.Flow
  */
 interface PlaceRemoteDataSource {
 
-    suspend fun getFirebaseData(): Results<List<PlaceRemoteData>>
+    suspend fun getFirebaseData(): DataHelper<List<PlaceRemoteData>>
 
-    fun getFlowFirebaseData(): Flow<Results<List<PlaceRemoteData>>>
+    fun getFlowFirebaseData(): Flow<DataHelper<List<PlaceRemoteData>>>
 
     fun setFirebaseData(data: PlaceRemoteData, imageUri: Uri?, success: (Boolean) -> Unit, failed: (Boolean, Throwable) -> Unit)
 }

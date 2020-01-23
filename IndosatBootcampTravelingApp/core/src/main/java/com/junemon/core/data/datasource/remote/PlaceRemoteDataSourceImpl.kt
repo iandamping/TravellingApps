@@ -5,6 +5,7 @@ import com.junemon.model.domain.PlaceRemoteData
 import com.junemon.model.domain.Results
 import com.junemon.core.remote.util.RemoteHelper
 import com.junemon.core.data.data.datasource.PlaceRemoteDataSource
+import com.junemon.model.domain.DataHelper
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -19,12 +20,12 @@ class PlaceRemoteDataSourceImpl @Inject constructor(
 ) : PlaceRemoteDataSource {
 
     @ExperimentalCoroutinesApi
-    override suspend fun getFirebaseData(): Results<List<PlaceRemoteData>> {
+    override suspend fun getFirebaseData(): DataHelper<List<PlaceRemoteData>> {
         return remoteHelper.getFirebaseData()
     }
 
     @ExperimentalCoroutinesApi
-    override fun getFlowFirebaseData(): Flow<Results<List<PlaceRemoteData>>> {
+    override fun getFlowFirebaseData(): Flow<DataHelper<List<PlaceRemoteData>>> {
         return remoteHelper.getFlowFirebaseData()
     }
 

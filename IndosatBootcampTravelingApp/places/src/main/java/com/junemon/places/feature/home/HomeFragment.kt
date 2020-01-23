@@ -118,6 +118,8 @@ class HomeFragment : BaseFragment() {
                     }
                     is Results.Error -> {
                         stopAllShimmer()
+                        initViewPager(result.cache)
+                        initRecyclerView(result.cache)
                     }
                     is Results.Loading -> {
                         startAllShimmer()
@@ -127,9 +129,10 @@ class HomeFragment : BaseFragment() {
         }
     }
 
-    private fun FragmentHomeBinding.initViewPager(result: List<PlaceCacheData>) {
+    private fun FragmentHomeBinding.initViewPager(result: List<PlaceCacheData>?) {
         apply {
             ilegallStateCatching {
+                checkNotNull(result)
                 check(result.isNotEmpty())
                 pageSize = if (result.size > 10) {
                     10
@@ -142,9 +145,10 @@ class HomeFragment : BaseFragment() {
         }
     }
 
-    private fun FragmentHomeBinding.initRecyclerView(result: List<PlaceCacheData>) {
+    private fun FragmentHomeBinding.initRecyclerView(result: List<PlaceCacheData>?) {
         apply {
             universalCatching {
+                checkNotNull(result)
                 check(result.isNotEmpty())
                 val religiData = result.mapCacheToPresentation()
                     .filter { it.placeType == "Wisata Religi" }

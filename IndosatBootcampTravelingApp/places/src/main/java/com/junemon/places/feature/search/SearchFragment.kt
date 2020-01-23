@@ -120,6 +120,12 @@ class SearchFragment : BaseFragment() {
                     is Results.Success -> {
                         data = result.data.mapCacheToPresentation()
                     }
+                    is Results.Error ->{
+                        val cache by lazy { result.cache?.mapCacheToPresentation() }
+                        if (cache!=null){
+                            data = cache!!
+                        }
+                    }
                 }
             })
 
