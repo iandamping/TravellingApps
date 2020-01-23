@@ -66,26 +66,29 @@ class PlaceRepositoryImpl @Inject constructor(
                 Results.Loading
             }.asLiveData())
 
-            when (val responseStatus = remoteDataSource.getFirebaseData()) {
-                is DataHelper.RemoteSourceValue -> {
-                    check(responseStatus.data.isNotEmpty()) {
-                        " data is null "
+            val responseStatus = remoteDataSource.getFirebaseData()
+
+            responseStatus.collect {data ->
+                when (data) {
+                    is DataHelper.RemoteSourceError -> {
+                        emitSource(cacheDataSource.getCache().map {
+                            Results.Error(exception = data.exception, cache = it)
+                        }.asLiveData())
                     }
-                    // Stop the previous emission to avoid dispatching the updated user
-                    // as `loading`.
-                    disposables.dispose()
-                    cacheDataSource.setCache(responseStatus.data.mapRemoteToCacheDomain())
-                    emitSource(cacheDataSource.getSelectedTypeCache(placeType).map {
-                        Results.Success(it)
-                    }.asLiveData())
-                }
-                is DataHelper.RemoteSourceError -> {
-                    emitSource(cacheDataSource.getSelectedTypeCache(placeType).map {
-                        Results.Error(exception = responseStatus.exception, cache = it)
-                    }.asLiveData())
+                    is DataHelper.RemoteSourceValue -> {
+                        check(data.data.isNotEmpty()) {
+                            " data is empty "
+                        }
+                        // Stop the previous emission to avoid dispatching the updated user
+                        // as `loading`.
+                        disposables.dispose()
+                        cacheDataSource.setCache(data.data.mapRemoteToCacheDomain())
+                        emitSource(cacheDataSource.getSelectedTypeCache(placeType).map {
+                            Results.Success(it)
+                        }.asLiveData())
+                    }
                 }
             }
-
         }
     }
 

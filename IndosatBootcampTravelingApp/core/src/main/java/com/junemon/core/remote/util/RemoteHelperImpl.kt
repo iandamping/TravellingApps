@@ -29,10 +29,29 @@ class RemoteHelperImpl @Inject constructor(
     private val storagePlaceReference: StorageReference,
     private val databasePlaceReference: DatabaseReference
 ) : RemoteHelper {
-
-    override suspend fun getFirebaseData(): DataHelper<List<PlaceRemoteData>> {
+    @ExperimentalCoroutinesApi
+    override suspend fun getFirebaseData(): Flow<DataHelper<List<PlaceRemoteData>>> {
         val container: MutableList<PlaceRemoteEntity> = mutableListOf()
-        return suspendCancellableCoroutine { cancellableContinuation ->
+        return callbackFlow {
+            databasePlaceReference.addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(p0: DatabaseError) {
+                    close(p0.toException())
+                }
+
+                override fun onDataChange(p0: DataSnapshot) {
+                    p0.children.forEach {
+                        container.add(it.getValue(PlaceRemoteEntity::class.java)!!)
+                    }
+                    if (!this@callbackFlow.channel.isClosedForSend) {
+                        offer(customSuccess(container.mapToRemoteDomain()))
+                    }
+                }
+            })
+            awaitClose { cancel() }
+        }
+
+
+        /*return suspendCancellableCoroutine { cancellableContinuation ->
             databasePlaceReference.addValueEventListener(object : ValueEventListener {
 
                 override fun onCancelled(p0: DatabaseError) {
@@ -51,7 +70,7 @@ class RemoteHelperImpl @Inject constructor(
             cancellableContinuation.invokeOnCancellation {
                 cancellableContinuation.resume(customError(Exception(it)))
             }
-        }
+        }*/
     }
 
     @ExperimentalCoroutinesApi
