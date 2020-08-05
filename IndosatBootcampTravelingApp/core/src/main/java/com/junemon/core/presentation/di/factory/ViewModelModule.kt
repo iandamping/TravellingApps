@@ -1,4 +1,4 @@
-package com.junemon.core.presentation.di
+package com.junemon.core.presentation.di.factory
 
 import androidx.lifecycle.ViewModelProvider
 import com.junemon.core.presentation.di.factory.ViewModelFactory

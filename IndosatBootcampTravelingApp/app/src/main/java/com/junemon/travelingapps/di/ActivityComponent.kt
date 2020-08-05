@@ -12,7 +12,7 @@ import com.junemon.core.presentation.util.interfaces.PermissionHelper
 import com.junemon.core.presentation.util.interfaces.RecyclerHelper
 import com.junemon.core.presentation.util.interfaces.ViewHelper
 import com.junemon.core.remote.util.RemoteHelper
-import com.junemon.daggerinyourface.di.scope.PerActivities
+import com.junemon.core.di.scope.PerActivities
 import com.junemon.travelingapps.activity.MainActivity
 import com.junemon.travelingapps.activity.SplashActivity
 import dagger.Component
