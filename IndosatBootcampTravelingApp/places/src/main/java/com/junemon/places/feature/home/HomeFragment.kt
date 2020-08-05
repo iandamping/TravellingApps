@@ -25,6 +25,7 @@ import com.junemon.places.di.sharedPlaceComponent
 import com.junemon.places.feature.home.slideradapter.HomeSliderAdapter
 import com.junemon.places.vm.PlaceViewModel
 import kotlinx.android.synthetic.main.item_recyclerview.view.*
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -75,7 +76,7 @@ class HomeFragment : BaseFragment() {
             loadingImageHelper.run {
                 tbImageLogo.loadWithGlide(
                     ContextCompat.getDrawable(
-                        this@HomeFragment.context!!,
+                        requireContext(),
                         R.drawable.samarinda_logo
                     )!!
                 )
@@ -108,7 +109,6 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun FragmentHomeBinding.initData() {
-        apply {
             placeVm.getCache().observe(viewLifecycleOwner, Observer { result ->
                 when (result) {
                     is Results.Success -> {
@@ -126,7 +126,6 @@ class HomeFragment : BaseFragment() {
                     }
                 }
             })
-        }
     }
 
     private fun FragmentHomeBinding.initViewPager(result: List<PlaceCacheData>?) {

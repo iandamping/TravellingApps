@@ -2,6 +2,7 @@ package com.junemon.core.domain.usecase
 
 import android.net.Uri
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.asLiveData
 import com.junemon.model.domain.PlaceCacheData
 import com.junemon.model.domain.PlaceRemoteData
 import com.junemon.model.domain.Results

@@ -20,13 +20,8 @@ class PlaceRemoteDataSourceImpl @Inject constructor(
 ) : PlaceRemoteDataSource {
 
     @ExperimentalCoroutinesApi
-    override suspend fun getFirebaseData(): Flow<DataHelper<List<PlaceRemoteData>>> {
+    override suspend fun getFirebaseData(): DataHelper<List<PlaceRemoteData>> {
         return remoteHelper.getFirebaseData()
-    }
-
-    @ExperimentalCoroutinesApi
-    override fun getFlowFirebaseData(): Flow<DataHelper<List<PlaceRemoteData>>> {
-        return remoteHelper.getFlowFirebaseData()
     }
 
     override fun setFirebaseData(

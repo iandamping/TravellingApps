@@ -14,9 +14,7 @@ import kotlinx.coroutines.flow.Flow
  */
 interface PlaceRemoteDataSource {
 
-    suspend fun getFirebaseData(): Flow<DataHelper<List<PlaceRemoteData>>>
-
-    fun getFlowFirebaseData(): Flow<DataHelper<List<PlaceRemoteData>>>
+    suspend fun getFirebaseData(): DataHelper<List<PlaceRemoteData>>
 
     fun setFirebaseData(data: PlaceRemoteData, imageUri: Uri?, success: (Boolean) -> Unit, failed: (Boolean, Throwable) -> Unit)
 }

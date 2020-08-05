@@ -13,9 +13,7 @@ import kotlinx.coroutines.flow.Flow
  */
 interface RemoteHelper {
 
-    suspend fun getFirebaseData(): Flow<DataHelper<List<PlaceRemoteData>>>
-
-    fun getFlowFirebaseData(): Flow<DataHelper<List<PlaceRemoteData>>>
+   suspend fun getFirebaseData(): DataHelper<List<PlaceRemoteData>>
 
     fun uploadFirebaseData(
         data: PlaceRemoteData,
