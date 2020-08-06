@@ -16,8 +16,8 @@ import javax.inject.Inject
  */
 class PlaceUseCase @Inject constructor(private val repository: PlaceRepository) {
 
-    fun getCache(): LiveData<Results<List<PlaceCacheData>>> = repository.getCache()
-    fun getSelectedTypeCache(placeType: String): LiveData<Results<List<PlaceCacheData>>> = repository.getSelectedTypeCache(placeType)
+    fun getCache(): LiveData<Results<List<PlaceCacheData>>> = repository.getCache().asLiveData()
+    fun getSelectedTypeCache(placeType: String): LiveData<Results<List<PlaceCacheData>>> = repository.getSelectedTypeCache(placeType).asLiveData()
     suspend fun delete() = repository.delete()
     fun uploadFirebaseData(data: PlaceRemoteData, imageUri: Uri?, success: (Boolean) -> Unit, failed: (Boolean, Throwable) -> Unit) = repository.uploadFirebaseData(data, imageUri, success, failed)
 }

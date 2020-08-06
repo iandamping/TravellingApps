@@ -14,9 +14,9 @@ import kotlinx.coroutines.flow.Flow
  */
 interface PlaceRepository {
 
-    fun getCache(): LiveData<Results<List<PlaceCacheData>>>
+    fun getCache(): Flow<Results<List<PlaceCacheData>>>
 
-    fun getSelectedTypeCache(placeType: String): LiveData<Results<List<PlaceCacheData>>>
+    fun getSelectedTypeCache(placeType: String): Flow<Results<List<PlaceCacheData>>>
 
     suspend fun delete()
 
