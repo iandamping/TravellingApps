@@ -48,6 +48,7 @@ class RemoteHelperImpl @Inject constructor(
             }
 
             override fun onDataChange(p0: DataSnapshot) {
+                container.clear()
                 p0.children.forEach {
                     container.add(it.getValue(PlaceRemoteEntity::class.java)!!)
                 }
@@ -70,6 +71,7 @@ class RemoteHelperImpl @Inject constructor(
                 }
 
                 override fun onDataChange(p0: DataSnapshot) {
+                    container.clear()
                     p0.children.forEach {
                         container.add(it.getValue(PlaceRemoteEntity::class.java)!!)
                     }
