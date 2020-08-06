@@ -24,7 +24,6 @@ import com.junemon.travelingapps.feature.home.slideradapter.HomeSliderAdapter
 import com.junemon.travelingapps.vm.PlaceViewModel
 import kotlinx.android.synthetic.main.item_recyclerview.view.*
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
@@ -58,8 +57,6 @@ class HomeFragment : BasePlaceFragment() {
     private var pageSize: Int = 0
     private var currentPage = 0
 
-
-
     override fun createView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -71,6 +68,7 @@ class HomeFragment : BasePlaceFragment() {
     }
 
     override fun viewCreated(view: View, savedInstanceState: Bundle?) {
+        placeVm.startRunningViewPager()
         binding.run {
             initData()
             initView()
@@ -78,10 +76,24 @@ class HomeFragment : BasePlaceFragment() {
     }
 
     override fun destroyView() {
+        placeVm.stopRunningViewPager()
         _binding = null
     }
 
     override fun activityCreated() {
+        placeVm.setRunningForever.observe(viewLifecycleOwner, Observer {
+            viewLifecycleOwner.lifecycleScope.launchWhenCreated {
+                while(it) {
+                    if (currentPage == pageSize){
+                        currentPage = 0
+                    }
+                    delay(4000L)
+                    if (_binding!=null){
+                        binding.vpPlaceRandom.setCurrentItem(currentPage++, true)
+                    }
+                }
+            }
+        })
     }
 
     private fun FragmentHomeBinding.initView() {
@@ -91,6 +103,7 @@ class HomeFragment : BasePlaceFragment() {
             )
         }
         btnCreate.setOnClickListener {
+
             findNavController()
                 .navigate(HomeFragmentDirections.actionHomeFragmentToUploadFragment())
         }
@@ -110,6 +123,8 @@ class HomeFragment : BasePlaceFragment() {
             )
         }
         btnSearchMain.setOnClickListener {
+
+
             findNavController()
                 .navigate(HomeFragmentDirections.actionHomeFragmentToSearchFragment())
         }
@@ -139,14 +154,16 @@ class HomeFragment : BasePlaceFragment() {
         ilegallStateCatching {
             checkNotNull(result)
             check(result.isNotEmpty())
+
             pageSize = if (result.size > 10) {
                 10
             } else result.size
 
             viewAdapter.addData(result.mapCacheToPresentation().shuffled().take(10))
             vpPlaceRandom.adapter = viewAdapter
-
             indicator.setViewPager(vpPlaceRandom)
+
+
         }
     }
 
@@ -171,6 +188,8 @@ class HomeFragment : BasePlaceFragment() {
                         tvItemPlaceDistrict.text = it?.placeDistrict
                     },
                     layoutResId = R.layout.item_recyclerview, itemClick = {
+
+
                         findNavController().navigate(
                             HomeFragmentDirections.actionHomeFragmentToDetailFragment(
                                 gson.toJson(
@@ -188,6 +207,8 @@ class HomeFragment : BasePlaceFragment() {
                         tvItemPlaceDistrict.text = it?.placeDistrict
                     },
                     layoutResId = R.layout.item_recyclerview, itemClick = {
+
+
                         findNavController().navigate(
                             HomeFragmentDirections.actionHomeFragmentToDetailFragment(
                                 gson.toJson(
@@ -205,6 +226,8 @@ class HomeFragment : BasePlaceFragment() {
                         tvItemPlaceDistrict.text = it?.placeDistrict
                     },
                     layoutResId = R.layout.item_recyclerview, itemClick = {
+
+
                         findNavController().navigate(
                             HomeFragmentDirections.actionHomeFragmentToDetailFragment(
                                 gson.toJson(
@@ -255,13 +278,6 @@ class HomeFragment : BasePlaceFragment() {
 
             shimmerReligiusType.visible()
             shimmerReligiusType.startShimmer()
-        }
-    }
-
-    private fun runDelayed(call: () -> Unit) {
-        lifecycleScope.launch {
-            delay(4000L)
-            call.invoke()
         }
     }
 }

@@ -13,6 +13,10 @@ import javax.inject.Inject
 
 class PlaceViewModel @Inject constructor(private val repository: PlaceUseCase) : ViewModel() {
 
+    private val _setRunningForever: MutableLiveData<Boolean> = MutableLiveData()
+    val setRunningForever: LiveData<Boolean>
+        get() = _setRunningForever
+
     private val _searchItem: MutableLiveData<MutableList<PlaceCachePresentation>> =
         MutableLiveData()
 
@@ -21,6 +25,14 @@ class PlaceViewModel @Inject constructor(private val repository: PlaceUseCase) :
 
     fun setSearchItem(data: MutableList<PlaceCachePresentation>) {
         this._searchItem.value = data
+    }
+
+    fun startRunningViewPager(){
+        _setRunningForever.value = true
+    }
+
+    fun stopRunningViewPager(){
+        _setRunningForever.value = false
     }
 
     fun getCache(): LiveData<Results<List<PlaceCacheData>>> = repository.getCache()
