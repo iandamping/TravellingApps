@@ -13,11 +13,11 @@ import com.junemon.model.domain.DataHelper
 import com.junemon.model.domain.PlaceRemoteData
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.channels.ConflatedBroadcastChannel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -26,16 +26,44 @@ import javax.inject.Inject
  * Github https://github.com/iandamping
  * Indonesia.
  */
+
+@ExperimentalCoroutinesApi
+@FlowPreview
 class RemoteHelperImpl @Inject constructor(
     @DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher,
     private val storagePlaceReference: StorageReference,
     private val databasePlaceReference: DatabaseReference
 ) : RemoteHelper {
 
-    override suspend fun getFirebaseData(): DataHelper<List<PlaceRemoteData>> {
+    private val channel = ConflatedBroadcastChannel<DataHelper<List<PlaceRemoteData>>>()
+
+    /**observing operation*/
+    override fun getFirebaseData(): Flow<DataHelper<List<PlaceRemoteData>>> {
+        val container: MutableSet<PlaceRemoteEntity> = mutableSetOf()
+        databasePlaceReference.addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+                if (!channel.isClosedForSend) {
+                    channel.offer(DataHelper.RemoteSourceError(p0.toException()))
+                }
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                p0.children.forEach {
+                    container.add(it.getValue(PlaceRemoteEntity::class.java)!!)
+                }
+                if (!channel.isClosedForSend) {
+                    channel.offer(customSuccess(container.toList().mapToRemoteDomain()))
+                }
+            }
+        })
+        return channel.asFlow()
+    }
+
+    /**one-shot only operation*/
+    override suspend fun getFirebaseOneShotData(): DataHelper<List<PlaceRemoteData>> {
         val result: CompletableDeferred<DataHelper<List<PlaceRemoteData>>> = CompletableDeferred()
-        val container: MutableList<PlaceRemoteEntity> = mutableListOf()
-        withContext(defaultDispatcher){
+        val container: MutableSet<PlaceRemoteEntity> = mutableSetOf()
+        withContext(defaultDispatcher) {
             databasePlaceReference.addValueEventListener(object : ValueEventListener {
                 override fun onCancelled(p0: DatabaseError) {
                     result.complete(DataHelper.RemoteSourceError(p0.toException()))
@@ -45,7 +73,7 @@ class RemoteHelperImpl @Inject constructor(
                     p0.children.forEach {
                         container.add(it.getValue(PlaceRemoteEntity::class.java)!!)
                     }
-                    result.complete(customSuccess(container.mapToRemoteDomain()))
+                    result.complete(customSuccess(container.toList().mapToRemoteDomain()))
                 }
             })
         }
@@ -72,7 +100,6 @@ class RemoteHelperImpl @Inject constructor(
             }
         } else databasePlaceReference.push().setValue(data)
     }
-
 
     private fun <T> customSuccess(data: T): DataHelper<T> {
         return DataHelper.RemoteSourceValue(data)

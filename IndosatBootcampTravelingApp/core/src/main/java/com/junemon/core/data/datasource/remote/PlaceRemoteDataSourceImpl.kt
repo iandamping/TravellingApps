@@ -15,12 +15,17 @@ import javax.inject.Inject
  * Github https://github.com/iandamping
  * Indonesia.
  */
+@ExperimentalCoroutinesApi
 class PlaceRemoteDataSourceImpl @Inject constructor(
     private val remoteHelper: RemoteHelper
 ) : PlaceRemoteDataSource {
 
-    @ExperimentalCoroutinesApi
-    override suspend fun getFirebaseData(): DataHelper<List<PlaceRemoteData>> {
+    /**One shot operation*/
+    override suspend fun getFirebaseOneShotData(): DataHelper<List<PlaceRemoteData>> {
+        return remoteHelper.getFirebaseOneShotData()
+    }
+    /**Observing operation*/
+    override fun getFirebaseData(): Flow<DataHelper<List<PlaceRemoteData>>> {
         return remoteHelper.getFirebaseData()
     }
 
