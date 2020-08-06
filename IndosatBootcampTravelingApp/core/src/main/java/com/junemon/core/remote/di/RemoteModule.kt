@@ -4,6 +4,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import com.google.gson.Gson
 import com.junemon.core.BuildConfig.firebaseStorageUrl
 import com.junemon.core.BuildConfig.placeNode
 import dagger.Module
@@ -16,6 +17,12 @@ import dagger.Provides
  */
 @Module
 object RemoteModule {
+
+    @Provides
+    @JvmStatic
+    fun provideGson(): Gson {
+        return Gson()
+    }
 
     @Provides
     @JvmStatic

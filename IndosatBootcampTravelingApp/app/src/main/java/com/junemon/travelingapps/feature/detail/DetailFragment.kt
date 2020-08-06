@@ -30,8 +30,11 @@ class DetailFragment : BasePlaceFragment() {
     @Inject
     lateinit var imageHelper: ImageHelper
 
+    @Inject
+    lateinit var gson: Gson
+
     private val passedData by lazy {
-        Gson().fromJson(
+        gson.fromJson(
             DetailFragmentArgs.fromBundle(requireArguments()).detailData,
             PlaceCachePresentation::class.java
         )

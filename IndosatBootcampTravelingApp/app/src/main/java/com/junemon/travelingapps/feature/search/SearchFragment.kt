@@ -31,7 +31,8 @@ import javax.inject.Inject
  * Indonesia.
  */
 class SearchFragment : BasePlaceFragment() {
-    private val gson = Gson()
+    @Inject
+    lateinit var gson: Gson
 
     @Inject
     lateinit var viewHelper: ViewHelper

@@ -45,6 +45,9 @@ class HomeFragment : BasePlaceFragment() {
     @Inject
     lateinit var recyclerViewHelper: RecyclerHelper
 
+    @Inject
+    lateinit var gson: Gson
+
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private lateinit var placeVm: PlaceViewModel
@@ -55,7 +58,7 @@ class HomeFragment : BasePlaceFragment() {
     private var pageSize: Int = 0
     private var currentPage = 0
 
-    private val gson by lazy { Gson() }
+
 
     override fun createView(
         inflater: LayoutInflater,
@@ -70,6 +73,7 @@ class HomeFragment : BasePlaceFragment() {
     override fun viewCreated(view: View, savedInstanceState: Bundle?) {
         binding.run {
             initData()
+            initView()
         }
     }
 

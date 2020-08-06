@@ -53,7 +53,8 @@ class PaginationFragment : BasePlaceFragment() {
 
     private lateinit var placeVm: PlaceViewModel
 
-    private val gson = Gson()
+    @Inject
+    lateinit var gson: Gson
 
     private var _binding: FragmentPaginationBinding? = null
     private val binding get() = _binding!!
