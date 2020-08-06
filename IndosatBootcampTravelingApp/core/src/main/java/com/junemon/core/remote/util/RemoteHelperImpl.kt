@@ -27,6 +27,7 @@ import javax.inject.Inject
  * Indonesia.
  */
 class RemoteHelperImpl @Inject constructor(
+    @DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher,
     private val storagePlaceReference: StorageReference,
     private val databasePlaceReference: DatabaseReference
 ) : RemoteHelper {
@@ -34,7 +35,7 @@ class RemoteHelperImpl @Inject constructor(
     override suspend fun getFirebaseData(): DataHelper<List<PlaceRemoteData>> {
         val result: CompletableDeferred<DataHelper<List<PlaceRemoteData>>> = CompletableDeferred()
         val container: MutableList<PlaceRemoteEntity> = mutableListOf()
-        withContext(Dispatchers.Default){
+        withContext(defaultDispatcher){
             databasePlaceReference.addValueEventListener(object : ValueEventListener {
                 override fun onCancelled(p0: DatabaseError) {
                     result.complete(DataHelper.RemoteSourceError(p0.toException()))

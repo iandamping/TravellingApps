@@ -1,9 +1,5 @@
 package com.junemon.core.data.di
 
-import com.junemon.core.cache.di.DatabaseHelperModule
-import com.junemon.core.cache.di.DatabaseModule
-import com.junemon.core.remote.di.RemoteHelperModule
-import com.junemon.core.remote.di.RemoteModule
 import com.junemon.core.data.data.datasource.PlaceCacheDataSource
 import com.junemon.core.data.data.datasource.PlaceRemoteDataSource
 import com.junemon.core.data.data.repository.PlaceRepositoryImpl

@@ -14,17 +14,14 @@ import kotlinx.coroutines.Dispatchers
 object CoroutineModule {
 
     @DefaultDispatcher
-    @JvmStatic
     @Provides
     fun providesDefaultDispatcher(): CoroutineDispatcher = Dispatchers.Default
 
     @IoDispatcher
-    @JvmStatic
     @Provides
     fun providesIoDispatcher(): CoroutineDispatcher = Dispatchers.IO
 
     @MainDispatcher
-    @JvmStatic
     @Provides
     fun providesMainDispatcher(): CoroutineDispatcher = Dispatchers.Main
 }

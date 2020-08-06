@@ -40,7 +40,7 @@ android {
         jvmTarget = "1.8"
     }
 
-    dynamicFeatures = [":places"]
+    dynamicFeatures = []
 
 }
 
@@ -55,8 +55,10 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:$navigationVer"
     implementation "androidx.navigation:navigation-ui-ktx:$navigationVer"
     implementation "com.github.iandamping:RecyclerViewHelper:$recyclerhelper_version"
+    implementation "androidx.navigation:navigation-fragment-ktx:$navigationVer"
+    implementation "androidx.navigation:navigation-ui-ktx:$navigationVer"
     implementation "me.relex:circleindicator:1.2.2@aar"
     implementation "androidx.activity:activity-ktx:1.1.0"
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
-    kapt 'com.google.dagger:dagger-android-processor:2.24'
+    kapt 'com.google.dagger:dagger-android-processor:2.28.3'
 }

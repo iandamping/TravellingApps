@@ -16,5 +16,5 @@ interface IntentHelper {
 
     fun intentShareText(activity: FragmentActivity, text: String)
 
-    fun Fragment.intentShareImageAndText(scope: CoroutineScope, tittle: String?, message: String?, imageUrl: String?)
+    suspend fun Fragment.intentShareImageAndText(tittle: String?, message: String?, imageUrl: String?)
 }

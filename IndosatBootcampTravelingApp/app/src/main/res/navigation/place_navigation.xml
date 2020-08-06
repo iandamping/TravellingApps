@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.junemon.places.feature.home.HomeFragment"
+        android:name="com.junemon.travelingapps.feature.home.HomeFragment"
         android:label="HomeFragment"
         tools:layout="@layout/fragment_home">
         <action
@@ -42,12 +42,12 @@
     </fragment>
     <fragment
         android:id="@+id/uploadFragment"
-        android:name="com.junemon.places.feature.upload.UploadFragment"
+        android:name="com.junemon.travelingapps.feature.upload.UploadFragment"
         android:label="UploadFragment"
         tools:layout="@layout/fragment_upload" />
     <fragment
         android:id="@+id/detailFragment"
-        android:name="com.junemon.places.feature.detail.DetailFragment"
+        android:name="com.junemon.travelingapps.feature.detail.DetailFragment"
         android:label="DetailFragment"
         tools:layout="@layout/fragment_detail">
         <argument
@@ -56,7 +56,7 @@
     </fragment>
     <fragment
         android:id="@+id/paginationFragment"
-        android:name="com.junemon.places.feature.pagination.PaginationFragment"
+        android:name="com.junemon.travelingapps.feature.pagination.PaginationFragment"
         android:label="PaginationFragment"
         tools:layout="@layout/fragment_pagination">
         <argument
@@ -68,7 +68,7 @@
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
-        android:name="com.junemon.places.feature.search.SearchFragment"
+        android:name="com.junemon.travelingapps.feature.search.SearchFragment"
         android:label="SearchFragment"
         tools:layout="@layout/fragment_search">
         <action

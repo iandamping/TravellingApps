@@ -3,13 +3,15 @@ package com.junemon.travelingapps.activity
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityOptionsCompat
-import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import com.junemon.core.presentation.util.interfaces.LoadImageHelper
 import com.junemon.travelingapps.R
-import com.junemon.travelingapps.activityComponent
+import com.junemon.travelingapps.databinding.ActivityMainBinding
+import com.junemon.travelingapps.databinding.ActivitySplashBinding
+import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_splash.*
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
@@ -17,42 +19,32 @@ import javax.inject.Inject
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class SplashActivity : AppCompatActivity() {
+class SplashActivity : DaggerAppCompatActivity() {
+    private lateinit var binding: ActivitySplashBinding
 
     @Inject
     lateinit var loadImageHelper: LoadImageHelper
 
-    private val mDelayHandler: Handler by lazy { Handler() }
-
     override fun onCreate(savedInstanceState: Bundle?) {
-        activityComponent().inject(this)
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_splash)
+        binding = ActivitySplashBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         loadImageHelper.run {
             splashImage.loadWithGlide(
-                ContextCompat.getDrawable(
-                    this@SplashActivity,
-                    R.drawable.samarinda_logo
-                )!!
+                resources.getDrawable(R.drawable.samarinda_logo, null)
             )
         }
-        mDelayHandler.postDelayed(mRunnable, 3000L)
-    }
-
-    private val mRunnable: Runnable = Runnable {
-        if (!isFinishing) {
-            val activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                this, splashImage, getString(
-                    R.string.transition_name
-                )
-            )
+        runDelayed {
             val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent, activityOptionsCompat.toBundle())
+            startActivity(intent)
         }
     }
 
-    public override fun onDestroy() {
-        super.onDestroy()
-        mDelayHandler.removeCallbacks(mRunnable)
+    private fun runDelayed(call: () -> Unit) {
+        lifecycleScope.launch {
+            delay(500L)
+            call.invoke()
+        }
     }
 }

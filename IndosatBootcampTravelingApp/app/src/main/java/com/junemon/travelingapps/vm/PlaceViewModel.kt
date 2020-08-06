@@ -1,4 +1,4 @@
-package com.junemon.places.vm
+package com.junemon.travelingapps.vm
 
 import android.net.Uri
 import androidx.lifecycle.LiveData

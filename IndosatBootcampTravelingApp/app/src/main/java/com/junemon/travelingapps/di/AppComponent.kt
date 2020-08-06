@@ -1,58 +1,50 @@
 package com.junemon.travelingapps.di
 
-import com.junemon.core.cache.util.interfaces.PlacesDaoHelper
-import com.junemon.core.data.data.datasource.PlaceCacheDataSource
-import com.junemon.core.data.data.datasource.PlaceRemoteDataSource
-import com.junemon.core.di.component.CoreComponent
-import com.junemon.core.di.scope.ApplicationScope
-import com.junemon.core.domain.repository.PlaceRepository
-import com.junemon.core.presentation.util.interfaces.CommonHelper
-import com.junemon.core.presentation.util.interfaces.ImageHelper
-import com.junemon.core.presentation.util.interfaces.IntentHelper
-import com.junemon.core.presentation.util.interfaces.LoadImageHelper
-import com.junemon.core.presentation.util.interfaces.PermissionHelper
-import com.junemon.core.presentation.util.interfaces.RecyclerHelper
-import com.junemon.core.presentation.util.interfaces.ViewHelper
-import com.junemon.core.remote.util.RemoteHelper
-import com.junemon.travelingapps.activity.MainActivity
-import com.junemon.travelingapps.activity.SplashActivity
+import android.app.Application
+import com.junemon.core.cache.di.DatabaseHelperModule
+import com.junemon.core.cache.di.DatabaseModule
+import com.junemon.core.data.di.CoroutineModule
+import com.junemon.core.data.di.DataModule
+import com.junemon.core.di.module.GlideModule
+import com.junemon.core.domain.di.DomainModule
+import com.junemon.core.presentation.di.PresentationModule
+import com.junemon.core.presentation.di.factory.ViewModelModule
+import com.junemon.core.remote.di.RemoteHelperModule
+import com.junemon.core.remote.di.RemoteModule
+import com.junemon.travelingapps.PlaceApplication
+import com.junemon.travelingapps.di.module.ActivityBindingModule
+import dagger.BindsInstance
 import dagger.Component
+import dagger.android.AndroidInjector
+import dagger.android.support.AndroidSupportInjectionModule
+import javax.inject.Singleton
 
 /**
  * Created by Ian Damping on 06,January,2020
  * Github https://github.com/iandamping
  * Indonesia.
  */
-@ApplicationScope
-@Component(dependencies = [CoreComponent::class])
-interface AppComponent {
+@Singleton
+@Component(
+    modules = [AndroidSupportInjectionModule::class,
+        ActivityBindingModule::class,
+        ViewModelModule::class,
+        DatabaseModule::class,
+        CoroutineModule::class,
+        DataModule::class,
+        DomainModule::class,
+        RemoteModule::class,
+        DatabaseHelperModule::class,
+        RemoteHelperModule::class,
+        PresentationModule::class,
+        GlideModule::class]
+)
+interface AppComponent : AndroidInjector<PlaceApplication> {
 
-    fun provideLoadImageHelper(): LoadImageHelper
-
-    fun provideIntentUtil(): IntentHelper
-
-    fun provideImageUtil(): ImageHelper
-
-    fun providePermissionHelperUtil(): PermissionHelper
-
-    fun provideRecyclerViewHelper(): RecyclerHelper
-
-    fun provideViewHelper(): ViewHelper
-
-    fun provideCommmonHelper(): CommonHelper
-
-    fun providePlaceRepository(): PlaceRepository
-
-    fun providePlaceRemoteDataSource(): PlaceRemoteDataSource
-
-    fun providePlaceCacheDataSource(): PlaceCacheDataSource
-
-    fun providePlacesDaoHelper(): PlacesDaoHelper
-
-    fun provideRemoteHelper(): RemoteHelper
-
-    @Component.Factory
-    interface Factory {
-        fun coreComponent(coreComponent: CoreComponent): AppComponent
+    @Component.Builder
+    interface Builder {
+        @BindsInstance
+        fun application(application: Application): Builder
+        fun build(): AppComponent
     }
 }

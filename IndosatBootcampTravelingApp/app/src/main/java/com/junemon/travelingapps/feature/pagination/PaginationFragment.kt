@@ -1,32 +1,31 @@
-package com.junemon.places.feature.pagination
+package com.junemon.travelingapps.feature.pagination
 
-import android.content.Context
 import android.os.Bundle
-import android.os.StrictMode
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.google.gson.Gson
-import com.junemon.model.domain.Results
-import com.junemon.model.presentation.dto.mapCacheToPresentation
-import com.junemon.places.R
-import com.junemon.places.databinding.FragmentPaginationBinding
-import com.junemon.places.di.sharedPlaceComponent
-import com.junemon.places.vm.PlaceViewModel
 import com.junemon.core.presentation.PresentationConstant.placePaginationRvCallback
-import com.junemon.core.presentation.base.BaseFragment
+import com.junemon.core.presentation.di.factory.viewModelProvider
 import com.junemon.core.presentation.util.interfaces.ImageHelper
 import com.junemon.core.presentation.util.interfaces.IntentHelper
 import com.junemon.core.presentation.util.interfaces.LoadImageHelper
 import com.junemon.core.presentation.util.interfaces.RecyclerHelper
 import com.junemon.core.presentation.util.interfaces.ViewHelper
 import com.junemon.model.domain.PlaceCacheData
+import com.junemon.model.domain.Results
+import com.junemon.model.presentation.dto.mapCacheToPresentation
+import com.junemon.travelingapps.base.BasePlaceFragment
+import com.junemon.travelingapps.R
+import com.junemon.travelingapps.databinding.FragmentPaginationBinding
+import com.junemon.travelingapps.vm.PlaceViewModel
 import kotlinx.android.synthetic.main.item_pagination_recyclerview.view.*
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
@@ -34,71 +33,77 @@ import javax.inject.Inject
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class PaginationFragment : BaseFragment() {
+class PaginationFragment : BasePlaceFragment() {
     @Inject
     lateinit var viewHelper: ViewHelper
+
     @Inject
     lateinit var recyclerViewHelper: RecyclerHelper
+
     @Inject
     lateinit var loadingImageHelper: LoadImageHelper
+
     @Inject
     lateinit var imageHelper: ImageHelper
+
     @Inject
     lateinit var intentHelper: IntentHelper
-    @Inject
-    lateinit var placeVm: PlaceViewModel
+
+    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    private lateinit var placeVm: PlaceViewModel
 
     private val gson = Gson()
 
+    private var _binding: FragmentPaginationBinding? = null
+    private val binding get() = _binding!!
+
     private val paginationType by lazy {
-        PaginationFragmentArgs.fromBundle(arguments!!).paginationType
+        PaginationFragmentArgs.fromBundle(requireArguments()).paginationType
     }
 
-    override fun onAttach(context: Context) {
-        //inject Dagger
-        sharedPlaceComponent().inject(this)
-        super.onAttach(context)
-        // dont use this, but i had to
-        val builder = StrictMode.VmPolicy.Builder()
-        StrictMode.setVmPolicy(builder.build())
-    }
-
-    override fun onCreateView(
+    override fun createView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding: FragmentPaginationBinding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_pagination, container, false)
-        binding.apply {
-            lifecycleOwner = viewLifecycleOwner
-            initView(paginationType)
-        }
+        _binding = FragmentPaginationBinding.inflate(inflater, container, false)
+        placeVm = viewModelProvider(viewModelFactory)
         return binding.root
     }
 
-    private fun FragmentPaginationBinding.initView(type: String) {
-        apply {
-            placeVm.getSelectedTypeCache(type).observe(viewLifecycleOwner, Observer { result ->
-                when (result) {
-                    is Results.Error -> {
-                        stopAllShimmer()
-                        inflateRecyclerView(result.cache)
-                    }
-                    is Results.Success -> {
-                        stopAllShimmer()
-                        inflateRecyclerView(result.data)
-
-                    }
-                    is Results.Loading -> {
-                        startAllShimmer()
-                    }
-                }
-            })
+    override fun viewCreated(view: View, savedInstanceState: Bundle?) {
+        binding.run {
+            initView(paginationType)
         }
     }
 
-    private fun FragmentPaginationBinding.inflateRecyclerView(data:List<PlaceCacheData>?){
+    override fun destroyView() {
+        _binding = null
+    }
+
+    override fun activityCreated() {
+    }
+
+    private fun FragmentPaginationBinding.initView(type: String) {
+        placeVm.getSelectedTypeCache(type).observe(viewLifecycleOwner, Observer { result ->
+            when (result) {
+                is Results.Error -> {
+                    stopAllShimmer()
+                    inflateRecyclerView(result.cache)
+                }
+                is Results.Success -> {
+                    stopAllShimmer()
+                    inflateRecyclerView(result.data)
+                }
+                is Results.Loading -> {
+                    startAllShimmer()
+                }
+            }
+        })
+    }
+
+    private fun FragmentPaginationBinding.inflateRecyclerView(data: List<PlaceCacheData>?) {
         recyclerViewHelper.run {
             recyclerviewCatching {
                 checkNotNull(data)
@@ -126,16 +131,18 @@ class PaginationFragment : BaseFragment() {
                         }
                         ivPaginationShare.setOnClickListener { _ ->
                             intentHelper.run {
-                                this@PaginationFragment.intentShareImageAndText(
-                                    placeVm.viewModelScope,
-                                    it.placeName,
-                                    it.placeDetail,
-                                    it.placePicture
-                                )
+                                lifecycleScope.launch {
+                                    this@PaginationFragment.intentShareImageAndText(
+                                        it.placeName,
+                                        it.placeDetail,
+                                        it.placePicture
+                                    )
+                                }
+
                             }
                         }
                     }, itemClick = {
-                        this@inflateRecyclerView.root.findNavController().navigate(
+                        findNavController().navigate(
                             PaginationFragmentDirections.actionPaginationFragmentToDetailFragment(
                                 gson.toJson(this)
                             )
@@ -146,22 +153,18 @@ class PaginationFragment : BaseFragment() {
     }
 
     private fun FragmentPaginationBinding.stopAllShimmer() {
-        apply {
-            viewHelper.run {
-                shimmerPagination.stopShimmer()
-                shimmerPagination.hideShimmer()
-                shimmerPagination.gone()
-                rvPagination.visible()
-            }
+        viewHelper.run {
+            shimmerPagination.stopShimmer()
+            shimmerPagination.hideShimmer()
+            shimmerPagination.gone()
+            rvPagination.visible()
         }
     }
 
     private fun FragmentPaginationBinding.startAllShimmer() {
-        apply {
-            viewHelper.run {
-                shimmerPagination.visible()
-                shimmerPagination.startShimmer()
-            }
+        viewHelper.run {
+            shimmerPagination.visible()
+            shimmerPagination.startShimmer()
         }
     }
 }

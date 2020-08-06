@@ -1,13 +1,13 @@
 package com.junemon.places.di.component
 
-import com.junemon.places.di.module.PlaceConsumeModule
-import com.junemon.places.feature.detail.DetailFragment
-import com.junemon.places.feature.home.HomeFragment
-import com.junemon.places.feature.pagination.PaginationFragment
-import com.junemon.places.feature.search.SearchFragment
-import com.junemon.places.feature.upload.UploadFragment
+import com.junemon.travelingapps.di.module.PlaceModule
+import com.junemon.travelingapps.feature.detail.DetailFragment
+import com.junemon.travelingapps.feature.home.HomeFragment
+import com.junemon.travelingapps.feature.pagination.PaginationFragment
+import com.junemon.travelingapps.feature.search.SearchFragment
+import com.junemon.travelingapps.feature.upload.UploadFragment
 import com.junemon.core.di.scope.FeatureScope
-import com.junemon.places.di.module.PlaceHomeModule
+import com.junemon.travelingapps.di.module.PlaceHomeModule
 import com.junemon.travelingapps.di.ActivityComponent
 import dagger.Component
 
@@ -17,7 +17,7 @@ import dagger.Component
  * Indonesia.
  */
 @Component(
-    modules = [PlaceConsumeModule::class,PlaceHomeModule::class], dependencies = [ActivityComponent::class]
+    modules = [PlaceModule::class, PlaceHomeModule::class], dependencies = [ActivityComponent::class]
 )
 @FeatureScope
 interface PlacesComponent {

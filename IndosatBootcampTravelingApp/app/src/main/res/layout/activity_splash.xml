@@ -10,7 +10,6 @@
         android:id="@+id/splashImage"
         android:layout_width="350dp"
         android:layout_height="350dp"
-        android:transitionName="@string/transition_name"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
