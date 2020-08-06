@@ -15,9 +15,8 @@ import dagger.Provides
 object HomePagerAdapterModule {
 
     @Provides
-    fun provideHomeSliderAdapter(viewHelper: ViewHelper,loadImageHelper: LoadImageHelper): HomeSliderAdapter {
+    fun provideHomeSliderAdapter(loadImageHelper: LoadImageHelper): HomeSliderAdapter {
         return HomeSliderAdapter(
-            viewHelper,
             loadImageHelper
         )
     }

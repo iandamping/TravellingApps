@@ -10,26 +10,26 @@ import com.junemon.core.presentation.base.adapter.BaseKotlinListAdapter
 interface RecyclerHelper {
 
     fun <T> RecyclerView.setUpVerticalListAdapter(
-        items: List<T>?,
+        items: List<T>,
         diffUtil: DiffUtil.ItemCallback<T>,
         layoutResId: Int,
         bindHolder: View.(T) -> Unit,
         itemClick: T.() -> Unit = {},
         manager: RecyclerView.LayoutManager = LinearLayoutManager(this.context)
-    ): BaseKotlinListAdapter<T>?
+    ): BaseKotlinListAdapter<T>
 
     fun <T> RecyclerView.setUpVerticalGridAdapter(
-        items: List<T>?,
+        items: List<T>,
         diffUtil: DiffUtil.ItemCallback<T>,
         layoutResId: Int,
         gridSize: Int,
         bindHolder: View.(T) -> Unit,
         itemClick: T.() -> Unit = {},
         manager: RecyclerView.LayoutManager = GridLayoutManager(this.context, gridSize)
-    ): BaseKotlinListAdapter<T>?
+    ): BaseKotlinListAdapter<T>
 
     fun <T> RecyclerView.setUpHorizontalListAdapter(
-        items: List<T>?,
+        items: List<T>,
         diffUtil: DiffUtil.ItemCallback<T>,
         layoutResId: Int,
         bindHolder: View.(T) -> Unit,
@@ -38,5 +38,5 @@ interface RecyclerHelper {
             this.context, LinearLayoutManager.HORIZONTAL,
             false
         )
-    ): BaseKotlinListAdapter<T>?
+    ): BaseKotlinListAdapter<T>
 }

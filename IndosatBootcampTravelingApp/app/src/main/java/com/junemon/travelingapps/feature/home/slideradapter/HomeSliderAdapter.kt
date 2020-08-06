@@ -5,13 +5,8 @@ import android.view.ViewGroup
 import androidx.viewpager.widget.PagerAdapter
 import com.junemon.core.presentation.layoutInflater
 import com.junemon.core.presentation.util.interfaces.LoadImageHelper
-import com.junemon.core.presentation.util.interfaces.ViewHelper
 import com.junemon.model.presentation.PlaceCachePresentation
-import com.junemon.travelingapps.R
-import com.junemon.travelingapps.databinding.CustomLoadingBinding
-import com.junemon.travelingapps.databinding.FragmentPaginationBinding
 import com.junemon.travelingapps.databinding.ItemSliderBinding
-import kotlinx.android.synthetic.main.item_slider.view.*
 import javax.inject.Inject
 
 /**
@@ -20,26 +15,25 @@ import javax.inject.Inject
  * Indonesia.
  */
 class HomeSliderAdapter @Inject constructor(
-    // private val data: List<PlaceCachePresentation>,
-    private val viewHelper: ViewHelper,
     private val loadImageHelper: LoadImageHelper
 ) : PagerAdapter() {
-    private var data:List<PlaceCachePresentation> = mutableListOf()
+    private var data: MutableSet<PlaceCachePresentation> = mutableSetOf()
     private var _binding: ItemSliderBinding? = null
     private val binding get() = _binding!!
 
-
-
-    fun addData(passedData: List<PlaceCachePresentation>){
-        data = passedData.toMutableList()
+    fun addData(passedData: List<PlaceCachePresentation>) {
+        data.clear()
+        passedData.forEach {
+            data.add(it)
+        }
     }
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         _binding = ItemSliderBinding.inflate(container.context.layoutInflater)
 
-        loadImageHelper.run { binding.ivSliderImage.loadWithGlide(data[position].placePicture) }
-        binding.tvPlaceName.text = data[position].placeName
-        binding.tvPlaceAddress.text = data[position].placeAddres
+        loadImageHelper.run { binding.ivSliderImage.loadWithGlide(data.toList()[position].placePicture) }
+        binding.tvPlaceName.text = data.toList()[position].placeName
+        binding.tvPlaceAddress.text = data.toList()[position].placeAddres
         binding.ivSliderImage.setOnClickListener {
             // it.findNavController().navigate(MovieFragmentDirections.actionHomeFragmentToDetailMovieFragment(data[position].id!!))
         }
