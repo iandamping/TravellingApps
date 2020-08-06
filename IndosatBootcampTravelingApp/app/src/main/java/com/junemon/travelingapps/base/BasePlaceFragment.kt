@@ -78,7 +78,7 @@ abstract class BasePlaceFragment : DaggerFragment() {
         try {
             function.invoke()
         } catch (e: IllegalStateException) {
-            // commonHelper.timberLogE(e.message)
+            Timber.e(e)
         }
     }
 

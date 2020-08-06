@@ -12,7 +12,6 @@ import com.junemon.model.domain.DataHelper
 import com.junemon.model.domain.PlaceCacheData
 import com.junemon.model.domain.PlaceRemoteData
 import com.junemon.model.domain.Results
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -39,14 +38,8 @@ class PlaceRepositoryImpl @Inject constructor(
                 }
                 is DataHelper.RemoteSourceValue -> {
                     disposables.dispose()
-                    emitSource(
-                        cacheDataSource.getCache().map {
-                            check(it.isNotEmpty())
-                            Results.Success(it)
-                        }.catch {
-                            cacheDataSource.setCache(remoteData.data.mapRemoteToCacheDomain())
-                        }.asLiveData()
-                    )
+                    cacheDataSource.setCache(remoteData.data.mapRemoteToCacheDomain())
+                    emitSource(cacheDataSource.getCache().map { Results.Success(it) }.asLiveData())
                 }
             }
         }
@@ -67,14 +60,11 @@ class PlaceRepositoryImpl @Inject constructor(
                 }
                 is DataHelper.RemoteSourceValue -> {
                     disposables.dispose()
+                    cacheDataSource.setCache(remoteData.data.mapRemoteToCacheDomain())
                     emitSource(
-                        cacheDataSource.getSelectedTypeCache(placeType)
-                            .map {
-                                check(it.isNotEmpty())
-                                Results.Success(it)
-                            }.catch {
-                                cacheDataSource.setCache(remoteData.data.mapRemoteToCacheDomain())
-                            }.asLiveData()
+                        cacheDataSource.getSelectedTypeCache(placeType).map {
+                            Results.Success(it)
+                        }.asLiveData()
                     )
                 }
             }

@@ -123,7 +123,6 @@ class UploadFragment : BasePlaceFragment() {
             placeAddress.isBlank() -> commonHelper.run { etPlaceAddress.requestError(getString(R.string.place_address_checker)) }
             else -> {
                 ilegallStateCatching {
-                    checkNotNull(selectedUriForFirebase)
                     setDialogShow(false)
                     placeVm.uploadFirebaseData(
                         data = PlaceRemoteData(
