@@ -48,6 +48,10 @@
         <action
             android:id="@+id/action_uploadFragment_to_openCameraFragment"
             app:destination="@id/openCameraFragment" />
+        <argument
+            android:name="passedUri"
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
     <fragment
         android:id="@+id/detailFragment"
@@ -81,6 +85,13 @@
     </fragment>
     <fragment
         android:id="@+id/openCameraFragment"
+        tools:layout="@layout/fragment_open_camera"
         android:name="com.junemon.travelingapps.feature.camera.OpenCameraFragment"
-        android:label="OpenCameraFragment" />
+        android:label="OpenCameraFragment" >
+        <action
+            android:id="@+id/action_openCameraFragment_to_uploadFragment"
+            app:destination="@id/uploadFragment"
+            app:popUpTo="@id/uploadFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
 </navigation>

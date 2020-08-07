@@ -8,7 +8,6 @@ import javax.inject.Qualifier
  * Indonesia.
  */
 
-
 @Retention(AnnotationRetention.BINARY)
 @Qualifier
 annotation class CameraXFileDirectory

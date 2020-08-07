@@ -14,6 +14,7 @@ import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
+import androidx.navigation.fragment.findNavController
 import com.junemon.core.di.module.CameraXFileDirectory
 import com.junemon.travelingapps.base.BasePlaceFragment
 import com.junemon.travelingapps.databinding.FragmentOpenCameraBinding
@@ -77,8 +78,9 @@ class OpenCameraFragment : BasePlaceFragment() {
             imageCapture = ImageCapture.Builder()
                 .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
                 .build()
-            val cameraSelector =
-                CameraSelector.Builder().requireLensFacing(CameraSelector.LENS_FACING_BACK).build()
+
+
+            val cameraSelector = CameraSelector.Builder().requireLensFacing(CameraSelector.LENS_FACING_BACK).build()
 
             try {
                 // Unbind use cases before rebinding
@@ -86,7 +88,7 @@ class OpenCameraFragment : BasePlaceFragment() {
 
                 // Bind use cases to camera
                 camera = cameraProvider.bindToLifecycle(
-                    this, cameraSelector, preview, imageCapture
+                    viewLifecycleOwner, cameraSelector, preview, imageCapture
                 )
                 preview?.setSurfaceProvider(binding.viewFinder.createSurfaceProvider())
             } catch (exc: Exception) {
@@ -111,8 +113,8 @@ class OpenCameraFragment : BasePlaceFragment() {
 
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
                     val savedUri = Uri.fromFile(cameraXDirectory)
-                    val msg = "Photo capture succeeded: $savedUri"
-                    Timber.d(msg)
+                    findNavController().navigate(OpenCameraFragmentDirections
+                        .actionOpenCameraFragmentToUploadFragment(savedUri.toString()))
                 }
             })
     }

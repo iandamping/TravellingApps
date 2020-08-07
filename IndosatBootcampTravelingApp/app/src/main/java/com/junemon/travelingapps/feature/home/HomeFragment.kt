@@ -104,9 +104,8 @@ class HomeFragment : BasePlaceFragment() {
             )
         }
         btnCreate.setOnClickListener {
-
             findNavController()
-                .navigate(HomeFragmentDirections.actionHomeFragmentToUploadFragment())
+                .navigate(HomeFragmentDirections.actionHomeFragmentToUploadFragment(null))
         }
         lnSeeAllPlaceCultureType.setOnClickListener {
             findNavController().navigate(

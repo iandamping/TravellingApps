@@ -2,15 +2,20 @@ package com.junemon.travelingapps.feature.upload
 
 import android.app.AlertDialog
 import android.content.Intent
+import android.graphics.ImageDecoder
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.junemon.core.di.module.CameraXFileDirectory
 import com.junemon.core.presentation.PresentationConstant.RequestSelectGalleryImage
 import com.junemon.core.presentation.di.factory.viewModelProvider
 import com.junemon.core.presentation.util.interfaces.CommonHelper
@@ -18,10 +23,11 @@ import com.junemon.core.presentation.util.interfaces.ImageHelper
 import com.junemon.core.presentation.util.interfaces.PermissionHelper
 import com.junemon.core.presentation.util.interfaces.ViewHelper
 import com.junemon.model.domain.PlaceRemoteData
-import com.junemon.travelingapps.base.BasePlaceFragment
 import com.junemon.travelingapps.R
+import com.junemon.travelingapps.base.BasePlaceFragment
 import com.junemon.travelingapps.databinding.FragmentUploadBinding
 import com.junemon.travelingapps.vm.PlaceViewModel
+import java.io.File
 import javax.inject.Inject
 import kotlin.properties.Delegates
 
@@ -46,9 +52,14 @@ class UploadFragment : BasePlaceFragment() {
     private var _binding: FragmentUploadBinding? = null
     private val binding get() = _binding!!
 
-    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private lateinit var placeVm: PlaceViewModel
+
+    private val passedUri:String? by lazy {
+        UploadFragmentArgs.fromBundle(requireArguments()).passedUri
+    }
 
     private var isPermisisonGranted by Delegates.notNull<Boolean>()
     private var selectedUriForFirebase by Delegates.notNull<Uri>()
@@ -76,10 +87,28 @@ class UploadFragment : BasePlaceFragment() {
     }
 
     override fun activityCreated() {
-        ilegallArgumenCatching {
-            permissionHelper.getAllPermission(requireActivity()) {
-                isPermisisonGranted = it
+        permissionHelper.getAllPermission(requireActivity()) {
+            isPermisisonGranted = it
+        }
+
+        if (passedUri!=null){
+            val savedUri = Uri.parse(passedUri)
+            val bitmap = when {
+                Build.VERSION.SDK_INT < 28 -> MediaStore.Images.Media.getBitmap(
+                    requireContext().contentResolver,
+                    savedUri
+                )
+                else -> {
+                    val source = ImageDecoder.createSource(requireContext().contentResolver, savedUri)
+                    ImageDecoder.decodeBitmap(source)
+                }
             }
+            viewHelper.run {
+                binding.btnUnggahFoto.gone()
+                binding.tvInfoUpload.gone()
+                binding.ivPickPhoto.visible()
+            }
+            binding.ivPickPhoto.setImageBitmap(bitmap)
         }
     }
 
@@ -152,12 +181,11 @@ class UploadFragment : BasePlaceFragment() {
         universalCatching {
             require(status)
             val options = arrayOf("Buka Galeri", "Gunakan Kamera")
-            AlertDialog.Builder(context)
+            AlertDialog.Builder(requireContext())
                 .setItems(options) { dialog, which ->
                     when (which) {
                         0 -> imageHelper.openImageFromGallery(this)
                         1 -> {
-                            // imageHelper.openImageFromCamera(this)
                             findNavController().navigate(UploadFragmentDirections.actionUploadFragmentToOpenCameraFragment())
                         }
                     }
@@ -176,20 +204,6 @@ class UploadFragment : BasePlaceFragment() {
                     requireNotNull(data.data)
                     selectedUriForFirebase = data.data!!
                     val bitmap = imageHelper.getBitmapFromGallery(requireContext(), data.data!!)
-                    viewHelper.run {
-                        binding.btnUnggahFoto.gone()
-                        binding.tvInfoUpload.gone()
-                        binding.ivPickPhoto.visible()
-                    }
-                    binding.ivPickPhoto.setImageBitmap(bitmap)
-                }
-            } else {
-                ilegallStateCatching {
-                    val bitmap = imageHelper.decodeSampledBitmapFromFile(
-                        imageHelper.createImageFileFromPhoto(requireContext()) {
-                            selectedUriForFirebase = it
-                        }
-                    )
                     viewHelper.run {
                         binding.btnUnggahFoto.gone()
                         binding.tvInfoUpload.gone()
