@@ -24,10 +24,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".presentation.base.BaseActivity"
-            android:noHistory="true"
-            android:screenOrientation="portrait" />
 
         <activity
             android:name=".activity.MainActivity"

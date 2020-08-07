@@ -26,8 +26,9 @@
 
                     <ImageView
                         android:id="@+id/tbImageLogo"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:layout_margin="@dimen/spacing_small"
                         android:padding="@dimen/spacing_small"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"

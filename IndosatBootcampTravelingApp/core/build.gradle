@@ -77,6 +77,8 @@ dependencies {
     api  "com.google.firebase:firebase-core:$firebaseCoreVer"
     api "com.google.firebase:firebase-storage:$firebaseStorageVer"
     api "com.google.firebase:firebase-database:$firebaseDatabaseVer"
+    api "com.google.firebase:firebase-auth:$firebaseAuthVer"
+    api "com.firebaseui:firebase-ui-auth:$firebaseAuthUiVer"
     implementation "androidx.room:room-runtime:$room_version"
     api "androidx.room:room-ktx:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
