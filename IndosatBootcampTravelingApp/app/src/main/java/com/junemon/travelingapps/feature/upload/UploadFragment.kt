@@ -156,7 +156,10 @@ class UploadFragment : BasePlaceFragment() {
                 .setItems(options) { dialog, which ->
                     when (which) {
                         0 -> imageHelper.openImageFromGallery(this)
-                        1 -> imageHelper.openImageFromCamera(this)
+                        1 -> {
+                            // imageHelper.openImageFromCamera(this)
+                            findNavController().navigate(UploadFragmentDirections.actionUploadFragmentToOpenCameraFragment())
+                        }
                     }
                     dialog.dismiss()
                 }

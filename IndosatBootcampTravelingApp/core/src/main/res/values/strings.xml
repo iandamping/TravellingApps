@@ -1,4 +1,5 @@
 <resources>
+    <string name="app_name">Wonderful Samarinda</string>
     <string name="package_name">com.junemon.travelingapps.provider</string>
     <string name="uploading_image">Uploading your awesome image</string>
     <string name="downloading_image">Downloading your awesome image</string>

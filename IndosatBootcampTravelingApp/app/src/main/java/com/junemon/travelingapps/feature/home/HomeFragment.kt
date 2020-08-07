@@ -47,7 +47,8 @@ class HomeFragment : BasePlaceFragment() {
     @Inject
     lateinit var gson: Gson
 
-    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private lateinit var placeVm: PlaceViewModel
 
@@ -83,12 +84,12 @@ class HomeFragment : BasePlaceFragment() {
     override fun activityCreated() {
         placeVm.setRunningForever.observe(viewLifecycleOwner, Observer {
             viewLifecycleOwner.lifecycleScope.launchWhenCreated {
-                while(it) {
-                    if (currentPage == pageSize){
+                while (it) {
+                    if (currentPage == pageSize) {
                         currentPage = 0
                     }
                     delay(4000L)
-                    if (_binding!=null){
+                    if (_binding != null) {
                         binding.vpPlaceRandom.setCurrentItem(currentPage++, true)
                     }
                 }
@@ -99,7 +100,7 @@ class HomeFragment : BasePlaceFragment() {
     private fun FragmentHomeBinding.initView() {
         loadingImageHelper.run {
             tbImageLogo.loadWithGlide(
-                requireContext().resources.getDrawable( R.drawable.samarinda_logo,null)
+                requireContext().resources.getDrawable(R.drawable.samarinda_logo, null)
             )
         }
         btnCreate.setOnClickListener {
@@ -123,7 +124,6 @@ class HomeFragment : BasePlaceFragment() {
             )
         }
         btnSearchMain.setOnClickListener {
-
 
             findNavController()
                 .navigate(HomeFragmentDirections.actionHomeFragmentToSearchFragment())
@@ -163,7 +163,6 @@ class HomeFragment : BasePlaceFragment() {
             vpPlaceRandom.adapter = viewAdapter
             indicator.setViewPager(vpPlaceRandom)
 
-
         }
     }
 
@@ -189,7 +188,6 @@ class HomeFragment : BasePlaceFragment() {
                     },
                     layoutResId = R.layout.item_recyclerview, itemClick = {
 
-
                         findNavController().navigate(
                             HomeFragmentDirections.actionHomeFragmentToDetailFragment(
                                 gson.toJson(
@@ -208,7 +206,6 @@ class HomeFragment : BasePlaceFragment() {
                     },
                     layoutResId = R.layout.item_recyclerview, itemClick = {
 
-
                         findNavController().navigate(
                             HomeFragmentDirections.actionHomeFragmentToDetailFragment(
                                 gson.toJson(
@@ -226,7 +223,6 @@ class HomeFragment : BasePlaceFragment() {
                         tvItemPlaceDistrict.text = it?.placeDistrict
                     },
                     layoutResId = R.layout.item_recyclerview, itemClick = {
-
 
                         findNavController().navigate(
                             HomeFragmentDirections.actionHomeFragmentToDetailFragment(

@@ -5,6 +5,7 @@ import com.junemon.core.cache.di.DatabaseHelperModule
 import com.junemon.core.cache.di.DatabaseModule
 import com.junemon.core.data.di.CoroutineModule
 import com.junemon.core.data.di.DataModule
+import com.junemon.core.di.module.CameraXModule
 import com.junemon.core.di.module.GlideModule
 import com.junemon.core.domain.di.DomainModule
 import com.junemon.core.presentation.di.PresentationModule
@@ -37,7 +38,8 @@ import javax.inject.Singleton
         DatabaseHelperModule::class,
         RemoteHelperModule::class,
         PresentationModule::class,
-        GlideModule::class]
+        GlideModule::class,
+        CameraXModule::class]
 )
 interface AppComponent : AndroidInjector<PlaceApplication> {
 

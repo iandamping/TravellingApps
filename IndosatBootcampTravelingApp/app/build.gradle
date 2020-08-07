@@ -61,4 +61,5 @@ dependencies {
     implementation "androidx.activity:activity-ktx:1.1.0"
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
     kapt 'com.google.dagger:dagger-android-processor:2.28.3'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.4'
 }

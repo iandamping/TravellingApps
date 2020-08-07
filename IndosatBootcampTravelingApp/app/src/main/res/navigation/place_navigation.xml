@@ -44,7 +44,11 @@
         android:id="@+id/uploadFragment"
         android:name="com.junemon.travelingapps.feature.upload.UploadFragment"
         android:label="UploadFragment"
-        tools:layout="@layout/fragment_upload" />
+        tools:layout="@layout/fragment_upload" >
+        <action
+            android:id="@+id/action_uploadFragment_to_openCameraFragment"
+            app:destination="@id/openCameraFragment" />
+    </fragment>
     <fragment
         android:id="@+id/detailFragment"
         android:name="com.junemon.travelingapps.feature.detail.DetailFragment"
@@ -75,4 +79,8 @@
             android:id="@+id/action_searchFragment_to_detailFragment"
             app:destination="@id/detailFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/openCameraFragment"
+        android:name="com.junemon.travelingapps.feature.camera.OpenCameraFragment"
+        android:label="OpenCameraFragment" />
 </navigation>

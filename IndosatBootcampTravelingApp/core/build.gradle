@@ -88,4 +88,11 @@ dependencies {
     api 'com.google.dagger:dagger-android-support:2.28.3'
     kapt 'com.google.dagger:dagger-android-processor:2.28.3'
 
+    // CameraX core library using camera2 implementation
+    api "androidx.camera:camera-camera2:$camerax_version"
+    // CameraX Lifecycle Library
+    api "androidx.camera:camera-lifecycle:$camerax_version"
+    // CameraX View class
+    api "androidx.camera:camera-view:1.0.0-alpha13"
+
 }

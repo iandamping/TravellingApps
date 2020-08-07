@@ -3,6 +3,7 @@ package com.junemon.travelingapps.di.module
 import androidx.lifecycle.ViewModel
 import com.junemon.core.di.scope.FeatureScope
 import com.junemon.core.presentation.di.factory.ViewModelKey
+import com.junemon.travelingapps.feature.camera.OpenCameraFragment
 import com.junemon.travelingapps.feature.detail.DetailFragment
 import com.junemon.travelingapps.feature.home.HomeFragment
 import com.junemon.travelingapps.feature.pagination.PaginationFragment
@@ -41,6 +42,10 @@ abstract class PlaceModule {
     @FeatureScope
     @ContributesAndroidInjector
     abstract fun contributeUploadFragment(): UploadFragment
+
+    @FeatureScope
+    @ContributesAndroidInjector
+    abstract fun contributeOpenCameraFragment(): OpenCameraFragment
 
     @Binds
     @IntoMap
