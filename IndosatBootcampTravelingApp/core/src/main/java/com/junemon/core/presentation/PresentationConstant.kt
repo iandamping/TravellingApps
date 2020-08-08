@@ -25,23 +25,38 @@ object PresentationConstant {
             View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
             View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
 
+    /** Milliseconds used for UI animations */
+    const val ANIMATION_FAST_MILLIS = 50L
+    const val ANIMATION_SLOW_MILLIS = 100L
 
     val placeRvCallback = object : DiffUtil.ItemCallback<PlaceCachePresentation?>() {
-        override fun areItemsTheSame(oldItem: PlaceCachePresentation, newItem: PlaceCachePresentation): Boolean {
+        override fun areItemsTheSame(
+            oldItem: PlaceCachePresentation,
+            newItem: PlaceCachePresentation
+        ): Boolean {
             return oldItem.localPlaceID == newItem.localPlaceID
         }
 
-        override fun areContentsTheSame(oldItem: PlaceCachePresentation, newItem: PlaceCachePresentation): Boolean {
+        override fun areContentsTheSame(
+            oldItem: PlaceCachePresentation,
+            newItem: PlaceCachePresentation
+        ): Boolean {
             return oldItem == newItem
         }
     }
 
     val placePaginationRvCallback = object : DiffUtil.ItemCallback<PlaceCachePresentation>() {
-        override fun areItemsTheSame(oldItem: PlaceCachePresentation, newItem: PlaceCachePresentation): Boolean {
+        override fun areItemsTheSame(
+            oldItem: PlaceCachePresentation,
+            newItem: PlaceCachePresentation
+        ): Boolean {
             return oldItem.localPlaceID == newItem.localPlaceID
         }
 
-        override fun areContentsTheSame(oldItem: PlaceCachePresentation, newItem: PlaceCachePresentation): Boolean {
+        override fun areContentsTheSame(
+            oldItem: PlaceCachePresentation,
+            newItem: PlaceCachePresentation
+        ): Boolean {
             return oldItem == newItem
         }
     }

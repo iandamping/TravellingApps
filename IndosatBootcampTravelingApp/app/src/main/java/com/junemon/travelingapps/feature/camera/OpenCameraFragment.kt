@@ -2,7 +2,10 @@ package com.junemon.travelingapps.feature.camera
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +19,8 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import com.junemon.core.di.module.CameraXFileDirectory
+import com.junemon.core.presentation.PresentationConstant.ANIMATION_FAST_MILLIS
+import com.junemon.core.presentation.PresentationConstant.ANIMATION_SLOW_MILLIS
 import com.junemon.travelingapps.base.BasePlaceFragment
 import com.junemon.travelingapps.databinding.FragmentOpenCameraBinding
 import timber.log.Timber
@@ -30,6 +35,7 @@ import javax.inject.Inject
 class OpenCameraFragment : BasePlaceFragment() {
     private val REQUEST_CODE_PERMISSIONS = 10
     private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
+    private var lensFacing: Int = CameraSelector.LENS_FACING_BACK
 
     @Inject
     @CameraXFileDirectory
@@ -55,6 +61,10 @@ class OpenCameraFragment : BasePlaceFragment() {
         binding.cameraCaptureButton.setOnClickListener {
             takePhoto()
         }
+        binding.cameraSwitchButton.setOnClickListener {
+            lensFacing = isCameraFacingBackOrFront()
+            bindCameraUseCases()
+        }
     }
 
     override fun destroyView() {
@@ -63,15 +73,14 @@ class OpenCameraFragment : BasePlaceFragment() {
 
     override fun activityCreated() {
         if (allPermissionsGranted()) {
-            startCamera()
+            bindCameraUseCases()
         } else {
             requestPermissions(REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS)
         }
     }
 
-    private fun startCamera() {
+    private fun bindCameraUseCases() {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext())
-
         cameraProviderFuture.addListener(Runnable {
             val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
             preview = Preview.Builder().build()
@@ -79,8 +88,8 @@ class OpenCameraFragment : BasePlaceFragment() {
                 .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
                 .build()
 
-
-            val cameraSelector = CameraSelector.Builder().requireLensFacing(CameraSelector.LENS_FACING_BACK).build()
+            val cameraSelector =
+                CameraSelector.Builder().requireLensFacing(lensFacing).build()
 
             try {
                 // Unbind use cases before rebinding
@@ -113,11 +122,37 @@ class OpenCameraFragment : BasePlaceFragment() {
 
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
                     val savedUri = Uri.fromFile(cameraXDirectory)
-                    findNavController().navigate(OpenCameraFragmentDirections
-                        .actionOpenCameraFragmentToUploadFragment(savedUri.toString()))
+                    findNavController().navigate(
+                        OpenCameraFragmentDirections
+                            .actionOpenCameraFragmentToUploadFragment(savedUri.toString())
+                    )
                 }
             })
+
+        // We can only change the foreground Drawable using API level 23+ API
+        flashAnimationAfterTakingPicture()
     }
+
+    private fun flashAnimationAfterTakingPicture() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            // Display flash animation to indicate that photo was captured
+            binding.root.run {
+                postDelayed({
+                    foreground = ColorDrawable(Color.WHITE)
+                    postDelayed({ foreground = null }, ANIMATION_FAST_MILLIS
+                    )
+                }, ANIMATION_SLOW_MILLIS)
+            }
+        }
+    }
+
+    private fun isCameraFacingBackOrFront(): Int =
+        if (CameraSelector.LENS_FACING_FRONT == lensFacing) {
+            CameraSelector.LENS_FACING_BACK
+        } else {
+            CameraSelector.LENS_FACING_FRONT
+        }
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
         ContextCompat.checkSelfPermission(requireContext(), it) == PackageManager.PERMISSION_GRANTED

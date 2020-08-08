@@ -15,6 +15,7 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.junemon.core.di.module.CameraXFileDirectory
 import com.junemon.core.presentation.PresentationConstant.RequestSelectGalleryImage
 import com.junemon.core.presentation.di.factory.viewModelProvider
@@ -57,8 +58,11 @@ class UploadFragment : BasePlaceFragment() {
 
     private lateinit var placeVm: PlaceViewModel
 
+    /** AndroidX navigation arguments */
+    private val args: UploadFragmentArgs by navArgs()
+
     private val passedUri:String? by lazy {
-        UploadFragmentArgs.fromBundle(requireArguments()).passedUri
+        args.passedUri
     }
 
     private var isPermisisonGranted by Delegates.notNull<Boolean>()

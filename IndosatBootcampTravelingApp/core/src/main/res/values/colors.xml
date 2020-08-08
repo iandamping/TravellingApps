@@ -25,7 +25,9 @@
     <color name="textviewr_bg">#F1F6F7</color>
     <color name="pure_white">#FFFF</color>
 
-
+    <color name="icActive">#FFFFFFFF</color>
+    <color name="icFocused">#DDFFFFFF</color>
+    <color name="icPressed">#AAFFFFFF</color>
 
 
 </resources>
