@@ -4,8 +4,11 @@ import android.os.Bundle
 import android.view.Window
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import com.junemon.core.presentation.PresentationConstant.FLAGS_FULLSCREEN
 import com.junemon.travelingapps.databinding.ActivityMainBinding
 import dagger.android.support.DaggerAppCompatActivity
+
+private const val IMMERSIVE_FLAG_TIMEOUT = 500L
 
 class MainActivity : DaggerAppCompatActivity() {
 
@@ -13,12 +16,16 @@ class MainActivity : DaggerAppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        this.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        this.window.setFlags(
-            WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN
-        )
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Before setting full screen flags, we must wait a bit to let UI settle; otherwise, we may
+        // be trying to set app to immersive mode before it's ready and the flags do not stick
+        binding.root.postDelayed({
+            binding.root.systemUiVisibility = FLAGS_FULLSCREEN
+        }, IMMERSIVE_FLAG_TIMEOUT)
     }
 }

@@ -49,9 +49,18 @@ class RemoteHelperImpl @Inject constructor(
 
             override fun onDataChange(p0: DataSnapshot) {
                 container.clear()
-                p0.children.forEach {
-                    container.add(it.getValue(PlaceRemoteEntity::class.java)!!)
+                p0.children.map {
+                   it.getValue(PlaceRemoteEntity::class.java)
+                }.forEach {
+                    if(it !=null){
+                        container.add(it)
+                    }else{
+                        if (!channel.isClosedForSend) {
+                            channel.offer(DataHelper.RemoteSourceError(Exception("Null")))
+                        }
+                    }
                 }
+
                 if (!channel.isClosedForSend) {
                     channel.offer(customSuccess(container.toList().mapToRemoteDomain()))
                 }
@@ -72,8 +81,16 @@ class RemoteHelperImpl @Inject constructor(
 
                 override fun onDataChange(p0: DataSnapshot) {
                     container.clear()
-                    p0.children.forEach {
-                        container.add(it.getValue(PlaceRemoteEntity::class.java)!!)
+                    p0.children.map {
+                        it.getValue(PlaceRemoteEntity::class.java)
+                    }.forEach {
+                        if(it !=null){
+                            container.add(it)
+                        }else{
+                            if (!channel.isClosedForSend) {
+                                channel.offer(DataHelper.RemoteSourceError(Exception("Null")))
+                            }
+                        }
                     }
                     result.complete(customSuccess(container.toList().mapToRemoteDomain()))
                 }

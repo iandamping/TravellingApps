@@ -24,6 +24,8 @@ import com.junemon.travelingapps.feature.home.slideradapter.HomeSliderAdapter
 import com.junemon.travelingapps.vm.PlaceViewModel
 import kotlinx.android.synthetic.main.item_recyclerview.view.*
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -77,9 +79,12 @@ class HomeFragment : BasePlaceFragment() {
     }
 
     override fun destroyView() {
+        fireSignOut()
         placeVm.stopRunningViewPager()
         _binding = null
     }
+
+
 
     override fun activityCreated() {
         placeVm.setRunningForever.observe(viewLifecycleOwner, Observer {
@@ -95,6 +100,20 @@ class HomeFragment : BasePlaceFragment() {
                 }
             }
         })
+
+        // placeVm.getUserProfile().observe(viewLifecycleOwner, Observer {userResult ->
+        //     when(userResult){
+        //         is Results.Success ->{
+        //             if (userResult.data.getDisplayName() ==null){
+        //                 fireSignIn()
+        //             }
+        //            Timber.e("name ${ userResult.data.getDisplayName()}")
+        //         }
+        //         is Results.Error ->{
+        //             Timber.e("name ${ userResult.exception}")
+        //         }
+        //     }
+        // })
     }
 
     private fun FragmentHomeBinding.initView() {
@@ -273,6 +292,24 @@ class HomeFragment : BasePlaceFragment() {
 
             shimmerReligiusType.visible()
             shimmerReligiusType.startShimmer()
+        }
+    }
+
+    private fun fireSignIn() {
+        lifecycleScope.launch {
+            val signInIntent = placeVm.initSignIn()
+            startActivityForResult(
+                signInIntent,
+                15
+            )
+        }
+    }
+
+    private fun fireSignOut() {
+        lifecycleScope.launch {
+            placeVm.initLogout {
+                Timber.e("success logout")
+            }
         }
     }
 }

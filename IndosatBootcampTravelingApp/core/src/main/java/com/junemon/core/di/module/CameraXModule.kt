@@ -21,7 +21,7 @@ object CameraXModule {
             File(it, context.resources.getString(R.string.app_name)).apply { mkdirs() }
         }
         val cameraXDir = if (mediaDir != null && mediaDir.exists())
-            mediaDir else context.filesDir
+            mediaDir else context.applicationContext.filesDir
 
         return File(
             cameraXDir, "Places.jpg"

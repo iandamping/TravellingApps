@@ -7,8 +7,6 @@ open class FirebaseUserInfo(
     private val firebaseUser: FirebaseUser?
 ) : AuthenticatedUserInfo {
 
-    override fun isSignedIn(): Boolean = firebaseUser != null
-
     override fun getEmail(): String? = firebaseUser?.email
 
     override fun getDisplayName(): String? = firebaseUser?.displayName

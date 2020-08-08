@@ -7,6 +7,7 @@ import com.junemon.core.remote.util.firebaseuser.AuthenticatedUserInfo
 import com.junemon.model.domain.DataHelper
 import com.junemon.model.domain.Results
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -21,13 +22,13 @@ class ProfileRepositoryImpl @Inject constructor(private val remoteDataSource: Pr
 
     override fun getUserProfile(): Flow<Results<AuthenticatedUserInfo>> {
         return flow {
-            remoteDataSource.getUserProfile().map { userResult ->
+            emitAll(remoteDataSource.getUserProfile().map { userResult ->
                 if (userResult is DataHelper.RemoteSourceValue){
-                    emit(Results.Success(userResult.data))
+                    Results.Success(userResult.data)
                 } else{
-                    emit(Results.Error(Exception("FirebaseAuth error"),null))
+                    Results.Error(Exception("FirebaseAuth error"),null)
                 }
-            }
+            })
         }
     }
 

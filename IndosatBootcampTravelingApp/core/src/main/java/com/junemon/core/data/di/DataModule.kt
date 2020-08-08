@@ -34,5 +34,5 @@ abstract class DataModule {
     abstract fun bindsPlaceRepository(placeRepositoryImpl: PlaceRepositoryImpl): PlaceRepository
 
     @Binds
-    abstract fun bindsPlaceRepository(profileRepositoryImpl: ProfileRepositoryImpl): ProfileRepository
+    abstract fun bindsProfileRepository(profileRepositoryImpl: ProfileRepositoryImpl): ProfileRepository
 }

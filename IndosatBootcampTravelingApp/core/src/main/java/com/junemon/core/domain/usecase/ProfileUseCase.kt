@@ -1,10 +1,11 @@
 package com.junemon.core.domain.usecase
 
 import android.content.Intent
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.asLiveData
 import com.junemon.core.domain.repository.ProfileRepository
 import com.junemon.core.remote.util.firebaseuser.AuthenticatedUserInfo
 import com.junemon.model.domain.Results
-import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 /**
@@ -14,7 +15,7 @@ import javax.inject.Inject
  */
 class ProfileUseCase @Inject constructor(private val repository: ProfileRepository) {
 
-    fun getUserProfile(): Flow<Results<AuthenticatedUserInfo>> = repository.getUserProfile()
+    fun getUserProfile(): LiveData<Results<AuthenticatedUserInfo>> = repository.getUserProfile().asLiveData()
 
     suspend fun initSignIn(): Intent = repository.initSignIn()
 

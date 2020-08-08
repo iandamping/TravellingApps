@@ -18,13 +18,10 @@ abstract class ActivityBindingModule {
     @ContributesAndroidInjector
     abstract fun splashActivity(): SplashActivity
 
-
     @PerActivities
     @ContributesAndroidInjector(
         modules = [  // fragments
             PlaceModule::class]
     )
     abstract fun mainActivity(): MainActivity
-    
-
 }
