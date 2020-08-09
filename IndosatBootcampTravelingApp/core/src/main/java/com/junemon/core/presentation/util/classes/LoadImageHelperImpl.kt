@@ -3,12 +3,21 @@ package com.junemon.core.presentation.util.classes
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.widget.ImageView
+import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.request.RequestOptions
+import com.junemon.core.data.di.IoDispatcher
+import com.junemon.core.data.di.MainDispatcher
 import com.junemon.core.presentation.util.interfaces.LoadImageHelper
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.withContext
+import java.io.File
 import javax.inject.Inject
 
 class LoadImageHelperImpl @Inject constructor(
+    @MainDispatcher private val mainDispatcher: CoroutineDispatcher,
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
+    private val glideInstance:Glide,
     private val requestManager: RequestManager,
     private val requestOptions: RequestOptions
 ) :
@@ -36,6 +45,18 @@ class LoadImageHelperImpl @Inject constructor(
     }
 
     override fun ImageView.loadWithGlide(bitmap: Bitmap) {
-        requestManager.load(drawable).into(this)
+        requestManager.load(bitmap).into(this)
+    }
+
+    override fun ImageView.loadWithGlide(file: File) {
+        requestManager.load(file).into(this)
+    }
+
+    override suspend fun clearMemory() = withContext(mainDispatcher){
+        glideInstance.clearMemory()
+    }
+
+    override suspend fun clearDiskCache()  = withContext(ioDispatcher){
+        glideInstance.clearDiskCache()
     }
 }

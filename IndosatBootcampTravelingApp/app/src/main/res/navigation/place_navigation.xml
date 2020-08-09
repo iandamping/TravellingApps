@@ -93,5 +93,18 @@
             app:destination="@id/uploadFragment"
             app:popUpTo="@id/uploadFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_openCameraFragment_to_selectImageFragment"
+            app:destination="@id/selectImageFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/selectImageFragment"
+        android:name="com.junemon.travelingapps.feature.camera.SelectImageFragment"
+        android:label="SelectImageFragment" >
+        <action
+            android:id="@+id/action_selectImageFragment_to_uploadFragment"
+            app:destination="@id/uploadFragment"
+            app:popUpTo="@id/uploadFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>

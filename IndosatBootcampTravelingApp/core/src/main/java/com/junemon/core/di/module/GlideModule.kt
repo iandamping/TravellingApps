@@ -19,6 +19,12 @@ object GlideModule {
 
     @Provides
     @JvmStatic
+    fun provideGlide(context: Application):Glide{
+        return Glide.get(context)
+    }
+
+    @Provides
+    @JvmStatic
     fun provideGlideRequestManager(context: Application):RequestManager{
         return Glide.with(context)
     }

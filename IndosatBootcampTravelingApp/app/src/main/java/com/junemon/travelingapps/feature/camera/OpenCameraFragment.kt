@@ -4,12 +4,15 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.MimeTypeMap
 import androidx.camera.core.Camera
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
@@ -17,6 +20,7 @@ import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
+import androidx.core.net.toFile
 import androidx.navigation.fragment.findNavController
 import com.junemon.core.di.module.CameraXFileDirectory
 import com.junemon.core.presentation.PresentationConstant.ANIMATION_FAST_MILLIS
@@ -121,10 +125,27 @@ class OpenCameraFragment : BasePlaceFragment() {
                 }
 
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
-                    val savedUri = Uri.fromFile(cameraXDirectory)
+                    // val savedUri = Uri.fromFile(cameraXDirectory)
+
+
+                    // If the folder selected is an external media directory, this is
+                    // unnecessary but otherwise other apps will not be able to access our
+                    // images unless we scan them using [MediaScannerConnection]
+                    
+                    // val mimeType = MimeTypeMap.getSingleton()
+                    //     .getMimeTypeFromExtension(savedUri.toFile().extension)
+                    // MediaScannerConnection.scanFile(
+                    //     context,
+                    //     arrayOf(savedUri.toString()),
+                    //     arrayOf(mimeType)
+                    // ) { _, uri ->
+                    //    Timber.e("Image capture scanned into media store: $uri")
+                    // }
+
+
                     findNavController().navigate(
                         OpenCameraFragmentDirections
-                            .actionOpenCameraFragmentToUploadFragment(savedUri.toString())
+                            .actionOpenCameraFragmentToSelectImageFragment()
                     )
                 }
             })
