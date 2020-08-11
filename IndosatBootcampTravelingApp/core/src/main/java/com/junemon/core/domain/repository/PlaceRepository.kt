@@ -13,7 +13,9 @@ import kotlinx.coroutines.flow.Flow
  */
 interface PlaceRepository {
 
-    fun getCacheOneShot(): Flow<Results<List<PlaceCacheData>>>
+    fun getRemote(): Flow<Results<List<PlaceCacheData>>>
+
+    fun getRemoteOneShot(): Flow<Results<List<PlaceCacheData>>>
 
     fun getCache(): Flow<Results<List<PlaceCacheData>>>
 

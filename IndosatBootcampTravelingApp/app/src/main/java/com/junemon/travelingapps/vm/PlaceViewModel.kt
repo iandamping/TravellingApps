@@ -42,6 +42,8 @@ class PlaceViewModel @Inject constructor(private val repository: PlaceUseCase,
 
     fun getCache(): LiveData<Results<List<PlaceCacheData>>> = repository.getCache()
 
+    fun getRemote(): LiveData<Results<List<PlaceCacheData>>> = repository.getRemote()
+
     fun getSelectedTypeCache(placeType: String): LiveData<Results<List<PlaceCacheData>>> =
         repository.getSelectedTypeCache(placeType)
 

@@ -148,7 +148,7 @@ class HomeFragment : BasePlaceFragment() {
     }
 
     private fun FragmentHomeBinding.initData() {
-        placeVm.getCache().observe(viewLifecycleOwner, Observer { result ->
+        placeVm.getRemote().observe(viewLifecycleOwner, Observer { result ->
             when (result) {
                 is Results.Success -> {
                     stopAllShimmer()
