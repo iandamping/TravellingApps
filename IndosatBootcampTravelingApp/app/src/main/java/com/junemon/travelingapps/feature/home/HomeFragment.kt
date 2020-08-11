@@ -79,7 +79,6 @@ class HomeFragment : BasePlaceFragment() {
     }
 
     override fun destroyView() {
-        fireSignOut()
         placeVm.stopRunningViewPager()
         _binding = null
     }
@@ -257,40 +256,45 @@ class HomeFragment : BasePlaceFragment() {
 
     private fun FragmentHomeBinding.stopAllShimmer() {
         viewHelper.run {
-            shimmerSlider.stopShimmer()
-            shimmerSlider.hideShimmer()
+            stopShimmer()
             shimmerSlider.gone()
-            vpPlaceRandom.visible()
-
-            shimmerCultureType.stopShimmer()
-            shimmerCultureType.hideShimmer()
             shimmerCultureType.gone()
-            rvPlaceCultureType.visible()
-
-            shimmerNatureType.stopShimmer()
-            shimmerNatureType.hideShimmer()
             shimmerNatureType.gone()
-            rvPlaceNatureType.visible()
-
-            shimmerReligiusType.stopShimmer()
-            shimmerReligiusType.hideShimmer()
             shimmerReligiusType.gone()
+            vpPlaceRandom.visible()
+            rvPlaceCultureType.visible()
+            rvPlaceNatureType.visible()
             rvPlaceReligiusType.visible()
         }
     }
 
     private fun FragmentHomeBinding.startAllShimmer() {
         viewHelper.run {
+            startShimmer()
             shimmerSlider.visible()
-            shimmerSlider.startShimmer()
-
             shimmerCultureType.visible()
-            shimmerCultureType.startShimmer()
-
             shimmerNatureType.visible()
-            shimmerNatureType.startShimmer()
-
             shimmerReligiusType.visible()
+        }
+    }
+
+    private fun FragmentHomeBinding.stopShimmer(){
+        binding.run {
+            shimmerSlider.stopShimmer()
+            shimmerSlider.hideShimmer()
+            shimmerCultureType.stopShimmer()
+            shimmerCultureType.hideShimmer()
+            shimmerNatureType.stopShimmer()
+            shimmerNatureType.hideShimmer()
+            shimmerReligiusType.stopShimmer()
+            shimmerReligiusType.hideShimmer()
+        }
+    }
+    private fun FragmentHomeBinding.startShimmer(){
+        binding.run{
+            shimmerSlider.startShimmer()
+            shimmerCultureType.startShimmer()
+            shimmerNatureType.startShimmer()
             shimmerReligiusType.startShimmer()
         }
     }

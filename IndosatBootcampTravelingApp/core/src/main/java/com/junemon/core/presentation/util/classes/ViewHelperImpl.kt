@@ -15,7 +15,7 @@ import javax.inject.Inject
  * Indonesia.
  */
 class ViewHelperImpl @Inject constructor() : ViewHelper {
-    override fun View.visible(animated: Boolean = false) {
+    override fun View.visible(animated: Boolean) {
         visibility = View.VISIBLE
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && animated) {
             alpha = 0f
@@ -26,7 +26,7 @@ class ViewHelperImpl @Inject constructor() : ViewHelper {
         }
     }
 
-    override fun View.gone(animated: Boolean = false) {
+    override fun View.gone(animated: Boolean) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && animated) {
             alpha = 1f
             animate()
