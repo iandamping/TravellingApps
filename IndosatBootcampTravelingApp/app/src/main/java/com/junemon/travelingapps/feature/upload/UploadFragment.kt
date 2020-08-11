@@ -1,7 +1,9 @@
 package com.junemon.travelingapps.feature.upload
 
+import android.Manifest
 import android.app.AlertDialog
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
@@ -12,10 +14,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.snackbar.Snackbar
 import com.junemon.core.di.module.CameraXFileDirectory
 import com.junemon.core.presentation.PresentationConstant.RequestSelectGalleryImage
 import com.junemon.core.presentation.di.factory.viewModelProvider
@@ -53,6 +57,9 @@ class UploadFragment : BasePlaceFragment() {
     private var _binding: FragmentUploadBinding? = null
     private val binding get() = _binding!!
 
+    private val REQUEST_CODE_PERMISSIONS = 10
+    private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
+
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
@@ -65,10 +72,14 @@ class UploadFragment : BasePlaceFragment() {
         args.passedUri
     }
 
-    private var isPermisisonGranted by Delegates.notNull<Boolean>()
+    private var isPermisisonGranted:Boolean = false
     private var selectedUriForFirebase by Delegates.notNull<Uri>()
     private var placeType by Delegates.notNull<String>()
     private var placeCity by Delegates.notNull<String>()
+
+    private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
+        ContextCompat.checkSelfPermission(requireContext(), it) == PackageManager.PERMISSION_GRANTED
+    }
 
     override fun createView(
         inflater: LayoutInflater,
@@ -91,10 +102,6 @@ class UploadFragment : BasePlaceFragment() {
     }
 
     override fun activityCreated() {
-        permissionHelper.getAllPermission(requireActivity()) {
-            isPermisisonGranted = it
-        }
-
         if (passedUri!=null){
             val savedUri = Uri.parse(passedUri)
             val bitmap = when {
@@ -133,8 +140,13 @@ class UploadFragment : BasePlaceFragment() {
         arrayDistrictSpinnerAdapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
         btnUnggahFoto.setOnClickListener {
-            openGalleryAndCamera(isPermisisonGranted)
+            if (allPermissionsGranted()) {
+                openGalleryAndCamera()
+            } else {
+                requestPermissions(REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS)
+            }
         }
+
         btnUnggah.setOnClickListener {
             uploadItem()
         }
@@ -181,9 +193,8 @@ class UploadFragment : BasePlaceFragment() {
         findNavController().navigateUp()
     }
 
-    private fun openGalleryAndCamera(status: Boolean) {
+    private fun openGalleryAndCamera() {
         universalCatching {
-            require(status)
             val options = arrayOf("Buka Galeri", "Gunakan Kamera")
             AlertDialog.Builder(requireContext())
                 .setItems(options) { dialog, which ->
@@ -215,6 +226,27 @@ class UploadFragment : BasePlaceFragment() {
                     }
                     binding.ivPickPhoto.setImageBitmap(bitmap)
                 }
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == REQUEST_CODE_PERMISSIONS) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                isPermisisonGranted = grantResults[0] == PackageManager.PERMISSION_GRANTED
+                openGalleryAndCamera()
+            } else {
+                isPermisisonGranted = false
+                Snackbar.make(
+                    binding.root,
+                    getString(R.string.permission_not_granted),
+                    Snackbar.LENGTH_SHORT
+                ).show()
             }
         }
     }

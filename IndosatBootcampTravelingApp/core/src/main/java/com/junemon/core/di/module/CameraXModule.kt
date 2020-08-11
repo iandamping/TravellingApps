@@ -2,6 +2,8 @@ package com.junemon.core.di.module
 
 import android.app.Application
 import com.junemon.core.R
+import com.junemon.core.presentation.PresentationConstant.FILENAME
+import com.junemon.core.presentation.PresentationConstant.PHOTO_EXTENSION
 import dagger.Module
 import dagger.Provides
 import java.io.File
@@ -24,7 +26,7 @@ object CameraXModule {
             mediaDir else context.applicationContext.filesDir
 
         return File(
-            cameraXDir, "Places.jpg"
+            cameraXDir, "$FILENAME$PHOTO_EXTENSION"
         )
     }
 }

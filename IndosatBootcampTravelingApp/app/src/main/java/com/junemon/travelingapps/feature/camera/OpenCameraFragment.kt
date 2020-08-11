@@ -37,8 +37,6 @@ import javax.inject.Inject
  * Indonesia.
  */
 class OpenCameraFragment : BasePlaceFragment() {
-    private val REQUEST_CODE_PERMISSIONS = 10
-    private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
     private var lensFacing: Int = CameraSelector.LENS_FACING_BACK
 
     @Inject
@@ -76,11 +74,7 @@ class OpenCameraFragment : BasePlaceFragment() {
     }
 
     override fun activityCreated() {
-        if (allPermissionsGranted()) {
-            bindCameraUseCases()
-        } else {
-            requestPermissions(REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS)
-        }
+        bindCameraUseCases()
     }
 
     private fun bindCameraUseCases() {
@@ -133,7 +127,7 @@ class OpenCameraFragment : BasePlaceFragment() {
             })
 
         // We can only change the foreground Drawable using API level 23+ API
-        flashAnimationAfterTakingPicture()
+        // flashAnimationAfterTakingPicture()
     }
 
     private fun flashAnimationAfterTakingPicture() {
@@ -157,7 +151,4 @@ class OpenCameraFragment : BasePlaceFragment() {
             CameraSelector.LENS_FACING_FRONT
         }
 
-    private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
-        ContextCompat.checkSelfPermission(requireContext(), it) == PackageManager.PERMISSION_GRANTED
-    }
 }

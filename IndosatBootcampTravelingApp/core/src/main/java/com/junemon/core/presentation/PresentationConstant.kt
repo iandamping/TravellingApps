@@ -19,6 +19,9 @@ object PresentationConstant {
     const val RequestSelectGalleryImage = 102
     const val RequestOpenCamera = 234
 
+    const val FILENAME = "Places"
+    const val PHOTO_EXTENSION = ".jpg"
+
     /** Combination of all flags required to put activity into immersive mode */
     const val FLAGS_FULLSCREEN =
         View.SYSTEM_UI_FLAG_LOW_PROFILE or
