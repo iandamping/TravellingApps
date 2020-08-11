@@ -10,9 +10,9 @@ import android.view.ViewGroup
  */
 interface ViewHelper {
 
-    fun View.visible()
+    fun View.visible(animated: Boolean = false)
 
-    fun View.gone()
+    fun View.gone(animated: Boolean = false)
 
     fun ViewGroup.inflates(layout: Int): View
 }

@@ -125,24 +125,6 @@ class OpenCameraFragment : BasePlaceFragment() {
                 }
 
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
-                    // val savedUri = Uri.fromFile(cameraXDirectory)
-
-
-                    // If the folder selected is an external media directory, this is
-                    // unnecessary but otherwise other apps will not be able to access our
-                    // images unless we scan them using [MediaScannerConnection]
-                    
-                    // val mimeType = MimeTypeMap.getSingleton()
-                    //     .getMimeTypeFromExtension(savedUri.toFile().extension)
-                    // MediaScannerConnection.scanFile(
-                    //     context,
-                    //     arrayOf(savedUri.toString()),
-                    //     arrayOf(mimeType)
-                    // ) { _, uri ->
-                    //    Timber.e("Image capture scanned into media store: $uri")
-                    // }
-
-
                     findNavController().navigate(
                         OpenCameraFragmentDirections
                             .actionOpenCameraFragmentToSelectImageFragment()
