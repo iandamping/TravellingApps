@@ -1,7 +1,7 @@
 package com.junemon.travelingapps.di.module
 
+import com.google.gson.Gson
 import com.junemon.core.presentation.util.interfaces.LoadImageHelper
-import com.junemon.core.presentation.util.interfaces.ViewHelper
 import com.junemon.travelingapps.feature.home.slideradapter.HomeSliderAdapter
 import dagger.Module
 import dagger.Provides
@@ -15,9 +15,10 @@ import dagger.Provides
 object HomePagerAdapterModule {
 
     @Provides
-    fun provideHomeSliderAdapter(loadImageHelper: LoadImageHelper): HomeSliderAdapter {
+    fun provideHomeSliderAdapter(loadImageHelper: LoadImageHelper, gson: Gson): HomeSliderAdapter {
         return HomeSliderAdapter(
-            loadImageHelper
+            gson = gson,
+            loadImageHelper = loadImageHelper
         )
     }
 }

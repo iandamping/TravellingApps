@@ -2,11 +2,14 @@ package com.junemon.travelingapps.feature.home.slideradapter
 
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.findNavController
 import androidx.viewpager.widget.PagerAdapter
+import com.google.gson.Gson
 import com.junemon.core.presentation.layoutInflater
 import com.junemon.core.presentation.util.interfaces.LoadImageHelper
 import com.junemon.model.presentation.PlaceCachePresentation
 import com.junemon.travelingapps.databinding.ItemSliderBinding
+import com.junemon.travelingapps.feature.home.HomeFragmentDirections
 import javax.inject.Inject
 
 /**
@@ -15,7 +18,8 @@ import javax.inject.Inject
  * Indonesia.
  */
 class HomeSliderAdapter @Inject constructor(
-    private val loadImageHelper: LoadImageHelper
+    private val loadImageHelper: LoadImageHelper,
+    private val gson: Gson
 ) : PagerAdapter() {
     private var data: MutableSet<PlaceCachePresentation> = mutableSetOf()
     private var _binding: ItemSliderBinding? = null
@@ -35,7 +39,13 @@ class HomeSliderAdapter @Inject constructor(
         binding.tvPlaceName.text = data.toList()[position].placeName
         binding.tvPlaceAddress.text = data.toList()[position].placeAddres
         binding.ivSliderImage.setOnClickListener {
-            // it.findNavController().navigate(MovieFragmentDirections.actionHomeFragmentToDetailMovieFragment(data[position].id!!))
+            it.findNavController().navigate(
+                HomeFragmentDirections.actionHomeFragmentToDetailFragment(
+                    gson.toJson(
+                        data.toList()[position]
+                    )
+                )
+            )
         }
         container.addView(binding.root)
         return binding.root
@@ -50,5 +60,5 @@ class HomeSliderAdapter @Inject constructor(
         return view == `object`
     }
 
-    override fun getCount() = data.size ?: 0
+    override fun getCount() = data.size
 }
