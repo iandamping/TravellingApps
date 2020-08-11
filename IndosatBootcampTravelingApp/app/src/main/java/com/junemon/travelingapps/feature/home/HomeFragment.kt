@@ -83,8 +83,6 @@ class HomeFragment : BasePlaceFragment() {
         _binding = null
     }
 
-
-
     override fun activityCreated() {
         placeVm.setRunningForever.observe(viewLifecycleOwner, Observer {
             viewLifecycleOwner.lifecycleScope.launchWhenCreated {
@@ -278,25 +276,22 @@ class HomeFragment : BasePlaceFragment() {
         }
     }
 
-    private fun FragmentHomeBinding.stopShimmer(){
-        binding.run {
-            shimmerSlider.stopShimmer()
-            shimmerSlider.hideShimmer()
-            shimmerCultureType.stopShimmer()
-            shimmerCultureType.hideShimmer()
-            shimmerNatureType.stopShimmer()
-            shimmerNatureType.hideShimmer()
-            shimmerReligiusType.stopShimmer()
-            shimmerReligiusType.hideShimmer()
-        }
+    private fun FragmentHomeBinding.stopShimmer() {
+        shimmerSlider.stopShimmer()
+        shimmerSlider.hideShimmer()
+        shimmerCultureType.stopShimmer()
+        shimmerCultureType.hideShimmer()
+        shimmerNatureType.stopShimmer()
+        shimmerNatureType.hideShimmer()
+        shimmerReligiusType.stopShimmer()
+        shimmerReligiusType.hideShimmer()
     }
-    private fun FragmentHomeBinding.startShimmer(){
-        binding.run{
-            shimmerSlider.startShimmer()
-            shimmerCultureType.startShimmer()
-            shimmerNatureType.startShimmer()
-            shimmerReligiusType.startShimmer()
-        }
+
+    private fun FragmentHomeBinding.startShimmer() {
+        shimmerSlider.startShimmer()
+        shimmerCultureType.startShimmer()
+        shimmerNatureType.startShimmer()
+        shimmerReligiusType.startShimmer()
     }
 
     private fun fireSignIn() {
