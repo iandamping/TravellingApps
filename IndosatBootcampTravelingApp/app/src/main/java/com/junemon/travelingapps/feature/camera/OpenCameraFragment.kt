@@ -1,18 +1,12 @@
 package com.junemon.travelingapps.feature.camera
 
-import android.Manifest
-import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.media.MediaScannerConnection
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.MimeTypeMap
 import androidx.camera.core.Camera
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
@@ -20,7 +14,6 @@ import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
-import androidx.core.net.toFile
 import androidx.navigation.fragment.findNavController
 import com.junemon.core.di.module.CameraXFileDirectory
 import com.junemon.core.presentation.PresentationConstant.ANIMATION_FAST_MILLIS
@@ -108,7 +101,15 @@ class OpenCameraFragment : BasePlaceFragment() {
     private fun takePhoto() {
         val imageCapture = imageCapture ?: return
 
-        val outputOptions = ImageCapture.OutputFileOptions.Builder(cameraXDirectory).build()
+        // Setup image capture metadata
+        val metadata = ImageCapture.Metadata().apply {
+
+            // Mirror image when using the front camera
+            isReversedHorizontal = lensFacing == CameraSelector.LENS_FACING_FRONT
+        }
+
+        val outputOptions = ImageCapture.OutputFileOptions.Builder(cameraXDirectory)
+            .setMetadata(metadata).build()
 
         imageCapture.takePicture(
             outputOptions,
@@ -137,7 +138,8 @@ class OpenCameraFragment : BasePlaceFragment() {
             binding.root.run {
                 postDelayed({
                     foreground = ColorDrawable(Color.WHITE)
-                    postDelayed({ foreground = null }, ANIMATION_FAST_MILLIS
+                    postDelayed(
+                        { foreground = null }, ANIMATION_FAST_MILLIS
                     )
                 }, ANIMATION_SLOW_MILLIS)
             }
@@ -150,5 +152,4 @@ class OpenCameraFragment : BasePlaceFragment() {
         } else {
             CameraSelector.LENS_FACING_FRONT
         }
-
 }

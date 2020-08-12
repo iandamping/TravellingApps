@@ -1,5 +1,6 @@
 package com.junemon.travelingapps.feature.camera
 
+import android.graphics.BitmapFactory
 import android.graphics.ImageDecoder
 import android.media.MediaScannerConnection
 import android.net.Uri
@@ -46,25 +47,13 @@ class SelectImageFragment : BasePlaceFragment() {
     override fun viewCreated(view: View, savedInstanceState: Bundle?) {
         binding.run {
             val savedUri = Uri.fromFile(cameraXDirectory)
-            val imageFile: File = File(cameraXDirectory.absolutePath)
-            val bitmap = when {
-                Build.VERSION.SDK_INT < 28 -> MediaStore.Images.Media.getBitmap(
-                    requireContext().contentResolver,
-                    savedUri
-                )
-                else -> {
-                    val source = ImageDecoder.createSource(requireContext().contentResolver, savedUri)
-                    ImageDecoder.decodeBitmap(source)
-                }
-            }
-            ivImage.setImageBitmap(bitmap)
 
-            /*loadingImageHelper.run {
+            val imageFile: File = File(cameraXDirectory.absolutePath)
+            val bitmap = BitmapFactory.decodeFile(cameraXDirectory.absolutePath)
+
+            loadingImageHelper.run {
                 ivImage.loadWithGlide(bitmap)
-            }*/
-            /*loadingImageHelper.run {
-                ivImage.loadWithGlide(imageFile)
-            }*/
+            }
             ivImageSelect.setOnClickListener {
                 findNavController().navigate(
                     SelectImageFragmentDirections.actionSelectImageFragmentToUploadFragment(

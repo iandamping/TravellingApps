@@ -13,14 +13,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
-import com.junemon.core.di.module.CameraXFileDirectory
 import com.junemon.core.presentation.PresentationConstant.RequestSelectGalleryImage
 import com.junemon.core.presentation.di.factory.viewModelProvider
 import com.junemon.core.presentation.util.interfaces.CommonHelper
@@ -32,7 +30,6 @@ import com.junemon.travelingapps.R
 import com.junemon.travelingapps.base.BasePlaceFragment
 import com.junemon.travelingapps.databinding.FragmentUploadBinding
 import com.junemon.travelingapps.vm.PlaceViewModel
-import java.io.File
 import javax.inject.Inject
 import kotlin.properties.Delegates
 
@@ -68,11 +65,11 @@ class UploadFragment : BasePlaceFragment() {
     /** AndroidX navigation arguments */
     private val args: UploadFragmentArgs by navArgs()
 
-    private val passedUri:String? by lazy {
+    private val passedUri: String? by lazy {
         args.passedUri
     }
 
-    private var isPermisisonGranted:Boolean = false
+    private var isPermisisonGranted: Boolean = false
     private var selectedUriForFirebase by Delegates.notNull<Uri>()
     private var placeType by Delegates.notNull<String>()
     private var placeCity by Delegates.notNull<String>()
@@ -102,19 +99,18 @@ class UploadFragment : BasePlaceFragment() {
     }
 
     override fun activityCreated() {
-        if (passedUri!=null){
+        if (passedUri != null) {
             val savedUri = Uri.parse(passedUri)
-            val bitmap = when {
-                Build.VERSION.SDK_INT < 28 -> MediaStore.Images.Media.getBitmap(
-                    requireContext().contentResolver,
-                    savedUri
-                )
-                else -> {
-                    val source = ImageDecoder.createSource(requireContext().contentResolver, savedUri)
-                    ImageDecoder.decodeBitmap(source)
-                }
+
+            val bitmap = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                ImageDecoder.decodeBitmap(ImageDecoder.createSource(requireContext().contentResolver, savedUri))
+            } else {
+                MediaStore.Images.Media.getBitmap(requireContext().contentResolver, savedUri)
             }
-            viewHelper.run {
+
+            selectedUriForFirebase = savedUri
+
+                viewHelper.run {
                 binding.btnUnggahFoto.gone()
                 binding.tvInfoUpload.gone()
                 binding.ivPickPhoto.visible()
