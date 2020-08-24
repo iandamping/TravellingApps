@@ -1,5 +1,6 @@
 package com.junemon.core.presentation.util.interfaces
 
+import android.content.Intent
 import androidx.fragment.app.Fragment
 
 /**
@@ -13,7 +14,7 @@ interface PermissionHelper {
 
     fun requestReadPermissionsGranted(permissions:Array<String>):Boolean
 
-    fun Fragment.onRequestPermissionsResult(
+    fun Fragment.onRequestingPermissionsResult(
         permissionCode:Int,
         requestCode: Int,
         grantResults: IntArray,
@@ -25,4 +26,5 @@ interface PermissionHelper {
         permissions:Array<String>,
         requestCode: Int
     )
+
 }

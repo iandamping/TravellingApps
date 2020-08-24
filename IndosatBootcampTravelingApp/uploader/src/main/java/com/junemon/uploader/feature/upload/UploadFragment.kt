@@ -60,7 +60,6 @@ class UploadFragment : BaseFragment() {
     @Inject
     lateinit var loadingImageHelper: LoadImageHelper
 
-
     private var _binding: FragmentUploadBinding? = null
     private val binding get() = _binding!!
 
@@ -81,18 +80,15 @@ class UploadFragment : BaseFragment() {
 
     private val sharedVm: SharedViewModel by activityViewModels()
 
-    private var isPermisisonGranted: Boolean = false
     private var selectedUriForFirebase by Delegates.notNull<Uri>()
     private var placeType by Delegates.notNull<String>()
     private var placeCity by Delegates.notNull<String>()
 
-    private fun requestCameraPermissionsGranted() = REQUIRED_CAMERA_PERMISSIONS.all {
-        ContextCompat.checkSelfPermission(requireContext(), it) == PackageManager.PERMISSION_GRANTED
-    }
+    private fun requestCameraPermissionsGranted() = permissionHelper.requestCameraPermissionsGranted(REQUIRED_CAMERA_PERMISSIONS)
 
-    private fun requestReadPermissionsGranted() = REQUIRED_READ_PERMISSIONS.all {
-        ContextCompat.checkSelfPermission(requireContext(), it) == PackageManager.PERMISSION_GRANTED
-    }
+
+    private fun requestReadPermissionsGranted() =  permissionHelper.requestReadPermissionsGranted(REQUIRED_READ_PERMISSIONS)
+
 
     override fun createView(
         inflater: LayoutInflater,
@@ -121,7 +117,7 @@ class UploadFragment : BaseFragment() {
                             binding.toolbarUpload.gone(true)
                         }
                         fireSignIn()
-                    }else{
+                    } else {
 
                         binding.run {
                             viewHelper.run {
@@ -136,16 +132,12 @@ class UploadFragment : BaseFragment() {
                             }
                         }
                     }
-
                 }
                 is Results.Error -> {
                     Timber.e("name ${userResult.exception}")
                 }
             }
         })
-
-
-
 
         // sharedVm.passedUri.observe(viewLifecycleOwner, Observer {
         //     if (it != null) {
@@ -244,20 +236,24 @@ class UploadFragment : BaseFragment() {
                             if (requestReadPermissionsGranted()) {
                                 openImageFromGallery()
                             } else {
-                                requestPermissions(
-                                    REQUIRED_READ_PERMISSIONS,
-                                    REQUEST_READ_CODE_PERMISSIONS
-                                )
+                                permissionHelper.run {
+                                    requestingPermission(
+                                        REQUIRED_READ_PERMISSIONS,
+                                        REQUEST_READ_CODE_PERMISSIONS
+                                    )
+                                }
                             }
                         }
                         1 -> {
                             if (requestCameraPermissionsGranted()) {
                                 findNavController().navigate(UploadFragmentDirections.actionUploadFragmentToOpenCameraFragment())
                             } else {
-                                requestPermissions(
-                                    REQUIRED_CAMERA_PERMISSIONS,
-                                    REQUEST_CAMERA_CODE_PERMISSIONS
-                                )
+                                permissionHelper.run {
+                                    requestingPermission(
+                                        REQUIRED_CAMERA_PERMISSIONS,
+                                        REQUEST_CAMERA_CODE_PERMISSIONS
+                                    )
+                                }
                             }
                         }
                     }
@@ -300,34 +296,27 @@ class UploadFragment : BaseFragment() {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when (requestCode) {
-            REQUEST_CAMERA_CODE_PERMISSIONS -> {
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    isPermisisonGranted = grantResults[0] == PackageManager.PERMISSION_GRANTED
-                    findNavController().navigate(UploadFragmentDirections.actionUploadFragmentToOpenCameraFragment())
-                } else {
-                    isPermisisonGranted = false
-                    Snackbar.make(
-                        binding.root,
-                        getString(R.string.permission_not_granted),
-                        Snackbar.LENGTH_SHORT
-                    ).show()
-                }
-            }
+        permissionHelper.run {
+            onRequestingPermissionsResult(REQUEST_CAMERA_CODE_PERMISSIONS,requestCode, grantResults,{
+                findNavController().navigate(UploadFragmentDirections.actionUploadFragmentToOpenCameraFragment())
+            },{
+                Snackbar.make(
+                    binding.root,
+                    getString(R.string.permission_not_granted),
+                    Snackbar.LENGTH_SHORT
+                ).show()
+            })
 
-            REQUEST_READ_CODE_PERMISSIONS -> {
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    isPermisisonGranted = grantResults[0] == PackageManager.PERMISSION_GRANTED
-                    openImageFromGallery()
-                } else {
-                    isPermisisonGranted = false
-                    Snackbar.make(
-                        binding.root,
-                        getString(R.string.permission_not_granted),
-                        Snackbar.LENGTH_SHORT
-                    ).show()
-                }
-            }
+
+            onRequestingPermissionsResult(REQUEST_READ_CODE_PERMISSIONS,requestCode, grantResults,{
+                openImageFromGallery()
+            },{
+                Snackbar.make(
+                    binding.root,
+                    getString(R.string.permission_not_granted),
+                    Snackbar.LENGTH_SHORT
+                ).show()
+            })
         }
     }
 
@@ -351,6 +340,7 @@ class UploadFragment : BaseFragment() {
             }
         }
     }
+
 
     private fun createBitmapFromUri(uri: Uri?): Bitmap? =
         if (uri != null) {
