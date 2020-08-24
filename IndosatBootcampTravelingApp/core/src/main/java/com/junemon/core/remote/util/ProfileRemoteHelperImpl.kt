@@ -5,17 +5,17 @@ import android.content.Intent
 import com.firebase.ui.auth.AuthUI
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
-import com.junemon.core.data.di.DefaultDispatcher
 import com.junemon.core.data.di.IoDispatcher
 import com.junemon.core.remote.util.firebaseuser.AuthenticatedUserInfo
 import com.junemon.core.remote.util.firebaseuser.FirebaseUserInfo
 import com.junemon.model.domain.DataHelper
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.withContext
-import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -23,6 +23,8 @@ import javax.inject.Inject
  * Github https://github.com/iandamping
  * Indonesia.
  */
+@ExperimentalCoroutinesApi
+@FlowPreview
 class ProfileRemoteHelperImpl @Inject constructor(
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
     private val context: Application,
@@ -30,13 +32,11 @@ class ProfileRemoteHelperImpl @Inject constructor(
 ) : ProfileRemoteHelper {
 
     private var isListening = false
-    private var lastUid: String? = null
 
     // Channel that keeps track of User Authentication
     private val channel = ConflatedBroadcastChannel<DataHelper<AuthenticatedUserInfo>>()
 
-    val listener: ((FirebaseAuth) -> Unit) = { auth ->
-        Timber.d("Received a FirebaseAuth update")
+    private val listener: ((FirebaseAuth) -> Unit) = { auth ->
 
         if (!channel.isClosedForSend) {
             channel.offer(DataHelper.RemoteSourceValue(FirebaseUserInfo(auth.currentUser)))

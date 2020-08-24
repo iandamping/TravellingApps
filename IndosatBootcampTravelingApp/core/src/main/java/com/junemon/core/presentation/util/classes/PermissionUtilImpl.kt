@@ -1,5 +1,11 @@
 package com.junemon.core.presentation.util.classes
 
+import android.Manifest
+import android.app.Application
+import android.content.Context
+import android.content.pm.PackageManager
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.junemon.core.presentation.util.interfaces.PermissionHelper
 import com.karumi.dexter.Dexter
@@ -14,25 +20,35 @@ import javax.inject.Inject
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class PermissionUtilImpl @Inject constructor() : PermissionHelper {
+class PermissionUtilImpl @Inject constructor( private val context: Context) : PermissionHelper {
 
-    override fun getAllPermission(activity: FragmentActivity, isGranted: (Boolean) -> Unit) {
-        Dexter.withActivity(activity).withPermissions(
-            android.Manifest.permission.READ_EXTERNAL_STORAGE,
-            android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            android.Manifest.permission.CAMERA
-        ).withListener(object : MultiplePermissionsListener {
-            override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
-                if (report?.areAllPermissionsGranted()!!) {
-                    isGranted(report.areAllPermissionsGranted())
+    override fun requestCameraPermissionsGranted(permissions:Array<String>) = permissions.all {
+        ContextCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED
+    }
+
+    override fun requestReadPermissionsGranted(permissions:Array<String>) = permissions.all {
+        ContextCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED
+    }
+
+    override fun Fragment.onRequestPermissionsResult(
+        permissionCode: Int,
+        requestCode: Int,
+        grantResults: IntArray,
+        permissionGranted: () -> Unit,
+        permissionDenied:() -> Unit
+    ) {
+        when(requestCode){
+            permissionCode ->{
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    permissionGranted.invoke()
+                }else{
+                    permissionDenied.invoke()
                 }
             }
+        }
+    }
 
-            override fun onPermissionRationaleShouldBeShown(
-                permissions: MutableList<PermissionRequest>?,
-                token: PermissionToken?
-            ) {
-            }
-        }).check()
+    override fun Fragment.requestingPermission(permissions: Array<String>, requestCode: Int) {
+        this.requestPermissions(permissions, requestCode)
     }
 }

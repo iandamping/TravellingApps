@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import com.google.gson.Gson
 import com.junemon.core.presentation.PresentationConstant.placePaginationRvCallback
@@ -20,7 +19,7 @@ import com.junemon.core.presentation.util.interfaces.ViewHelper
 import com.junemon.model.domain.PlaceCacheData
 import com.junemon.model.domain.Results
 import com.junemon.model.presentation.dto.mapCacheToPresentation
-import com.junemon.travelingapps.base.BasePlaceFragment
+import com.junemon.core.presentation.base.fragment.BaseFragment
 import com.junemon.travelingapps.R
 import com.junemon.travelingapps.databinding.FragmentPaginationBinding
 import com.junemon.travelingapps.vm.PlaceViewModel
@@ -33,7 +32,7 @@ import javax.inject.Inject
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class PaginationFragment : BasePlaceFragment() {
+class PaginationFragment : BaseFragment() {
     @Inject
     lateinit var viewHelper: ViewHelper
 

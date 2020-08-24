@@ -10,7 +10,7 @@ import com.junemon.core.presentation.util.interfaces.ImageHelper
 import com.junemon.core.presentation.util.interfaces.IntentHelper
 import com.junemon.core.presentation.util.interfaces.LoadImageHelper
 import com.junemon.model.presentation.PlaceCachePresentation
-import com.junemon.travelingapps.base.BasePlaceFragment
+import com.junemon.core.presentation.base.fragment.BaseFragment
 import com.junemon.travelingapps.databinding.FragmentDetailBinding
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -20,7 +20,7 @@ import javax.inject.Inject
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class DetailFragment : BasePlaceFragment() {
+class DetailFragment : BaseFragment() {
     @Inject
     lateinit var loadImageHelper: LoadImageHelper
 

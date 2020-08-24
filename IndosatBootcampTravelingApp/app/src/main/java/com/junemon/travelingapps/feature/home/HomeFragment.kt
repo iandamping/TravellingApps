@@ -18,7 +18,7 @@ import com.junemon.model.domain.PlaceCacheData
 import com.junemon.model.domain.Results
 import com.junemon.model.presentation.dto.mapCacheToPresentation
 import com.junemon.travelingapps.R
-import com.junemon.travelingapps.base.BasePlaceFragment
+import com.junemon.core.presentation.base.fragment.BaseFragment
 import com.junemon.travelingapps.databinding.FragmentHomeBinding
 import com.junemon.travelingapps.feature.home.slideradapter.HomeSliderAdapter
 import com.junemon.travelingapps.vm.PlaceViewModel
@@ -33,7 +33,7 @@ import javax.inject.Inject
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class HomeFragment : BasePlaceFragment() {
+class HomeFragment : BaseFragment() {
     @Inject
     lateinit var viewAdapter: HomeSliderAdapter
 
@@ -98,19 +98,7 @@ class HomeFragment : BasePlaceFragment() {
             }
         })
 
-        // placeVm.getUserProfile().observe(viewLifecycleOwner, Observer {userResult ->
-        //     when(userResult){
-        //         is Results.Success ->{
-        //             if (userResult.data.getDisplayName() ==null){
-        //                 fireSignIn()
-        //             }
-        //            Timber.e("name ${ userResult.data.getDisplayName()}")
-        //         }
-        //         is Results.Error ->{
-        //             Timber.e("name ${ userResult.exception}")
-        //         }
-        //     }
-        // })
+
     }
 
     private fun FragmentHomeBinding.initView() {
@@ -119,10 +107,7 @@ class HomeFragment : BasePlaceFragment() {
                 requireContext().resources.getDrawable(R.drawable.samarinda_logo, null)
             )
         }
-        btnCreate.setOnClickListener {
-            findNavController()
-                .navigate(HomeFragmentDirections.actionHomeFragmentToUploadFragment(null))
-        }
+
         lnSeeAllPlaceCultureType.setOnClickListener {
             findNavController().navigate(
                 HomeFragmentDirections.actionHomeFragmentToPaginationFragment(getString(R.string.place_culture))
@@ -294,21 +279,5 @@ class HomeFragment : BasePlaceFragment() {
         shimmerReligiusType.startShimmer()
     }
 
-    private fun fireSignIn() {
-        lifecycleScope.launch {
-            val signInIntent = placeVm.initSignIn()
-            startActivityForResult(
-                signInIntent,
-                15
-            )
-        }
-    }
 
-    private fun fireSignOut() {
-        lifecycleScope.launch {
-            placeVm.initLogout {
-                Timber.e("success logout")
-            }
-        }
-    }
 }

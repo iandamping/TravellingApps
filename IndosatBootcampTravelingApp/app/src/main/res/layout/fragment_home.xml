@@ -285,12 +285,6 @@
 
         </LinearLayout>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/btnCreate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end|bottom"
-            android:layout_margin="@dimen/spacing_medium"
-            android:src="@drawable/ic_mode_edit_white_24dp" />
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

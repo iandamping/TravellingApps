@@ -10,14 +10,7 @@
         android:name="com.junemon.travelingapps.feature.home.HomeFragment"
         android:label="HomeFragment"
         tools:layout="@layout/fragment_home">
-        <action
-            android:id="@+id/action_homeFragment_to_uploadFragment"
-            app:destination="@id/uploadFragment"
-            app:enterAnim="@anim/fragment_fade_enter"
-            app:exitAnim="@anim/fragment_fade_exit"
-            app:popEnterAnim="@anim/fragment_fade_enter"
-            app:popExitAnim="@anim/fragment_fade_exit"
-            app:popUpTo="@+id/homeFragment" />
+
         <action
             android:id="@+id/action_homeFragment_to_detailFragment"
             app:destination="@id/detailFragment"
@@ -40,19 +33,7 @@
             app:popEnterAnim="@anim/fragment_fade_enter"
             app:popExitAnim="@anim/fragment_fade_exit" />
     </fragment>
-    <fragment
-        android:id="@+id/uploadFragment"
-        android:name="com.junemon.travelingapps.feature.upload.UploadFragment"
-        android:label="UploadFragment"
-        tools:layout="@layout/fragment_upload" >
-        <action
-            android:id="@+id/action_uploadFragment_to_openCameraFragment"
-            app:destination="@id/openCameraFragment" />
-        <argument
-            android:name="passedUri"
-            app:argType="string"
-            app:nullable="true" />
-    </fragment>
+
     <fragment
         android:id="@+id/detailFragment"
         android:name="com.junemon.travelingapps.feature.detail.DetailFragment"
@@ -83,28 +64,5 @@
             android:id="@+id/action_searchFragment_to_detailFragment"
             app:destination="@id/detailFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/openCameraFragment"
-        tools:layout="@layout/fragment_open_camera"
-        android:name="com.junemon.travelingapps.feature.camera.OpenCameraFragment"
-        android:label="OpenCameraFragment" >
-        <action
-            android:id="@+id/action_openCameraFragment_to_uploadFragment"
-            app:destination="@id/uploadFragment"
-            app:popUpTo="@id/uploadFragment"
-            app:popUpToInclusive="true" />
-        <action
-            android:id="@+id/action_openCameraFragment_to_selectImageFragment"
-            app:destination="@id/selectImageFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/selectImageFragment"
-        android:name="com.junemon.travelingapps.feature.camera.SelectImageFragment"
-        android:label="SelectImageFragment" >
-        <action
-            android:id="@+id/action_selectImageFragment_to_uploadFragment"
-            app:destination="@id/uploadFragment"
-            app:popUpTo="@id/uploadFragment"
-            app:popUpToInclusive="true" />
-    </fragment>
+
 </navigation>

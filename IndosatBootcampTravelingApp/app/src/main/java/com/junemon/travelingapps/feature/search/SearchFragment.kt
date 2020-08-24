@@ -19,7 +19,7 @@ import com.junemon.model.domain.Results
 import com.junemon.model.presentation.PlaceCachePresentation
 import com.junemon.model.presentation.dto.mapCacheToPresentation
 import com.junemon.travelingapps.R
-import com.junemon.travelingapps.base.BasePlaceFragment
+import com.junemon.core.presentation.base.fragment.BaseFragment
 import com.junemon.travelingapps.databinding.FragmentSearchBinding
 import com.junemon.travelingapps.vm.PlaceViewModel
 import kotlinx.android.synthetic.main.item_recyclerview.view.*
@@ -30,7 +30,7 @@ import javax.inject.Inject
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class SearchFragment : BasePlaceFragment() {
+class SearchFragment : BaseFragment() {
     @Inject
     lateinit var gson: Gson
 

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/upload_navigation"
+    app:startDestination="@id/uploadFragment">
+
+    <fragment
+        android:id="@+id/uploadFragment"
+        android:name="com.junemon.uploader.feature.upload.UploadFragment"
+        android:label="UploadFragment"
+        tools:layout="@layout/fragment_upload" >
+        <action
+            android:id="@+id/action_uploadFragment_to_openCameraFragment"
+            app:destination="@id/openCameraFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/openCameraFragment"
+        tools:layout="@layout/fragment_open_camera"
+        android:name="com.junemon.uploader.feature.camera.OpenCameraFragment"
+        android:label="OpenCameraFragment" >
+        <action
+            android:id="@+id/action_openCameraFragment_to_uploadFragment"
+            app:destination="@id/uploadFragment"
+            app:popUpTo="@id/uploadFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_openCameraFragment_to_selectImageFragment"
+            app:destination="@id/selectImageFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/selectImageFragment"
+        android:name="com.junemon.uploader.feature.camera.SelectImageFragment"
+        android:label="SelectImageFragment" >
+        <action
+            android:id="@+id/action_selectImageFragment_to_uploadFragment"
+            app:destination="@id/uploadFragment"
+            app:popUpTo="@id/uploadFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+</navigation>

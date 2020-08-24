@@ -1,6 +1,5 @@
 package com.junemon.core.remote.util.firebaseuser
 
-import android.net.Uri
 
 interface AuthenticatedUserInfo {
 
@@ -8,6 +7,6 @@ interface AuthenticatedUserInfo {
 
     fun getDisplayName(): String?
 
-    fun getPhotoUrl(): Uri?
+    fun getPhotoUrl(): String?
 
 }

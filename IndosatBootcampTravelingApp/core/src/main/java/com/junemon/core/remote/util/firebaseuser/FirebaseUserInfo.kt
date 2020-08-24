@@ -1,6 +1,5 @@
 package com.junemon.core.remote.util.firebaseuser
 
-import android.net.Uri
 import com.google.firebase.auth.FirebaseUser
 
 open class FirebaseUserInfo(
@@ -11,5 +10,5 @@ open class FirebaseUserInfo(
 
     override fun getDisplayName(): String? = firebaseUser?.displayName
 
-    override fun getPhotoUrl(): Uri? = firebaseUser?.photoUrl
+    override fun getPhotoUrl(): String? = firebaseUser?.photoUrl.toString()
 }
