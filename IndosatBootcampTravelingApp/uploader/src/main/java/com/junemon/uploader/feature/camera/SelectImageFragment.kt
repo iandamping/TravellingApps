@@ -55,7 +55,7 @@ class SelectImageFragment : BaseFragment() {
             }
             ivImageSelect.setOnClickListener {
 
-                sharedVm.setPassedUri(savedUri)
+                sharedVm.setPassedUri(savedUri.toString())
 
                 findNavController().navigate(
                     SelectImageFragmentDirections.actionSelectImageFragmentToUploadFragment()

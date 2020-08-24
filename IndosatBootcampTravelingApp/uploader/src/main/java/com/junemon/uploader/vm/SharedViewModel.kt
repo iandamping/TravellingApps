@@ -1,6 +1,5 @@
 package com.junemon.uploader.vm
 
-import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,10 +10,10 @@ import androidx.lifecycle.ViewModel
  * Indonesia.
  */
 class SharedViewModel: ViewModel() {
-    private var _passedUri:MutableLiveData<Uri?> = MutableLiveData()
-    val passedUri:LiveData<Uri?> = _passedUri
+    private var _passedUri:MutableLiveData<String?> = MutableLiveData()
+    val passedUri:LiveData<String?> = _passedUri
 
-    fun setPassedUri(uri: Uri?){
-        _passedUri.value = uri
+    fun setPassedUri(data: String?){
+        _passedUri.value = data
     }
 }

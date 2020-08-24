@@ -3,7 +3,6 @@ package com.junemon.uploader.feature.upload
 import android.Manifest
 import android.app.AlertDialog
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.net.Uri
@@ -14,7 +13,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
@@ -80,7 +78,8 @@ class UploadFragment : BaseFragment() {
 
     private val sharedVm: SharedViewModel by activityViewModels()
 
-    private var selectedUriForFirebase by Delegates.notNull<Uri>()
+    private var selectedUriForFirebase :Uri? = null
+    private var bitmap :Bitmap? = null
     private var placeType by Delegates.notNull<String>()
     private var placeCity by Delegates.notNull<String>()
 
@@ -139,25 +138,35 @@ class UploadFragment : BaseFragment() {
             }
         })
 
-        // sharedVm.passedUri.observe(viewLifecycleOwner, Observer {
-        //     if (it != null) {
-        //
-        //         val bitmap = createBitmapFromUri(it)
-        //
-        //         selectedUriForFirebase = it
-        //
-        //         viewHelper.run {
-        //             binding.btnUnggahFoto.gone(true)
-        //             binding.tvInfoUpload.gone(true)
-        //             binding.ivPickPhoto.visible(true)
-        //         }
-        //         loadingImageHelper.run {
-        //             if (bitmap != null) {
-        //                 binding.ivPickPhoto.loadWithGlide(bitmap)
-        //             }
-        //         }
-        //     }
-        // })
+        sharedVm.passedUri.observe(viewLifecycleOwner, {
+            if (it != null) {
+                val savedUri = Uri.parse(it)
+
+                bitmap = createBitmapFromUri(savedUri)
+
+
+                binding.ivPickPhoto.setImageBitmap(bitmap)
+
+
+                selectedUriForFirebase = savedUri
+
+                viewHelper.run {
+                    binding.btnUnggahFoto.gone(true)
+                    binding.tvInfoUpload.gone(true)
+                    binding.ivPickPhoto.visible(true)
+                }
+                // val bitmap = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                //     ImageDecoder.decodeBitmap(ImageDecoder.createSource(requireContext().contentResolver, savedUri))
+                // } else {
+                //     MediaStore.Images.Media.getBitmap(requireContext().contentResolver, savedUri)
+                // }
+                // loadingImageHelper.run {
+                //     if (bitmap != null) {
+                //         binding.ivPickPhoto.loadWithGlide(bitmap)
+                //     }
+                // }
+            }
+        })
     }
 
     private fun FragmentUploadBinding.initView() {
@@ -212,18 +221,29 @@ class UploadFragment : BaseFragment() {
                             placePicture = null
                         ), imageUri = selectedUriForFirebase, success = {
                             setDialogShow(it)
-                            moveUp()
+                            clearUri()
                         }, failed = { status, _ ->
                             setDialogShow(status)
-                            moveUp()
+                            clearUri()
                         })
                 }
             }
         }
     }
 
-    private fun moveUp() {
-        findNavController().navigateUp()
+    private fun clearUri() {
+        selectedUriForFirebase = null
+        sharedVm.setPassedUri(null)
+        bitmap?.recycle()
+        binding.run {
+            ivPickPhoto.setImageDrawable(null)
+            viewHelper.run {
+                btnUnggahFoto.visible(true)
+                tvInfoUpload.visible(true)
+                ivPickPhoto.gone(true)
+            }
+        }
+
     }
 
     private fun openGalleryAndCamera() {
