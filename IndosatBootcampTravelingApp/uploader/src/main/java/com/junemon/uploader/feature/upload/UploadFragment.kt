@@ -205,8 +205,8 @@ class UploadFragment : BaseFragment() {
         when {
             placeName.isBlank() -> commonHelper.run { etPlaceName.requestError(getString(R.string.place_name_checker)) }
             placeDetail.isBlank() -> commonHelper.run { etPlaceDetail.requestError(getString(R.string.place_description_checker)) }
-            placeType.isBlank() -> commonHelper.run { context?.myToast(getString(R.string.place_type_checker)) }
-            placeCity.isBlank() -> commonHelper.run { context?.myToast(getString(R.string.place_district_checker)) }
+            placeType.isBlank() -> commonHelper.run { requireContext().myToast(getString(R.string.place_type_checker)) }
+            placeCity.isBlank() -> commonHelper.run { requireContext().myToast(getString(R.string.place_district_checker)) }
             placeAddress.isBlank() -> commonHelper.run { etPlaceAddress.requestError(getString(R.string.place_address_checker)) }
             else -> {
                 ilegallStateCatching {
@@ -242,6 +242,9 @@ class UploadFragment : BaseFragment() {
                 tvInfoUpload.visible(true)
                 ivPickPhoto.gone(true)
             }
+            etPlaceName.setText("")
+            etPlaceAddress.setText("")
+            etPlaceDetail.setText("")
         }
 
     }

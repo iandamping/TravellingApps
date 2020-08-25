@@ -65,7 +65,6 @@ dependencies {
     api 'com.airbnb.android:lottie:3.2.2'
     implementation "org.jetbrains.anko:anko:$anko_version"
     implementation "org.jetbrains.anko:anko-design:$anko_version"
-    api 'com.mikhaellopez:circularimageview:4.1.0'
     api 'com.github.bumptech.glide:glide:4.9.0'
     kapt 'com.github.bumptech.glide:compiler:4.9.0'
     api "com.facebook.shimmer:shimmer:$shimmerVer"

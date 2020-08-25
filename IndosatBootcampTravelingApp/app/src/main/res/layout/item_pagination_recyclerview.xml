@@ -31,8 +31,11 @@
                 android:textStyle="bold"
                 tools:text="Bukit Bengkirai" />
 
-            <com.mikhaellopez.circularimageview.CircularImageView
+            <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/ivFirebaseProfileImage"
+                android:layout_margin="@dimen/spacing_small"
+                android:padding="@dimen/spacing_small"
+                app:shapeAppearanceOverlay="@style/circleImageView"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:scaleType="centerCrop"
