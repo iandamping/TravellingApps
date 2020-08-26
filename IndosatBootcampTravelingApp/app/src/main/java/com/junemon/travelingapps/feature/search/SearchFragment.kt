@@ -6,22 +6,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
+import androidx.core.view.doOnPreDraw
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import com.google.gson.Gson
 import com.junemon.core.presentation.PresentationConstant.placePaginationRvCallback
+import com.junemon.core.presentation.base.fragment.BaseFragment
 import com.junemon.core.presentation.di.factory.viewModelProvider
 import com.junemon.core.presentation.util.interfaces.LoadImageHelper
 import com.junemon.core.presentation.util.interfaces.RecyclerHelper
 import com.junemon.core.presentation.util.interfaces.ViewHelper
-import com.junemon.model.domain.Results
 import com.junemon.model.presentation.PlaceCachePresentation
 import com.junemon.model.presentation.dto.mapCacheToPresentation
 import com.junemon.travelingapps.R
-import com.junemon.core.presentation.base.fragment.BaseFragment
 import com.junemon.travelingapps.databinding.FragmentSearchBinding
 import com.junemon.travelingapps.vm.PlaceViewModel
+import kotlinx.android.synthetic.main.item_recyclerview.*
 import kotlinx.android.synthetic.main.item_recyclerview.view.*
 import javax.inject.Inject
 
@@ -43,7 +44,8 @@ class SearchFragment : BaseFragment() {
     @Inject
     lateinit var loadingImageHelper: LoadImageHelper
 
-    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private lateinit var placeVm: PlaceViewModel
 
@@ -67,6 +69,8 @@ class SearchFragment : BaseFragment() {
             initData()
             initView()
         }
+        postponeEnterTransition()
+        view.doOnPreDraw { startPostponedEnterTransition() }
     }
 
     override fun destroyView() {
@@ -132,14 +136,21 @@ class SearchFragment : BaseFragment() {
                         loadingImageHelper.run { ivItemPlaceImage.loadWithGlide(it.placePicture) }
                         tvItemPlaceName.text = it.placeName
                         tvItemPlaceDistrict.text = it.placeDistrict
+                        cvItemContainer.transitionName = it.placePicture
                     }, itemClick = {
-                        findNavController().navigate(
+
+                        setupExitEnterTransition()
+
+                        val toDetailFragment =
                             SearchFragmentDirections.actionSearchFragmentToDetailFragment(
                                 gson.toJson(
                                     this
                                 )
                             )
-                        )
+
+                        /**transition name must unique !*/
+                        val extras = FragmentNavigatorExtras(cvItemContainer to this.placePicture!!)
+                        navigate(toDetailFragment, extras)
                     }
                 )
             }

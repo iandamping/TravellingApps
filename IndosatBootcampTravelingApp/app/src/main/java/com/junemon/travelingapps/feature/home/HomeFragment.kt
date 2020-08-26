@@ -4,19 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.ViewCompat
 import androidx.core.view.doOnPreDraw
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavDirections
-import com.google.android.material.transition.Hold
-import com.google.android.material.transition.MaterialElevationScale
-import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import com.google.gson.Gson
 import com.junemon.core.presentation.PresentationConstant.placeRvCallback
+import com.junemon.core.presentation.base.fragment.BaseFragment
 import com.junemon.core.presentation.di.factory.viewModelProvider
 import com.junemon.core.presentation.util.interfaces.LoadImageHelper
 import com.junemon.core.presentation.util.interfaces.RecyclerHelper
@@ -25,15 +20,12 @@ import com.junemon.model.domain.PlaceCacheData
 import com.junemon.model.domain.Results
 import com.junemon.model.presentation.dto.mapCacheToPresentation
 import com.junemon.travelingapps.R
-import com.junemon.core.presentation.base.fragment.BaseFragment
 import com.junemon.travelingapps.databinding.FragmentHomeBinding
 import com.junemon.travelingapps.feature.home.slideradapter.HomeSliderAdapter
 import com.junemon.travelingapps.vm.PlaceViewModel
 import kotlinx.android.synthetic.main.item_recyclerview.*
 import kotlinx.android.synthetic.main.item_recyclerview.view.*
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -107,8 +99,6 @@ class HomeFragment : BaseFragment() {
                 }
             }
         })
-
-
     }
 
     private fun FragmentHomeBinding.initView() {
@@ -152,7 +142,7 @@ class HomeFragment : BaseFragment() {
                 }
                 is Results.Loading -> {
                     startAllShimmer()
-                    if (result.cache!=null){
+                    if (result.cache != null) {
                         stopAllShimmer()
                         initViewPager(result.cache)
                         initRecyclerView(result.cache)
@@ -203,14 +193,17 @@ class HomeFragment : BaseFragment() {
 
                         setupExitEnterTransition()
 
-                        val toDetailFragment = HomeFragmentDirections.actionHomeFragmentToDetailFragment(
-                            gson.toJson(
-                                this
+                        val toDetailFragment =
+                            HomeFragmentDirections.actionHomeFragmentToDetailFragment(
+                                gson.toJson(
+                                    this
+                                )
                             )
-                        )
+
                         /**transition name must unique !*/
-                        val extras = FragmentNavigatorExtras(cvItemContainer to this!!.placePicture!!)
-                        navigateDetail(toDetailFragment, extras)
+                        val extras =
+                            FragmentNavigatorExtras(cvItemContainer to this!!.placePicture!!)
+                        navigate(toDetailFragment, extras)
                     }
                 )
                 rvPlaceCultureType.setUpHorizontalListAdapter(
@@ -224,13 +217,15 @@ class HomeFragment : BaseFragment() {
                     layoutResId = R.layout.item_recyclerview, itemClick = {
                         setupExitEnterTransition()
 
-                        val toDetailFragment = HomeFragmentDirections.actionHomeFragmentToDetailFragment(
-                            gson.toJson(
-                                this
+                        val toDetailFragment =
+                            HomeFragmentDirections.actionHomeFragmentToDetailFragment(
+                                gson.toJson(
+                                    this
+                                )
                             )
-                        )
-                        val extras = FragmentNavigatorExtras(cvItemContainer to this!!.placePicture!!)
-                        navigateDetail(toDetailFragment, extras)
+                        val extras =
+                            FragmentNavigatorExtras(cvItemContainer to this!!.placePicture!!)
+                        navigate(toDetailFragment, extras)
                     }
                 )
                 rvPlaceReligiusType.setUpHorizontalListAdapter(
@@ -244,26 +239,18 @@ class HomeFragment : BaseFragment() {
                     layoutResId = R.layout.item_recyclerview, itemClick = {
                         setupExitEnterTransition()
 
-                        val toDetailFragment = HomeFragmentDirections.actionHomeFragmentToDetailFragment(
-                            gson.toJson(
-                                this
+                        val toDetailFragment =
+                            HomeFragmentDirections.actionHomeFragmentToDetailFragment(
+                                gson.toJson(
+                                    this
+                                )
                             )
-                        )
-                        val extras = FragmentNavigatorExtras(cvItemContainer to this!!.placePicture!!)
-                        navigateDetail(toDetailFragment, extras)
+                        val extras =
+                            FragmentNavigatorExtras(cvItemContainer to this!!.placePicture!!)
+                        navigate(toDetailFragment, extras)
                     }
                 )
             }
-        }
-    }
-
-    private fun setupExitEnterTransition() {
-        exitTransition = Hold().apply {
-            duration = resources.getInteger(R.integer.motion_duration_medium).toLong()
-        }
-
-        reenterTransition = MaterialElevationScale(true).apply {
-            duration = resources.getInteger(R.integer.motion_duration_small).toLong()
         }
     }
 
@@ -308,10 +295,4 @@ class HomeFragment : BaseFragment() {
         shimmerNatureType.startShimmer()
         shimmerReligiusType.startShimmer()
     }
-
-    private fun navigateDetail(destination: NavDirections, extraInfo: FragmentNavigator.Extras) = with(findNavController()) {
-        currentDestination?.getAction(destination.actionId)?.let { navigate(destination, extraInfo) }
-    }
-
-
 }

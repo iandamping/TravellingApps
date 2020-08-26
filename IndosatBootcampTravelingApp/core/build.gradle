@@ -2,6 +2,8 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'androidx.navigation.safeargs'
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
@@ -96,6 +98,11 @@ dependencies {
     api "androidx.camera:camera-lifecycle:$camerax_version"
     // CameraX View class
     api "androidx.camera:camera-view:1.0.0-alpha13"
+
+    api "androidx.navigation:navigation-fragment-ktx:$navigationVer"
+    api "androidx.navigation:navigation-ui-ktx:$navigationVer"
+    api "androidx.navigation:navigation-fragment-ktx:$navigationVer"
+    api "androidx.navigation:navigation-ui-ktx:$navigationVer"
 
 //    // Dependencies for local unit tests
 //    testImplementation "junit:junit:$junitVersion"

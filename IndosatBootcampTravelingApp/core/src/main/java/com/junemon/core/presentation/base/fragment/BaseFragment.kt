@@ -9,6 +9,12 @@ import android.os.StrictMode
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.NavDirections
+import androidx.navigation.fragment.FragmentNavigator
+import androidx.navigation.fragment.findNavController
+import com.google.android.material.transition.Hold
+import com.google.android.material.transition.MaterialElevationScale
+import com.junemon.core.R
 import com.junemon.core.databinding.CustomLoadingBinding
 import com.junemon.core.presentation.layoutInflater
 import dagger.android.support.DaggerFragment
@@ -30,6 +36,20 @@ abstract class BaseFragment : DaggerFragment() {
         // dont use this, but i had to
         val builder = StrictMode.VmPolicy.Builder()
         StrictMode.setVmPolicy(builder.build())
+    }
+
+    protected fun navigate(destination: NavDirections, extraInfo: FragmentNavigator.Extras) = with(findNavController()) {
+        currentDestination?.getAction(destination.actionId)?.let { navigate(destination, extraInfo) }
+    }
+
+    protected fun setupExitEnterTransition() {
+        exitTransition = Hold().apply {
+            duration = resources.getInteger(R.integer.motion_duration_medium).toLong()
+        }
+
+        reenterTransition = MaterialElevationScale(true).apply {
+            duration = resources.getInteger(R.integer.motion_duration_small).toLong()
+        }
     }
 
     private fun setBaseDialog(context: Context) {
@@ -125,4 +145,6 @@ abstract class BaseFragment : DaggerFragment() {
         destroyView()
         _binding = null
     }
+
+
 }

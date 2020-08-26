@@ -51,10 +51,6 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    implementation "androidx.navigation:navigation-fragment-ktx:$navigationVer"
-    implementation "androidx.navigation:navigation-ui-ktx:$navigationVer"
-    implementation "androidx.navigation:navigation-fragment-ktx:$navigationVer"
-    implementation "androidx.navigation:navigation-ui-ktx:$navigationVer"
     implementation "me.relex:circleindicator:1.2.2@aar"
     implementation "androidx.activity:activity-ktx:1.1.0"
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
