@@ -1,9 +1,12 @@
 package com.junemon.travelingapps.feature.home
 
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.ViewCompat
+import androidx.core.view.ViewGroupCompat
 import androidx.core.view.doOnPreDraw
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -102,6 +105,19 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun FragmentHomeBinding.initView() {
+        when {
+            Build.VERSION.SDK_INT < 24 -> {
+                ViewGroupCompat.setTransitionGroup (rvPlaceCultureType,true)
+                ViewGroupCompat.setTransitionGroup (rvPlaceNatureType,true)
+                ViewGroupCompat.setTransitionGroup (rvPlaceReligiusType,true)
+            }
+            Build.VERSION.SDK_INT > 24 -> {
+                rvPlaceCultureType.isTransitionGroup=true
+                rvPlaceNatureType.isTransitionGroup=true
+                rvPlaceReligiusType.isTransitionGroup=true
+            }
+        }
+
         loadingImageHelper.run {
             tbImageLogo.loadWithGlide(
                 requireContext().resources.getDrawable(R.drawable.samarinda_logo, null)
@@ -187,7 +203,14 @@ class HomeFragment : BaseFragment() {
                         loadingImageHelper.run { ivItemPlaceImage.loadWithGlide(it?.placePicture) }
                         tvItemPlaceName.text = it?.placeName
                         tvItemPlaceDistrict.text = it?.placeDistrict
-                        cvItemContainer.transitionName = it?.placePicture
+                        when {
+                            Build.VERSION.SDK_INT < 24 -> {
+                                ViewCompat.setTransitionName(cvItemContainer,it?.placePicture)
+                            }
+                            Build.VERSION.SDK_INT > 24 -> {
+                                cvItemContainer.transitionName = it?.placePicture
+                            }
+                        }
                     },
                     layoutResId = R.layout.item_recyclerview, itemClick = {
 
@@ -212,7 +235,14 @@ class HomeFragment : BaseFragment() {
                         loadingImageHelper.run { ivItemPlaceImage.loadWithGlide(it?.placePicture) }
                         tvItemPlaceName.text = it?.placeName
                         tvItemPlaceDistrict.text = it?.placeDistrict
-                        cvItemContainer.transitionName = it?.placePicture
+                        when {
+                            Build.VERSION.SDK_INT < 24 -> {
+                                ViewCompat.setTransitionName(cvItemContainer,it?.placePicture)
+                            }
+                            Build.VERSION.SDK_INT > 24 -> {
+                                cvItemContainer.transitionName = it?.placePicture
+                            }
+                        }
                     },
                     layoutResId = R.layout.item_recyclerview, itemClick = {
                         setupExitEnterTransition()
@@ -234,7 +264,15 @@ class HomeFragment : BaseFragment() {
                         loadingImageHelper.run { ivItemPlaceImage.loadWithGlide(it?.placePicture) }
                         tvItemPlaceName.text = it?.placeName
                         tvItemPlaceDistrict.text = it?.placeDistrict
-                        cvItemContainer.transitionName = it?.placePicture
+                        when {
+                            Build.VERSION.SDK_INT < 24 -> {
+                               ViewCompat.setTransitionName(cvItemContainer,it?.placePicture)
+                            }
+                            Build.VERSION.SDK_INT > 24 -> {
+                                cvItemContainer.transitionName = it?.placePicture
+                            }
+                        }
+
                     },
                     layoutResId = R.layout.item_recyclerview, itemClick = {
                         setupExitEnterTransition()

@@ -1,9 +1,12 @@
 package com.junemon.travelingapps.feature.pagination
 
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.ViewCompat
+import androidx.core.view.ViewGroupCompat
 import androidx.core.view.doOnPreDraw
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -23,7 +26,9 @@ import com.junemon.travelingapps.R
 import com.junemon.travelingapps.databinding.FragmentPaginationBinding
 import com.junemon.travelingapps.vm.PlaceViewModel
 import kotlinx.android.synthetic.main.item_pagination_recyclerview.view.*
+import kotlinx.android.synthetic.main.item_pagination_recyclerview.view.cvItemContainer
 import kotlinx.android.synthetic.main.item_recyclerview.*
+import kotlinx.android.synthetic.main.item_recyclerview.view.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -75,6 +80,16 @@ class PaginationFragment : BaseFragment() {
 
     override fun viewCreated(view: View, savedInstanceState: Bundle?) {
         binding.initView(paginationType)
+        binding.run {
+            when {
+                Build.VERSION.SDK_INT < 24 -> {
+                    ViewGroupCompat.setTransitionGroup (rvPagination,true)
+                }
+                Build.VERSION.SDK_INT > 24 -> {
+                    rvPagination.isTransitionGroup=true
+                }
+            }
+        }
         postponeEnterTransition()
         view.doOnPreDraw { startPostponedEnterTransition() }
     }
@@ -105,7 +120,14 @@ class PaginationFragment : BaseFragment() {
                         tvPaginationName.text = it.placeName
                         tvPaginationAddress.text = it.placeAddres
                         tvPaginationDistrict.text = it.placeDistrict
-                        cvItemContainer.transitionName = it.placePicture
+                        when {
+                            Build.VERSION.SDK_INT < 24 -> {
+                                ViewCompat.setTransitionName(cvItemContainer,it.placePicture)
+                            }
+                            Build.VERSION.SDK_INT > 24 -> {
+                                cvItemContainer.transitionName = it.placePicture
+                            }
+                        }
                         loadingImageHelper.run {
                             ivFirebaseProfileImage.loadWithGlide(it.placePicture)
                             ivPaginationImage.loadWithGlide(it.placePicture)

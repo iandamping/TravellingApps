@@ -1,5 +1,6 @@
 package com.junemon.travelingapps.feature.detail
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -51,8 +52,9 @@ class DetailFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         sharedElementEnterTransition = MaterialContainerTransform().apply {
-
+            drawingViewId = R.id.financialNavHostFragment
             duration = resources.getInteger(R.integer.motion_duration_medium).toLong()
+            scrimColor = Color.TRANSPARENT
             isElevationShadowEnabled = true
         }
         super.onCreate(savedInstanceState)

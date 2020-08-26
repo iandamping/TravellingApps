@@ -1,11 +1,14 @@
 package com.junemon.travelingapps.feature.search
 
 import android.annotation.SuppressLint
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
+import androidx.core.view.ViewCompat
+import androidx.core.view.ViewGroupCompat
 import androidx.core.view.doOnPreDraw
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -84,6 +87,15 @@ class SearchFragment : BaseFragment() {
     }
 
     private fun FragmentSearchBinding.initView() {
+        when {
+            Build.VERSION.SDK_INT < 24 -> {
+                ViewGroupCompat.setTransitionGroup (rvSearchPlace,true)
+            }
+            Build.VERSION.SDK_INT > 24 -> {
+                rvSearchPlace.isTransitionGroup=true
+            }
+        }
+
         searchViews.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
             androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -126,7 +138,7 @@ class SearchFragment : BaseFragment() {
     }
 
     private fun FragmentSearchBinding.initData() {
-        placeVm.searchItem.observe(viewLifecycleOwner, Observer {
+        placeVm.searchItem.observe(viewLifecycleOwner, {
             recyclerViewHelper.run {
                 rvSearchPlace.setUpVerticalGridAdapter(
                     items = it,
@@ -136,7 +148,14 @@ class SearchFragment : BaseFragment() {
                         loadingImageHelper.run { ivItemPlaceImage.loadWithGlide(it.placePicture) }
                         tvItemPlaceName.text = it.placeName
                         tvItemPlaceDistrict.text = it.placeDistrict
-                        cvItemContainer.transitionName = it.placePicture
+                        when {
+                            Build.VERSION.SDK_INT < 24 -> {
+                                ViewCompat.setTransitionName(cvItemContainer,it.placePicture)
+                            }
+                            Build.VERSION.SDK_INT > 24 -> {
+                                cvItemContainer.transitionName = it.placePicture
+                            }
+                        }
                     }, itemClick = {
 
                         setupExitEnterTransition()
