@@ -26,7 +26,7 @@ class ProfileRepositoryImpl @Inject constructor(private val remoteDataSource: Pr
                 if (userResult is DataHelper.RemoteSourceValue){
                     Results.Success(userResult.data)
                 } else{
-                    Results.Error(Exception("FirebaseAuth error"),null)
+                    Results.Error(Exception("FirebaseAuth error"))
                 }
             })
         }

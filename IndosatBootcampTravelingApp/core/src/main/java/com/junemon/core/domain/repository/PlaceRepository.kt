@@ -15,11 +15,9 @@ interface PlaceRepository {
 
     fun getRemote(): Flow<Results<List<PlaceCacheData>>>
 
-    fun getRemoteOneShot(): Flow<Results<List<PlaceCacheData>>>
+    fun getCache(): Flow<List<PlaceCacheData>>
 
-    fun getCache(): Flow<Results<List<PlaceCacheData>>>
-
-    fun getSelectedTypeCache(placeType: String): Flow<Results<List<PlaceCacheData>>>
+    fun getSelectedTypeCache(placeType: String): Flow<List<PlaceCacheData>>
 
     suspend fun delete()
 

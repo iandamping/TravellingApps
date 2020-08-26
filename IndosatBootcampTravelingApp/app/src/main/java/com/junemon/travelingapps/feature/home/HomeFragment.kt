@@ -149,11 +149,14 @@ class HomeFragment : BaseFragment() {
                 }
                 is Results.Error -> {
                     stopAllShimmer()
-                    initViewPager(result.cache)
-                    initRecyclerView(result.cache)
                 }
                 is Results.Loading -> {
                     startAllShimmer()
+                    if (result.cache!=null){
+                        stopAllShimmer()
+                        initViewPager(result.cache)
+                        initRecyclerView(result.cache)
+                    }
                 }
             }
         })

@@ -25,6 +25,7 @@ import com.junemon.travelingapps.databinding.FragmentPaginationBinding
 import com.junemon.travelingapps.vm.PlaceViewModel
 import kotlinx.android.synthetic.main.item_pagination_recyclerview.view.*
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -86,20 +87,8 @@ class PaginationFragment : BaseFragment() {
     }
 
     private fun FragmentPaginationBinding.initView(type: String) {
-        placeVm.getSelectedTypeCache(type).observe(viewLifecycleOwner, Observer { result ->
-            when (result) {
-                is Results.Error -> {
-                    stopAllShimmer()
-                    inflateRecyclerView(result.cache)
-                }
-                is Results.Success -> {
-                    stopAllShimmer()
-                    inflateRecyclerView(result.data)
-                }
-                is Results.Loading -> {
-                    startAllShimmer()
-                }
-            }
+        placeVm.getSelectedTypeCache(type).observe(viewLifecycleOwner, { result ->
+            inflateRecyclerView(result)
         })
     }
 
@@ -152,19 +141,4 @@ class PaginationFragment : BaseFragment() {
         }
     }
 
-    private fun FragmentPaginationBinding.stopAllShimmer() {
-        viewHelper.run {
-            shimmerPagination.stopShimmer()
-            shimmerPagination.hideShimmer()
-            shimmerPagination.gone()
-            rvPagination.visible()
-        }
-    }
-
-    private fun FragmentPaginationBinding.startAllShimmer() {
-        viewHelper.run {
-            shimmerPagination.visible()
-            shimmerPagination.startShimmer()
-        }
-    }
 }

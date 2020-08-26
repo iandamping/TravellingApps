@@ -17,11 +17,11 @@ import javax.inject.Inject
  */
 class PlaceUseCase @Inject constructor(private val repository: PlaceRepository) {
 
-    fun getCache(): LiveData<Results<List<PlaceCacheData>>> = repository.getCache().asLiveData()
+    fun getCache(): LiveData<List<PlaceCacheData>> = repository.getCache().asLiveData()
 
     fun getRemote(): LiveData<Results<List<PlaceCacheData>>> = repository.getRemote().asLiveData()
 
-    fun getSelectedTypeCache(placeType: String): LiveData<Results<List<PlaceCacheData>>> =
+    fun getSelectedTypeCache(placeType: String): LiveData<List<PlaceCacheData>> =
         repository.getSelectedTypeCache(placeType).asLiveData()
 
     suspend fun delete() = repository.delete()
