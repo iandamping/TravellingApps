@@ -5,12 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.transition.MaterialContainerTransform
+import androidx.navigation.fragment.navArgs
 import com.google.gson.Gson
 import com.junemon.core.presentation.util.interfaces.ImageHelper
 import com.junemon.core.presentation.util.interfaces.IntentHelper
 import com.junemon.core.presentation.util.interfaces.LoadImageHelper
 import com.junemon.model.presentation.PlaceCachePresentation
 import com.junemon.core.presentation.base.fragment.BaseFragment
+import com.junemon.core.presentation.util.transition.themeColor
+import com.junemon.travelingapps.R
 import com.junemon.travelingapps.databinding.FragmentDetailBinding
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -33,15 +37,26 @@ class DetailFragment : BaseFragment() {
     @Inject
     lateinit var gson: Gson
 
+    private val args: DetailFragmentArgs by navArgs()
+
     private val passedData by lazy {
         gson.fromJson(
-            DetailFragmentArgs.fromBundle(requireArguments()).detailData,
+            args.detailData,
             PlaceCachePresentation::class.java
         )
     }
 
     private var _binding: FragmentDetailBinding? = null
     private val binding get() = _binding!!
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        sharedElementEnterTransition = MaterialContainerTransform().apply {
+
+            duration = resources.getInteger(R.integer.motion_duration_medium).toLong()
+            isElevationShadowEnabled = true
+        }
+        super.onCreate(savedInstanceState)
+    }
 
     override fun createView(
         inflater: LayoutInflater,
@@ -56,6 +71,7 @@ class DetailFragment : BaseFragment() {
         binding.run {
             detailData = passedData
             initView(passedData)
+            coordinatorParent.transitionName = passedData.placePicture
         }
     }
 

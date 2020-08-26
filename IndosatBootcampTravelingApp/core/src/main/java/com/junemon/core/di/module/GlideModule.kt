@@ -32,6 +32,6 @@ object GlideModule {
     @Provides
     @JvmStatic
     fun provideGlideRequestOptions():RequestOptions{
-        return RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC).placeholder(R.drawable.no_data)
+        return RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC).placeholder(R.drawable.empty_image).error(R.drawable.no_data)
     }
 }
