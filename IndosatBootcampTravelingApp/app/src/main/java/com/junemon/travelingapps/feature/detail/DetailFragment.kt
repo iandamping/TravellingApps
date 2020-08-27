@@ -55,7 +55,7 @@ class DetailFragment : BaseFragment() {
             drawingViewId = R.id.financialNavHostFragment
             duration = resources.getInteger(R.integer.motion_duration_medium).toLong()
             scrimColor = Color.TRANSPARENT
-            isElevationShadowEnabled = true
+            setAllContainerColors(requireContext().themeColor(R.attr.colorSurface))
         }
         super.onCreate(savedInstanceState)
     }

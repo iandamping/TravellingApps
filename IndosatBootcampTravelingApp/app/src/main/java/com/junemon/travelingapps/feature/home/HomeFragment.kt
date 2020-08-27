@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.transition.MaterialFadeThrough
 import com.google.gson.Gson
 import com.junemon.core.presentation.PresentationConstant.placeRvCallback
 import com.junemon.core.presentation.base.fragment.BaseFragment
@@ -67,6 +68,13 @@ class HomeFragment : BaseFragment(), HomeSliderListener {
 
     private var pageSize: Int = 0
     private var currentPage = 0
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enterTransition = MaterialFadeThrough().apply {
+            duration = resources.getInteger(R.integer.motion_duration_large).toLong()
+        }
+    }
 
     override fun createView(
         inflater: LayoutInflater,
