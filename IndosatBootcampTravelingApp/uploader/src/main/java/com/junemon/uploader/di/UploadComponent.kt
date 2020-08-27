@@ -27,6 +27,7 @@ import javax.inject.Singleton
 @Singleton
 @Component(
     modules = [AndroidSupportInjectionModule::class,
+        AppModule::class,
         ActivityBindingModule::class,
         ViewModelModule::class,
         DatabaseModule::class,
@@ -40,12 +41,15 @@ import javax.inject.Singleton
         GlideModule::class,
         CameraXModule::class]
 )
-interface UploadComponent: AndroidInjector<UploadApplication> {
+interface UploadComponent : AndroidInjector<UploadApplication> {
 
-    @Component.Builder
+    /*@Component.Builder
     interface Builder {
         @BindsInstance
         fun application(application: Application): Builder
         fun build(): UploadComponent
-    }
+    }*/
+
+    @Component.Builder
+    abstract class Builder : AndroidInjector.Builder<UploadApplication>()
 }

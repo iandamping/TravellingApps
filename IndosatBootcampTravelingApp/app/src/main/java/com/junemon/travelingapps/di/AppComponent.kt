@@ -14,6 +14,7 @@ import com.junemon.core.remote.di.RemoteHelperModule
 import com.junemon.core.remote.di.RemoteModule
 import com.junemon.travelingapps.PlaceApplication
 import com.junemon.travelingapps.di.module.ActivityBindingModule
+import com.junemon.travelingapps.di.module.AppModule
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjector
@@ -28,6 +29,7 @@ import javax.inject.Singleton
 @Singleton
 @Component(
     modules = [AndroidSupportInjectionModule::class,
+        AppModule::class,
         ActivityBindingModule::class,
         ViewModelModule::class,
         DatabaseModule::class,
@@ -43,10 +45,13 @@ import javax.inject.Singleton
 )
 interface AppComponent : AndroidInjector<PlaceApplication> {
 
-    @Component.Builder
+    /*@Component.Builder
     interface Builder {
         @BindsInstance
         fun application(application: Application): Builder
         fun build(): AppComponent
-    }
+    }*/
+
+    @Component.Builder
+    abstract class Builder : AndroidInjector.Builder<PlaceApplication>()
 }

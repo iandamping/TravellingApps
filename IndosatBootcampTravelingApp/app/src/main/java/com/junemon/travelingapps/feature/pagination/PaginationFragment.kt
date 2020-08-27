@@ -11,6 +11,7 @@ import androidx.core.view.doOnPreDraw
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.FragmentNavigatorExtras
+import androidx.navigation.fragment.navArgs
 import com.google.gson.Gson
 import com.junemon.core.presentation.PresentationConstant.placePaginationRvCallback
 import com.junemon.core.presentation.base.fragment.BaseFragment
@@ -24,6 +25,7 @@ import com.junemon.model.domain.PlaceCacheData
 import com.junemon.model.presentation.dto.mapCacheToPresentation
 import com.junemon.travelingapps.R
 import com.junemon.travelingapps.databinding.FragmentPaginationBinding
+import com.junemon.travelingapps.feature.detail.DetailFragmentArgs
 import com.junemon.travelingapps.vm.PlaceViewModel
 import kotlinx.android.synthetic.main.item_pagination_recyclerview.*
 import kotlinx.android.synthetic.main.item_pagination_recyclerview.view.*
@@ -62,8 +64,10 @@ class PaginationFragment : BaseFragment() {
     private var _binding: FragmentPaginationBinding? = null
     private val binding get() = _binding!!
 
+    private val args: PaginationFragmentArgs by navArgs()
+
     private val paginationType by lazy {
-        PaginationFragmentArgs.fromBundle(requireArguments()).paginationType
+        args.paginationType
     }
 
     override fun createView(
@@ -132,11 +136,14 @@ class PaginationFragment : BaseFragment() {
                         }
                         ivPaginationSaveImage.setOnClickListener { _ ->
                             imageHelper.run {
-                                this@PaginationFragment.saveImage(
-                                    lifecycleScope,
-                                    relativeParent,
-                                    it.placePicture
-                                )
+                                lifecycleScope.launch {
+                                    if (it.placePicture != null) {
+                                        saveImage(
+                                            relativeParent,
+                                            it.placePicture!!
+                                        )
+                                    }
+                                }
                             }
                         }
                         ivPaginationShare.setOnClickListener { _ ->

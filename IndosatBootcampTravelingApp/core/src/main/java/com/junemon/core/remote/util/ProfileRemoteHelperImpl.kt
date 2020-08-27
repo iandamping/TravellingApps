@@ -1,6 +1,6 @@
 package com.junemon.core.remote.util
 
-import android.app.Application
+import android.content.Context
 import android.content.Intent
 import com.firebase.ui.auth.AuthUI
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -27,7 +27,7 @@ import javax.inject.Inject
 @FlowPreview
 class ProfileRemoteHelperImpl @Inject constructor(
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
-    private val context: Application,
+    private val context: Context,
     private val mFirebaseAuth: FirebaseAuth
 ) : ProfileRemoteHelper {
 
@@ -71,7 +71,7 @@ class ProfileRemoteHelperImpl @Inject constructor(
         }
     }
 
-    override suspend fun initLogout(onComplete: () -> Unit){
+    override suspend fun initLogout(onComplete: () -> Unit) {
         withContext(ioDispatcher) {
             AuthUI.getInstance()
                 .signOut(context)

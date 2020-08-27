@@ -1,11 +1,9 @@
 package com.junemon.core.presentation.util.interfaces
 
-import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
 import android.view.View
 import androidx.fragment.app.Fragment
-import kotlinx.coroutines.CoroutineScope
 import java.io.File
 
 /**
@@ -16,7 +14,6 @@ import java.io.File
 interface ImageHelper {
 
     fun getBitmapFromAssets(
-        ctx: Context,
         fileName: String,
         widthImage: Int,
         heightImage: Int
@@ -26,11 +23,11 @@ interface ImageHelper {
 
     fun openImageFromCamera(fragment: Fragment)
 
-    fun getBitmapFromGallery(ctx: Context, path: Uri): Bitmap?
+    fun getBitmapFromGallery(path: Uri): Bitmap?
 
     fun saveImage(views: View, bitmap: Bitmap?)
 
-    fun Fragment.saveImage(scope: CoroutineScope, views: View, imageUrl: String?)
+    suspend fun saveImage(openingSnackbarFromViews: View, imageUrl: String)
 
     fun saveFirebaseImageToGallery(
         views: View,
@@ -39,7 +36,7 @@ interface ImageHelper {
 
     fun decodeSampledBitmapFromFile(imageFile: File): Bitmap
 
-    fun bitmapToFile(ctx: Context, bitmap: Bitmap?): File
+    fun bitmapToFile( bitmap: Bitmap?): File
 
-    fun createImageFileFromPhoto(context: Context, uri: (Uri) -> Unit): File
+    fun createImageFileFromPhoto(uri: (Uri) -> Unit): File
 }

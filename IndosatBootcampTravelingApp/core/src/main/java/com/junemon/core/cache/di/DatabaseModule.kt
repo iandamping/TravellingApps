@@ -1,6 +1,7 @@
 package com.junemon.core.cache.di
 
 import android.app.Application
+import android.content.Context
 import androidx.room.Room
 import com.junemon.core.cache.db.PlaceDao
 import com.junemon.core.cache.db.PlaceDatabase
@@ -19,7 +20,7 @@ object DatabaseModule {
     @Provides
     @JvmStatic
     @Singleton
-    fun provideDb(app: Application): PlaceDatabase {
+    fun provideDb(app: Context): PlaceDatabase {
         return Room
             .databaseBuilder(app, PlaceDatabase::class.java, "wonderful_samarinda.db")
             .fallbackToDestructiveMigration()

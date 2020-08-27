@@ -6,15 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
-import com.google.android.material.transition.MaterialContainerTransform
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.transition.MaterialContainerTransform
 import com.google.gson.Gson
+import com.junemon.core.presentation.base.fragment.BaseFragment
 import com.junemon.core.presentation.util.interfaces.ImageHelper
 import com.junemon.core.presentation.util.interfaces.IntentHelper
 import com.junemon.core.presentation.util.interfaces.LoadImageHelper
-import com.junemon.model.presentation.PlaceCachePresentation
-import com.junemon.core.presentation.base.fragment.BaseFragment
 import com.junemon.core.presentation.util.transition.themeColor
+import com.junemon.model.presentation.PlaceCachePresentation
 import com.junemon.travelingapps.R
 import com.junemon.travelingapps.databinding.FragmentDetailBinding
 import kotlinx.coroutines.launch
@@ -100,11 +100,16 @@ class DetailFragment : BaseFragment() {
         }
         ivDownload.setOnClickListener {
             imageHelper.run {
-                this@DetailFragment.saveImage(
-                    lifecycleScope,
-                    coordinatorParent,
-                    data.placePicture
-                )
+                lifecycleScope.launch {
+                    if (data.placePicture != null) {
+                        saveImage(
+                            coordinatorParent,
+                            data.placePicture!!
+                        )
+                    }
+
+                }
+
             }
         }
     }

@@ -295,7 +295,7 @@ class UploadFragment : BaseFragment() {
                     requireNotNull(data.data)
                     selectedUriForFirebase = data.data!!
 
-                    val bitmap = imageHelper.getBitmapFromGallery(requireContext(), data.data!!)
+                    val bitmap = imageHelper.getBitmapFromGallery(data.data!!)
 
                     loadingImageHelper.run {
                         if (bitmap != null) {

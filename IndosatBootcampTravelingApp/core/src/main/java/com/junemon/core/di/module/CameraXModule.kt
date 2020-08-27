@@ -1,6 +1,7 @@
 package com.junemon.core.di.module
 
 import android.app.Application
+import android.content.Context
 import com.junemon.core.R
 import com.junemon.core.presentation.PresentationConstant.FILENAME
 import com.junemon.core.presentation.PresentationConstant.PHOTO_EXTENSION
@@ -18,7 +19,7 @@ object CameraXModule {
 
     @Provides
     @CameraXFileDirectory
-    fun provideDirectoryFile(context: Application): File {
+    fun provideDirectoryFile(context: Context): File {
         val mediaDir = context.externalMediaDirs.firstOrNull()?.let {
             File(it, context.resources.getString(R.string.app_name)).apply { mkdirs() }
         }
