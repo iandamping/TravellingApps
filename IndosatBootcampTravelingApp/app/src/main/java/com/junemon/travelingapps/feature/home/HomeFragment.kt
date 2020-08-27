@@ -76,13 +76,15 @@ class HomeFragment : BaseFragment(), HomeSliderListener {
     }
 
     override fun viewCreated(view: View, savedInstanceState: Bundle?) {
+        postponeEnterTransition()
+        view.doOnPreDraw { startPostponedEnterTransition() }
+
         placeVm.startRunningViewPager()
         binding.run {
             initData()
             initView()
         }
-        postponeEnterTransition()
-        view.doOnPreDraw { startPostponedEnterTransition() }
+
     }
 
     override fun destroyView() {
