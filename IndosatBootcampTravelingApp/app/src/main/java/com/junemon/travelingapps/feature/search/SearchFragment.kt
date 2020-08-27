@@ -10,7 +10,6 @@ import android.widget.SearchView
 import androidx.core.view.ViewCompat
 import androidx.core.view.ViewGroupCompat
 import androidx.core.view.doOnPreDraw
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import com.google.gson.Gson
@@ -25,8 +24,8 @@ import com.junemon.model.presentation.dto.mapCacheToPresentation
 import com.junemon.travelingapps.R
 import com.junemon.travelingapps.databinding.FragmentSearchBinding
 import com.junemon.travelingapps.vm.PlaceViewModel
-import kotlinx.android.synthetic.main.item_recyclerview.*
-import kotlinx.android.synthetic.main.item_recyclerview.view.*
+import kotlinx.android.synthetic.main.item_search_recyclerview.*
+import kotlinx.android.synthetic.main.item_search_recyclerview.view.*
 import javax.inject.Inject
 
 /**
@@ -89,10 +88,10 @@ class SearchFragment : BaseFragment() {
     private fun FragmentSearchBinding.initView() {
         when {
             Build.VERSION.SDK_INT < 24 -> {
-                ViewGroupCompat.setTransitionGroup (rvSearchPlace,true)
+                ViewGroupCompat.setTransitionGroup(rvSearchPlace, true)
             }
             Build.VERSION.SDK_INT > 24 -> {
-                rvSearchPlace.isTransitionGroup=true
+                rvSearchPlace.isTransitionGroup = true
             }
         }
 
@@ -143,14 +142,14 @@ class SearchFragment : BaseFragment() {
                 rvSearchPlace.setUpVerticalGridAdapter(
                     items = it,
                     diffUtil = placePaginationRvCallback,
-                    layoutResId = R.layout.item_recyclerview,
+                    layoutResId = R.layout.item_search_recyclerview,
                     gridSize = 2, bindHolder = {
                         loadingImageHelper.run { ivItemPlaceImage.loadWithGlide(it.placePicture) }
                         tvItemPlaceName.text = it.placeName
                         tvItemPlaceDistrict.text = it.placeDistrict
                         when {
                             Build.VERSION.SDK_INT < 24 -> {
-                                ViewCompat.setTransitionName(cvItemContainer,it.placePicture)
+                                ViewCompat.setTransitionName(cvItemContainer, it.placePicture)
                             }
                             Build.VERSION.SDK_INT > 24 -> {
                                 cvItemContainer.transitionName = it.placePicture

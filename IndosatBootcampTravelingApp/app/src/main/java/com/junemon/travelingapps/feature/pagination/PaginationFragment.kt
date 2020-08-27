@@ -25,10 +25,8 @@ import com.junemon.model.presentation.dto.mapCacheToPresentation
 import com.junemon.travelingapps.R
 import com.junemon.travelingapps.databinding.FragmentPaginationBinding
 import com.junemon.travelingapps.vm.PlaceViewModel
+import kotlinx.android.synthetic.main.item_pagination_recyclerview.*
 import kotlinx.android.synthetic.main.item_pagination_recyclerview.view.*
-import kotlinx.android.synthetic.main.item_pagination_recyclerview.view.cvItemContainer
-import kotlinx.android.synthetic.main.item_recyclerview.*
-import kotlinx.android.synthetic.main.item_recyclerview.view.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -83,10 +81,10 @@ class PaginationFragment : BaseFragment() {
         binding.run {
             when {
                 Build.VERSION.SDK_INT < 24 -> {
-                    ViewGroupCompat.setTransitionGroup (rvPagination,true)
+                    ViewGroupCompat.setTransitionGroup(rvPagination, true)
                 }
                 Build.VERSION.SDK_INT > 24 -> {
-                    rvPagination.isTransitionGroup=true
+                    rvPagination.isTransitionGroup = true
                 }
             }
         }
@@ -122,7 +120,7 @@ class PaginationFragment : BaseFragment() {
                         tvPaginationDistrict.text = it.placeDistrict
                         when {
                             Build.VERSION.SDK_INT < 24 -> {
-                                ViewCompat.setTransitionName(cvItemContainer,it.placePicture)
+                                ViewCompat.setTransitionName(cvItemContainer, it.placePicture)
                             }
                             Build.VERSION.SDK_INT > 24 -> {
                                 cvItemContainer.transitionName = it.placePicture

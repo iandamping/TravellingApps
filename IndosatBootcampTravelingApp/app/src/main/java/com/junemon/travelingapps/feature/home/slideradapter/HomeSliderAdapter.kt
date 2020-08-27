@@ -12,7 +12,7 @@ import com.junemon.core.presentation.util.interfaces.LoadImageHelper
 import com.junemon.model.presentation.PlaceCachePresentation
 import com.junemon.travelingapps.databinding.ItemSliderBinding
 import com.junemon.travelingapps.feature.home.HomeFragmentDirections
-import kotlinx.android.synthetic.main.item_recyclerview.view.*
+import kotlinx.android.synthetic.main.item_recyclerview_nature_place.view.*
 import javax.inject.Inject
 
 /**

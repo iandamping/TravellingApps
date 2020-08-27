@@ -53,7 +53,7 @@ class DetailFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         sharedElementEnterTransition = MaterialContainerTransform().apply {
             drawingViewId = R.id.financialNavHostFragment
-            duration = resources.getInteger(R.integer.motion_duration_large).toLong()
+            duration = resources.getInteger(R.integer.motion_duration_medium).toLong()
             scrimColor = Color.TRANSPARENT
             isElevationShadowEnabled = true
         }
