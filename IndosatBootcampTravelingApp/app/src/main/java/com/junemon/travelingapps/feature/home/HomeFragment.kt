@@ -21,10 +21,12 @@ import com.junemon.core.presentation.util.interfaces.RecyclerHelper
 import com.junemon.core.presentation.util.interfaces.ViewHelper
 import com.junemon.model.domain.PlaceCacheData
 import com.junemon.model.domain.Results
+import com.junemon.model.presentation.PlaceCachePresentation
 import com.junemon.model.presentation.dto.mapCacheToPresentation
 import com.junemon.travelingapps.R
 import com.junemon.travelingapps.databinding.FragmentHomeBinding
 import com.junemon.travelingapps.feature.home.slideradapter.HomeSliderAdapter
+import com.junemon.travelingapps.feature.home.slideradapter.HomeSliderListener
 import com.junemon.travelingapps.vm.PlaceViewModel
 import kotlinx.android.synthetic.main.item_recyclerview.*
 import kotlinx.android.synthetic.main.item_recyclerview.view.*
@@ -36,9 +38,8 @@ import javax.inject.Inject
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class HomeFragment : BaseFragment() {
-    @Inject
-    lateinit var viewAdapter: HomeSliderAdapter
+class HomeFragment : BaseFragment(), HomeSliderListener {
+    private lateinit var viewAdapter: HomeSliderAdapter
 
     @Inject
     lateinit var viewHelper: ViewHelper
@@ -70,6 +71,7 @@ class HomeFragment : BaseFragment() {
     ): View? {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         placeVm = viewModelProvider(viewModelFactory)
+        viewAdapter = HomeSliderAdapter(this,loadingImageHelper)
         return binding.root
     }
 
@@ -332,5 +334,14 @@ class HomeFragment : BaseFragment() {
         shimmerCultureType.startShimmer()
         shimmerNatureType.startShimmer()
         shimmerReligiusType.startShimmer()
+    }
+
+    override fun onClickListener(view: View, data: PlaceCachePresentation) {
+        setupExitEnterTransition()
+
+        val toDetailFragment = HomeFragmentDirections.actionHomeFragmentToDetailFragment(gson.toJson(data))
+        val extras =
+            FragmentNavigatorExtras(view to data.placePicture!!)
+        navigate(toDetailFragment, extras)
     }
 }

@@ -22,7 +22,7 @@ import dagger.multibindings.IntoMap
 abstract class PlaceModule {
 
     @FeatureScope
-    @ContributesAndroidInjector(modules = [HomePagerAdapterModule::class])
+    @ContributesAndroidInjector
     abstract fun contributeHomeFragment(): HomeFragment
 
     @FeatureScope

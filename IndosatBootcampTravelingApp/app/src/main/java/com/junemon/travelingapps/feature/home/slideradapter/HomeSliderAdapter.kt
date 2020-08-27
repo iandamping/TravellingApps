@@ -1,7 +1,9 @@
 package com.junemon.travelingapps.feature.home.slideradapter
 
+import android.os.Build
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.ViewCompat
 import androidx.navigation.findNavController
 import androidx.viewpager.widget.PagerAdapter
 import com.google.gson.Gson
@@ -10,6 +12,7 @@ import com.junemon.core.presentation.util.interfaces.LoadImageHelper
 import com.junemon.model.presentation.PlaceCachePresentation
 import com.junemon.travelingapps.databinding.ItemSliderBinding
 import com.junemon.travelingapps.feature.home.HomeFragmentDirections
+import kotlinx.android.synthetic.main.item_recyclerview.view.*
 import javax.inject.Inject
 
 /**
@@ -17,9 +20,9 @@ import javax.inject.Inject
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class HomeSliderAdapter @Inject constructor(
-    private val loadImageHelper: LoadImageHelper,
-    private val gson: Gson
+class HomeSliderAdapter(
+    private val listener: HomeSliderListener,
+    private val loadImageHelper: LoadImageHelper
 ) : PagerAdapter() {
     private var data: MutableSet<PlaceCachePresentation> = mutableSetOf()
     private var _binding: ItemSliderBinding? = null
@@ -38,14 +41,18 @@ class HomeSliderAdapter @Inject constructor(
         loadImageHelper.run { binding.ivSliderImage.loadWithGlide(data.toList()[position].placePicture) }
         binding.tvPlaceName.text = data.toList()[position].placeName
         binding.tvPlaceAddress.text = data.toList()[position].placeAddres
+
+        when {
+            Build.VERSION.SDK_INT < 24 -> {
+                ViewCompat.setTransitionName(binding.ivSliderImage, data.toList()[position].placePicture)
+            }
+            Build.VERSION.SDK_INT > 24 -> {
+                binding.ivSliderImage.transitionName =  data.toList()[position].placePicture
+            }
+        }
+
         binding.ivSliderImage.setOnClickListener {
-            it.findNavController().navigate(
-                HomeFragmentDirections.actionHomeFragmentToDetailFragment(
-                    gson.toJson(
-                        data.toList()[position]
-                    )
-                )
-            )
+            listener.onClickListener(it, data.toList()[position])
         }
         container.addView(binding.root)
         return binding.root
