@@ -40,8 +40,7 @@ import javax.inject.Singleton
         DatabaseHelperModule::class,
         RemoteHelperModule::class,
         PresentationModule::class,
-        GlideModule::class,
-        CameraXModule::class]
+        GlideModule::class]
 )
 interface AppComponent : AndroidInjector<PlaceApplication> {
 
