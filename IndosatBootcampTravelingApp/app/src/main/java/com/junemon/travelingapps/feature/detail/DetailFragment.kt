@@ -100,14 +100,18 @@ class DetailFragment : BaseFragment() {
     private fun FragmentDetailBinding.initView(data: PlaceCachePresentation) {
         loadImageHelper.run { ivDetailMovieImages.loadWithGlide(data.placePicture) }
         ivShare.setOnClickListener {
-            intentHelper.run {
                 if (requestsGranted()) {
-                    intentShareImageAndText(
-                        requireContext(),
-                        data.placeName,
-                        data.placeDetail,
-                        data.placePicture
-                    )
+                    lifecycleScope.launch {
+                        setDialogShow(false)
+                        intentHelper.intentShareImageAndText(
+                            data.placeName,
+                            data.placeDetail,
+                            data.placePicture
+                        ){
+                            setDialogShow(true)
+                            sharedImageIntent(it)
+                        }
+                    }
                 } else {
                     permissionHelper.run {
                         requestingPermission(
@@ -117,7 +121,6 @@ class DetailFragment : BaseFragment() {
                     }
                 }
 
-            }
         }
         ivDownload.setOnClickListener {
             imageHelper.run {
@@ -146,14 +149,18 @@ class DetailFragment : BaseFragment() {
                 REQUEST_READ_WRITE_CODE_PERMISSIONS,
                 requestCode,
                 grantResults, {
-                    intentHelper.run {
-                        intentShareImageAndText(
-                            requireContext(),
+                    lifecycleScope.launch {
+                        setDialogShow(false)
+                        intentHelper.intentShareImageAndText(
                             passedData.placeName,
                             passedData.placeDetail,
                             passedData.placePicture
-                        )
+                        ){
+                            setDialogShow(true)
+                            sharedImageIntent(it)
+                        }
                     }
+
                 }, {
                     permissionDeniedSnackbar(binding.root)
                 })

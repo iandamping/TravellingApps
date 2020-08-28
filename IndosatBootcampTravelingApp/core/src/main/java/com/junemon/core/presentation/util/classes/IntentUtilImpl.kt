@@ -16,10 +16,8 @@ import com.junemon.core.data.di.MainDispatcher
 import com.junemon.core.presentation.PresentationConstant
 import com.junemon.core.presentation.util.interfaces.IntentHelper
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
-import org.jetbrains.anko.indeterminateProgressDialog
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -33,6 +31,8 @@ import javax.inject.Inject
  */
 class IntentUtilImpl @Inject constructor(
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
+    @IoDispatcher private val mainDispatcher: CoroutineDispatcher,
+    private val requestManager: RequestManager,
     private val context: Context
 ) : IntentHelper {
 
@@ -81,16 +81,9 @@ class IntentUtilImpl @Inject constructor(
         activity.startActivity(shareIntent)
     }
 
-    override fun intentShareImageAndText(
-        viewControllerContext: Context,
-        tittle: String?,
-        message: String?,
-        imageUrl: String?
+    override suspend fun intentShareImageAndText(
+        tittle: String?, message: String?, imageUrl: String?, intent: (Intent) -> Unit
     ) {
-        val dialogs = viewControllerContext.indeterminateProgressDialog(
-            viewControllerContext.resources.getString(R.string.please_wait),
-            viewControllerContext.resources.getString(R.string.processing_image)
-        )
         try {
             requireNotNull(tittle) {
                 "tittle to share is null"
@@ -101,19 +94,15 @@ class IntentUtilImpl @Inject constructor(
             requireNotNull(imageUrl) {
                 "picture to share is null"
             }
-            runBlocking {
-                withContext(ioDispatcher) {
-                    try {
-                        dialogs.show()
-                        val url = URL(imageUrl)
-                        val input = url.openStream()
-                        BitmapFactory.decodeStream(input)
-                    } catch (e: IOException) {
-                        null
-                    }
-                }?.let { bitmap ->
-                    if (getLocalBitmapUri(bitmap) != null) {
-                        dialogs.dismiss()
+
+            withContext(ioDispatcher) {
+                val bitmap = requestManager
+                    .asBitmap()
+                    .load(imageUrl)
+                    .submit(512, 512)
+                    .get()
+                if (getLocalBitmapUri(bitmap) != null) {
+                    withContext(mainDispatcher) {
                         val sharingIntent = Intent(Intent.ACTION_SEND)
                         sharingIntent.type = "image/*"
                         sharingIntent.putExtra(Intent.EXTRA_STREAM, getLocalBitmapUri(bitmap))
@@ -121,15 +110,12 @@ class IntentUtilImpl @Inject constructor(
                         sharingIntent.putExtra(Intent.EXTRA_TEXT, message)
                         sharingIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                         sharingIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                        viewControllerContext.startActivity(
-                            Intent.createChooser(
-                                sharingIntent,
-                                "Share Image"
-                            )
-                        )
+                        intent.invoke(sharingIntent)
                     }
                 }
             }
+
+
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -142,16 +128,19 @@ class IntentUtilImpl @Inject constructor(
     }
 }
 
+
 /*
-withContext(ioDispatcher) {
-    val bitmap = requestManager
-        .asBitmap()
-        .load(imageUrl)
-        .submit(512, 512)
-        .get()
-    if (getLocalBitmapUri(bitmap) != null) {
-        dialogs.dismiss()
-        withContext(mainDispatcher) {
+runBlocking {
+    withContext(ioDispatcher) {
+        try {
+            val url = URL(imageUrl)
+            val input = url.openStream()
+            BitmapFactory.decodeStream(input)
+        } catch (e: IOException) {
+            null
+        }
+    }?.let { bitmap ->
+        if (getLocalBitmapUri(bitmap) != null) {
             val sharingIntent = Intent(Intent.ACTION_SEND)
             sharingIntent.type = "image/*"
             sharingIntent.putExtra(Intent.EXTRA_STREAM, getLocalBitmapUri(bitmap))
@@ -159,14 +148,8 @@ withContext(ioDispatcher) {
             sharingIntent.putExtra(Intent.EXTRA_TEXT, message)
             sharingIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             sharingIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            viewControllerContext.startActivity(
-                Intent.createChooser(
-                    sharingIntent,
-                    "Share Image"
-                )
-            )
+            intent.invoke(sharingIntent)
         }
     }
-}
-}*/
  */
+}*/

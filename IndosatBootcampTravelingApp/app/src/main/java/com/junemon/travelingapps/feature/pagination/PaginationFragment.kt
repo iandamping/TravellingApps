@@ -27,7 +27,6 @@ import com.junemon.model.domain.PlaceCacheData
 import com.junemon.model.presentation.dto.mapCacheToPresentation
 import com.junemon.travelingapps.R
 import com.junemon.travelingapps.databinding.FragmentPaginationBinding
-import com.junemon.travelingapps.feature.detail.DetailFragmentArgs
 import com.junemon.travelingapps.vm.PlaceViewModel
 import kotlinx.android.synthetic.main.item_pagination_recyclerview.*
 import kotlinx.android.synthetic.main.item_pagination_recyclerview.view.*
@@ -169,14 +168,19 @@ class PaginationFragment : BaseFragment() {
                             }
                         }
                         ivPaginationShare.setOnClickListener { _ ->
-                            intentHelper.run {
                                 if (requestsGranted()) {
-                                        intentShareImageAndText(
-                                            requireContext(),
+                                    lifecycleScope.launch {
+                                        setDialogShow(false)
+                                        intentHelper.intentShareImageAndText(
                                             it.placeName,
                                             it.placeDetail,
                                             it.placePicture
-                                        )
+                                        ){intent ->
+                                            setDialogShow(true)
+                                            sharedImageIntent(intent)
+                                        }
+                                    }
+
                                 } else {
                                     permissionHelper.run {
                                         requestingPermission(
@@ -185,7 +189,6 @@ class PaginationFragment : BaseFragment() {
                                         )
                                     }
                                 }
-                            }
                         }
                     }, itemClick = {
                         setupExitEnterTransition()

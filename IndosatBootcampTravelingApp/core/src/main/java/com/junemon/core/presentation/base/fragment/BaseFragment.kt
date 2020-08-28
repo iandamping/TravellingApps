@@ -1,7 +1,9 @@
 package com.junemon.core.presentation.base.fragment
 
 import android.app.AlertDialog
+import android.app.ProgressDialog
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -20,6 +22,7 @@ import com.junemon.core.R
 import com.junemon.core.databinding.CustomLoadingBinding
 import com.junemon.core.presentation.layoutInflater
 import dagger.android.support.DaggerFragment
+import org.jetbrains.anko.indeterminateProgressDialog
 import timber.log.Timber
 
 /**
@@ -54,6 +57,15 @@ abstract class BaseFragment : DaggerFragment() {
         ).show()
     }
 
+    protected fun sharedImageIntent(intent: Intent) {
+        startActivity(
+            Intent.createChooser(
+                intent,
+                "Share Image"
+            )
+        )
+    }
+
     protected fun setupExitEnterTransition() {
         enterTransition = MaterialFadeThrough().apply {
             duration = resources.getInteger(R.integer.motion_duration_small).toLong()
@@ -65,13 +77,13 @@ abstract class BaseFragment : DaggerFragment() {
             duration = resources.getInteger(R.integer.motion_duration_small).toLong()
         }
 
-       /* exitTransition = MaterialElevationScale(false).apply {
-            duration = resources.getInteger(R.integer.motion_duration_large).toLong()
-        }
+        /* exitTransition = MaterialElevationScale(false).apply {
+             duration = resources.getInteger(R.integer.motion_duration_large).toLong()
+         }
 
-        reenterTransition = MaterialElevationScale(true).apply {
-            duration = resources.getInteger(R.integer.motion_duration_large).toLong()
-        }*/
+         reenterTransition = MaterialElevationScale(true).apply {
+             duration = resources.getInteger(R.integer.motion_duration_large).toLong()
+         }*/
     }
 
     private fun setBaseDialog(context: Context) {
@@ -97,6 +109,18 @@ abstract class BaseFragment : DaggerFragment() {
             alert.dismiss()
         } else {
             alert.show()
+        }
+    }
+
+    protected fun setProgressDialogShow(status: Boolean) {
+        val dialog = requireContext().indeterminateProgressDialog(
+            getString(R.string.please_wait),
+            getString(R.string.processing_image)
+        )
+        if (!status) {
+            dialog.show()
+        } else {
+            dialog.dismiss()
         }
     }
 
