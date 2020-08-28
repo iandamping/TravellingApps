@@ -17,5 +17,5 @@ interface IntentHelper {
 
     fun intentShareText(activity: FragmentActivity, text: String)
 
-    suspend fun intentShareImageAndText(viewControllerContext: Context,tittle: String?, message: String?, imageUrl: String?)
+    fun intentShareImageAndText(viewControllerContext: Context,tittle: String?, message: String?, imageUrl: String?)
 }

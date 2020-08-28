@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.Hold
 import com.google.android.material.transition.MaterialElevationScale
+import com.google.android.material.transition.MaterialFadeThrough
 import com.junemon.core.R
 import com.junemon.core.databinding.CustomLoadingBinding
 import com.junemon.core.presentation.layoutInflater
@@ -54,8 +55,11 @@ abstract class BaseFragment : DaggerFragment() {
     }
 
     protected fun setupExitEnterTransition() {
+        enterTransition = MaterialFadeThrough().apply {
+            duration = resources.getInteger(R.integer.motion_duration_small).toLong()
+        }
         exitTransition = Hold().apply {
-            duration = resources.getInteger(R.integer.motion_duration_medium).toLong()
+            duration = resources.getInteger(R.integer.motion_duration_small).toLong()
         }
         reenterTransition = MaterialElevationScale(true).apply {
             duration = resources.getInteger(R.integer.motion_duration_small).toLong()

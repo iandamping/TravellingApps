@@ -1,5 +1,6 @@
 package com.junemon.travelingapps.feature.pagination
 
+import android.Manifest
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -19,6 +20,7 @@ import com.junemon.core.presentation.di.factory.viewModelProvider
 import com.junemon.core.presentation.util.interfaces.ImageHelper
 import com.junemon.core.presentation.util.interfaces.IntentHelper
 import com.junemon.core.presentation.util.interfaces.LoadImageHelper
+import com.junemon.core.presentation.util.interfaces.PermissionHelper
 import com.junemon.core.presentation.util.interfaces.RecyclerHelper
 import com.junemon.core.presentation.util.interfaces.ViewHelper
 import com.junemon.model.domain.PlaceCacheData
@@ -61,6 +63,9 @@ class PaginationFragment : BaseFragment() {
     @Inject
     lateinit var gson: Gson
 
+    @Inject
+    lateinit var permissionHelper: PermissionHelper
+
     private var _binding: FragmentPaginationBinding? = null
     private val binding get() = _binding!!
 
@@ -69,6 +74,14 @@ class PaginationFragment : BaseFragment() {
     private val paginationType by lazy {
         args.paginationType
     }
+
+    private val REQUEST_READ_WRITE_CODE_PERMISSIONS = 5
+    private val REQUIRED_READ_WRITE_PERMISSIONS = arrayOf(
+        Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE
+    )
+
+    private fun requestsGranted() =
+        permissionHelper.requestGranted(REQUIRED_READ_WRITE_PERMISSIONS)
 
     override fun createView(
         inflater: LayoutInflater,
@@ -136,11 +149,20 @@ class PaginationFragment : BaseFragment() {
                         }
                         ivPaginationSaveImage.setOnClickListener { _ ->
                             imageHelper.run {
-                                lifecycleScope.launch {
-                                    if (it.placePicture != null) {
-                                        saveImage(
-                                            relativeParent,
-                                            it.placePicture!!
+                                if (requestsGranted()) {
+                                    lifecycleScope.launch {
+                                        if (it.placePicture != null) {
+                                            saveImage(
+                                                relativeParent,
+                                                it.placePicture!!
+                                            )
+                                        }
+                                    }
+                                } else {
+                                    permissionHelper.run {
+                                        requestingPermission(
+                                            REQUIRED_READ_WRITE_PERMISSIONS,
+                                            REQUEST_READ_WRITE_CODE_PERMISSIONS
                                         )
                                     }
                                 }
@@ -148,15 +170,21 @@ class PaginationFragment : BaseFragment() {
                         }
                         ivPaginationShare.setOnClickListener { _ ->
                             intentHelper.run {
-                                lifecycleScope.launch {
-                                    intentShareImageAndText(
-                                        requireContext(),
-                                        it.placeName,
-                                        it.placeDetail,
-                                        it.placePicture
-                                    )
+                                if (requestsGranted()) {
+                                        intentShareImageAndText(
+                                            requireContext(),
+                                            it.placeName,
+                                            it.placeDetail,
+                                            it.placePicture
+                                        )
+                                } else {
+                                    permissionHelper.run {
+                                        requestingPermission(
+                                            REQUIRED_READ_WRITE_PERMISSIONS,
+                                            REQUEST_READ_WRITE_CODE_PERMISSIONS
+                                        )
+                                    }
                                 }
-
                             }
                         }
                     }, itemClick = {

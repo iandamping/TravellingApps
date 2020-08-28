@@ -69,13 +69,6 @@ class HomeFragment : BaseFragment(), HomeSliderListener {
     private var pageSize: Int = 0
     private var currentPage = 0
 
-    /*override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enterTransition = MaterialFadeThrough().apply {
-            duration = resources.getInteger(R.integer.motion_duration_large).toLong()
-        }
-    }*/
-
     override fun createView(
         inflater: LayoutInflater,
         container: ViewGroup?,

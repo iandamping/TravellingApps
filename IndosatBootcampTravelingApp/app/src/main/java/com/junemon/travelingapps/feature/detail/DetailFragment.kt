@@ -101,23 +101,20 @@ class DetailFragment : BaseFragment() {
         loadImageHelper.run { ivDetailMovieImages.loadWithGlide(data.placePicture) }
         ivShare.setOnClickListener {
             intentHelper.run {
-                lifecycleScope.launch {
-                    if (requestsGranted()) {
-                        intentShareImageAndText(
-                            requireContext(),
-                            data.placeName,
-                            data.placeDetail,
-                            data.placePicture
+                if (requestsGranted()) {
+                    intentShareImageAndText(
+                        requireContext(),
+                        data.placeName,
+                        data.placeDetail,
+                        data.placePicture
+                    )
+                } else {
+                    permissionHelper.run {
+                        requestingPermission(
+                            REQUIRED_READ_WRITE_PERMISSIONS,
+                            REQUEST_READ_WRITE_CODE_PERMISSIONS
                         )
-                    } else {
-                        permissionHelper.run {
-                            requestingPermission(
-                                REQUIRED_READ_WRITE_PERMISSIONS,
-                                REQUEST_READ_WRITE_CODE_PERMISSIONS
-                            )
-                        }
                     }
-
                 }
 
             }
@@ -150,14 +147,12 @@ class DetailFragment : BaseFragment() {
                 requestCode,
                 grantResults, {
                     intentHelper.run {
-                        lifecycleScope.launch {
-                            intentShareImageAndText(
-                                requireContext(),
-                                passedData.placeName,
-                                passedData.placeDetail,
-                                passedData.placePicture
-                            )
-                        }
+                        intentShareImageAndText(
+                            requireContext(),
+                            passedData.placeName,
+                            passedData.placeDetail,
+                            passedData.placePicture
+                        )
                     }
                 }, {
                     permissionDeniedSnackbar(binding.root)
