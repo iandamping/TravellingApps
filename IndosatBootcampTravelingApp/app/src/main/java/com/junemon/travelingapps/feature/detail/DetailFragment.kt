@@ -48,7 +48,7 @@ class DetailFragment : BaseFragment() {
         Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE
     )
 
-    private fun requestReadPermissionsGranted() =
+    private fun requestsGranted() =
         permissionHelper.requestGranted(REQUIRED_READ_WRITE_PERMISSIONS)
 
     private val args: DetailFragmentArgs by navArgs()
@@ -66,7 +66,7 @@ class DetailFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         sharedElementEnterTransition = MaterialContainerTransform().apply {
             drawingViewId = R.id.financialNavHostFragment
-            duration = resources.getInteger(R.integer.motion_duration_medium).toLong()
+            duration = resources.getInteger(R.integer.motion_duration_small).toLong()
             scrimColor = Color.TRANSPARENT
             setAllContainerColors(requireContext().themeColor(R.attr.colorSurface))
         }
@@ -102,7 +102,7 @@ class DetailFragment : BaseFragment() {
         ivShare.setOnClickListener {
             intentHelper.run {
                 lifecycleScope.launch {
-                    if (requestReadPermissionsGranted()) {
+                    if (requestsGranted()) {
                         intentShareImageAndText(
                             requireContext(),
                             data.placeName,

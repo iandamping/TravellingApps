@@ -44,7 +44,6 @@ import javax.inject.Inject
  * Indonesia.
  */
 class HomeFragment : BaseFragment(), HomeSliderListener {
-    private lateinit var viewAdapter: HomeSliderAdapter
 
     @Inject
     lateinit var viewHelper: ViewHelper
@@ -62,6 +61,7 @@ class HomeFragment : BaseFragment(), HomeSliderListener {
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private lateinit var placeVm: PlaceViewModel
+    private lateinit var viewAdapter: HomeSliderAdapter
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
@@ -93,6 +93,7 @@ class HomeFragment : BaseFragment(), HomeSliderListener {
 
         placeVm.startRunningViewPager()
         binding.run {
+            startAllShimmer()
             initView()
         }
     }
@@ -180,7 +181,6 @@ class HomeFragment : BaseFragment(), HomeSliderListener {
                 }
                 is Results.Loading -> {
                     binding.run{
-                        startAllShimmer()
                         if (!result.cache.isNullOrEmpty()) {
                             stopAllShimmer()
                             initViewPager(result.cache)
