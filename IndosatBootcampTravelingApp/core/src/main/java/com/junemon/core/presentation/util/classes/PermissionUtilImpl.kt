@@ -23,6 +23,10 @@ class PermissionUtilImpl @Inject constructor(private val context: Context) : Per
         ContextCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED
     }
 
+    override fun requestGranted(permissions: Array<String>): Boolean = permissions.all {
+        ContextCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED
+    }
+
     override fun Fragment.onRequestingPermissionsResult(
         permissionCode: Int,
         requestCode: Int,

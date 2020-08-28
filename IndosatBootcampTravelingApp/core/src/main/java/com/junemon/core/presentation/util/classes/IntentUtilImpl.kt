@@ -1,21 +1,20 @@
 package com.junemon.core.presentation.util.classes
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import androidx.core.app.ShareCompat
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import com.bumptech.glide.Glide
+import com.bumptech.glide.RequestManager
 import com.junemon.core.R
 import com.junemon.core.data.di.IoDispatcher
 import com.junemon.core.data.di.MainDispatcher
 import com.junemon.core.presentation.util.interfaces.IntentHelper
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.jetbrains.anko.indeterminateProgressDialog
 import java.io.File
@@ -30,7 +29,8 @@ import javax.inject.Inject
  */
 class IntentUtilImpl @Inject constructor(
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
-    @MainDispatcher private val mainDispatcher: CoroutineDispatcher
+    @MainDispatcher private val mainDispatcher: CoroutineDispatcher,
+    private val requestManager: RequestManager
 ) : IntentHelper {
 
     private fun getLocalBitmapUri(bmp: Bitmap): Uri? {
@@ -68,14 +68,15 @@ class IntentUtilImpl @Inject constructor(
         activity.startActivity(shareIntent)
     }
 
-    override suspend fun Fragment.intentShareImageAndText(
+    override suspend fun intentShareImageAndText(
+        viewControllerContext: Context,
         tittle: String?,
         message: String?,
         imageUrl: String?
     ) {
-        val dialogs = this@intentShareImageAndText.requireContext().indeterminateProgressDialog(
-            this@intentShareImageAndText.requireContext().resources.getString(R.string.please_wait),
-            this@intentShareImageAndText.requireContext().resources.getString(R.string.processing_image)
+        val dialogs = viewControllerContext.indeterminateProgressDialog(
+            viewControllerContext.resources.getString(R.string.please_wait),
+            viewControllerContext.resources.getString(R.string.processing_image)
         )
         try {
             requireNotNull(tittle) {
@@ -89,7 +90,7 @@ class IntentUtilImpl @Inject constructor(
             }
             dialogs.show()
             withContext(ioDispatcher) {
-                val bitmap = Glide.with(this@intentShareImageAndText)
+                val bitmap = requestManager
                     .asBitmap()
                     .load(imageUrl)
                     .submit(512, 512)
@@ -103,7 +104,8 @@ class IntentUtilImpl @Inject constructor(
                         sharingIntent.putExtra(Intent.EXTRA_SUBJECT, tittle)
                         sharingIntent.putExtra(Intent.EXTRA_TEXT, message)
                         sharingIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                        this@intentShareImageAndText.startActivity(
+                        sharingIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        viewControllerContext.startActivity(
                             Intent.createChooser(
                                 sharingIntent,
                                 "Share Image"

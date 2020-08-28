@@ -14,6 +14,8 @@ interface PermissionHelper {
 
     fun requestReadPermissionsGranted(permissions:Array<String>):Boolean
 
+    fun requestGranted(permissions:Array<String>):Boolean
+
     fun Fragment.onRequestingPermissionsResult(
         permissionCode:Int,
         requestCode: Int,

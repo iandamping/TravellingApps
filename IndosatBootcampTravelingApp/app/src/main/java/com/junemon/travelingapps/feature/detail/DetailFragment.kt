@@ -1,5 +1,6 @@
 package com.junemon.travelingapps.feature.detail
 
+import android.Manifest
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,6 +14,7 @@ import com.junemon.core.presentation.base.fragment.BaseFragment
 import com.junemon.core.presentation.util.interfaces.ImageHelper
 import com.junemon.core.presentation.util.interfaces.IntentHelper
 import com.junemon.core.presentation.util.interfaces.LoadImageHelper
+import com.junemon.core.presentation.util.interfaces.PermissionHelper
 import com.junemon.core.presentation.util.transition.themeColor
 import com.junemon.model.presentation.PlaceCachePresentation
 import com.junemon.travelingapps.R
@@ -37,6 +39,17 @@ class DetailFragment : BaseFragment() {
 
     @Inject
     lateinit var gson: Gson
+
+    @Inject
+    lateinit var permissionHelper: PermissionHelper
+
+    private val REQUEST_READ_WRITE_CODE_PERMISSIONS = 5
+    private val REQUIRED_READ_WRITE_PERMISSIONS = arrayOf(
+        Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE
+    )
+
+    private fun requestReadPermissionsGranted() =
+        permissionHelper.requestGranted(REQUIRED_READ_WRITE_PERMISSIONS)
 
     private val args: DetailFragmentArgs by navArgs()
 
@@ -89,11 +102,22 @@ class DetailFragment : BaseFragment() {
         ivShare.setOnClickListener {
             intentHelper.run {
                 lifecycleScope.launch {
-                    this@DetailFragment.intentShareImageAndText(
-                        data.placeName,
-                        data.placeDetail,
-                        data.placePicture
-                    )
+                    if (requestReadPermissionsGranted()) {
+                        intentShareImageAndText(
+                            requireContext(),
+                            data.placeName,
+                            data.placeDetail,
+                            data.placePicture
+                        )
+                    } else {
+                        permissionHelper.run {
+                            requestingPermission(
+                                REQUIRED_READ_WRITE_PERMISSIONS,
+                                REQUEST_READ_WRITE_CODE_PERMISSIONS
+                            )
+                        }
+                    }
+
                 }
 
             }
@@ -111,6 +135,33 @@ class DetailFragment : BaseFragment() {
                 }
 
             }
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        permissionHelper.run {
+            onRequestingPermissionsResult(
+                REQUEST_READ_WRITE_CODE_PERMISSIONS,
+                requestCode,
+                grantResults, {
+                    intentHelper.run {
+                        lifecycleScope.launch {
+                            intentShareImageAndText(
+                                requireContext(),
+                                passedData.placeName,
+                                passedData.placeDetail,
+                                passedData.placePicture
+                            )
+                        }
+                    }
+                }, {
+                    permissionDeniedSnackbar(binding.root)
+                })
         }
     }
 }

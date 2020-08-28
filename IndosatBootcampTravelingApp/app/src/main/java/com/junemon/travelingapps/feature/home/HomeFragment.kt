@@ -69,12 +69,12 @@ class HomeFragment : BaseFragment(), HomeSliderListener {
     private var pageSize: Int = 0
     private var currentPage = 0
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    /*override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enterTransition = MaterialFadeThrough().apply {
             duration = resources.getInteger(R.integer.motion_duration_large).toLong()
         }
-    }
+    }*/
 
     override fun createView(
         inflater: LayoutInflater,
@@ -181,7 +181,7 @@ class HomeFragment : BaseFragment(), HomeSliderListener {
                 is Results.Loading -> {
                     binding.run{
                         startAllShimmer()
-                        if (result.cache != null) {
+                        if (!result.cache.isNullOrEmpty()) {
                             stopAllShimmer()
                             initViewPager(result.cache)
                             initRecyclerView(result.cache)
@@ -194,8 +194,8 @@ class HomeFragment : BaseFragment(), HomeSliderListener {
 
     private fun FragmentHomeBinding.initViewPager(result: List<PlaceCacheData>?) {
         ilegallStateCatching {
-            checkNotNull(result)
-            check(result.isNotEmpty())
+            requireNotNull(result)
+            require(result.isNotEmpty())
 
             pageSize = if (result.size > 10) {
                 10

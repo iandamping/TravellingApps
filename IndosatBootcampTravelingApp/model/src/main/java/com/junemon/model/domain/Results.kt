@@ -9,4 +9,5 @@ sealed class Results<out R> {
 sealed class DataHelper<out T>{
     data class RemoteSourceValue<out T>(val data: T) : DataHelper<T>()
     data class RemoteSourceError(val exception: Exception) : DataHelper<Nothing>()
+    object RemoteSourceLoading : DataHelper<Nothing>()
 }

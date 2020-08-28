@@ -1,4 +1,4 @@
-package com.junemon.uploader.di
+package com.junemon.uploader.di.module
 
 import com.junemon.core.di.scope.PerActivities
 import com.junemon.uploader.MainActivity

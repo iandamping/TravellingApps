@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.Hold
 import com.google.android.material.transition.MaterialElevationScale
 import com.junemon.core.R
@@ -38,25 +39,35 @@ abstract class BaseFragment : DaggerFragment() {
         StrictMode.setVmPolicy(builder.build())
     }
 
-    protected fun navigate(destination: NavDirections, extraInfo: FragmentNavigator.Extras) = with(findNavController()) {
-        currentDestination?.getAction(destination.actionId)?.let { navigate(destination, extraInfo) }
+    protected fun navigate(destination: NavDirections, extraInfo: FragmentNavigator.Extras) =
+        with(findNavController()) {
+            currentDestination?.getAction(destination.actionId)
+                ?.let { navigate(destination, extraInfo) }
+        }
+
+    protected fun permissionDeniedSnackbar(view: View) {
+        Snackbar.make(
+            view,
+            getString(R.string.permission_not_granted),
+            Snackbar.LENGTH_SHORT
+        ).show()
     }
 
     protected fun setupExitEnterTransition() {
-        /*exitTransition = Hold().apply {
+        exitTransition = Hold().apply {
             duration = resources.getInteger(R.integer.motion_duration_medium).toLong()
         }
         reenterTransition = MaterialElevationScale(true).apply {
             duration = resources.getInteger(R.integer.motion_duration_small).toLong()
-        }*/
+        }
 
-        exitTransition = MaterialElevationScale(false).apply {
+       /* exitTransition = MaterialElevationScale(false).apply {
             duration = resources.getInteger(R.integer.motion_duration_large).toLong()
         }
 
         reenterTransition = MaterialElevationScale(true).apply {
             duration = resources.getInteger(R.integer.motion_duration_large).toLong()
-        }
+        }*/
     }
 
     private fun setBaseDialog(context: Context) {
@@ -152,6 +163,4 @@ abstract class BaseFragment : DaggerFragment() {
         destroyView()
         _binding = null
     }
-
-
 }

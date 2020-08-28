@@ -149,7 +149,8 @@ class PaginationFragment : BaseFragment() {
                         ivPaginationShare.setOnClickListener { _ ->
                             intentHelper.run {
                                 lifecycleScope.launch {
-                                    this@PaginationFragment.intentShareImageAndText(
+                                    intentShareImageAndText(
+                                        requireContext(),
                                         it.placeName,
                                         it.placeDetail,
                                         it.placePicture

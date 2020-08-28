@@ -1,4 +1,4 @@
-package com.junemon.uploader.di
+package com.junemon.uploader.di.module
 
 import androidx.lifecycle.ViewModel
 import com.junemon.core.di.scope.FeatureScope

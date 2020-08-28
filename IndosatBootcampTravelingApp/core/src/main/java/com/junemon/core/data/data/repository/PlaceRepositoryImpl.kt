@@ -13,8 +13,11 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 /**
@@ -32,25 +35,24 @@ class PlaceRepositoryImpl @Inject constructor(
     /**Observing operation*/
     override fun getRemote(): Flow<Results<List<PlaceCacheData>>> {
         return flow {
-            remoteDataSource.getFirebaseData()
-                .onStart {
-                    cacheDataSource.getCache().collect {
-                        emit(Results.Loading(cache = it))
+            emitAll(remoteDataSource.getFirebaseData().flatMapLatest { firebaseResult ->
+                when (firebaseResult) {
+                    is DataHelper.RemoteSourceError -> {
+                        flowOf(Results.Error(exception = firebaseResult.exception))
                     }
-                }.collect { firebaseResult ->
-                    when (firebaseResult) {
-                        is DataHelper.RemoteSourceError -> {
-                            emit(Results.Error(exception = firebaseResult.exception))
-                        }
 
-                        is DataHelper.RemoteSourceValue -> {
-                            cacheDataSource.setCache(firebaseResult.data.mapRemoteToCacheDomain())
-                            cacheDataSource.getCache().collect {
-                                emit(Results.Success(it))
-                            }
+                    is DataHelper.RemoteSourceValue -> {
+                        cacheDataSource.setCache(firebaseResult.data.mapRemoteToCacheDomain())
+                        cacheDataSource.getCache().map { Results.Success(it) }
+                    }
+                    else -> {
+                        cacheDataSource.getCache().map {
+                            Results.Loading(cache = it)
                         }
                     }
                 }
+            })
+
         }
     }
 

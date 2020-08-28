@@ -18,6 +18,7 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -66,7 +67,7 @@ class RemoteHelperImpl @Inject constructor(
                 }
             }
         })
-        return channel.asFlow()
+        return channel.asFlow().onStart { emit(DataHelper.RemoteSourceLoading) }
     }
 
     /**one-shot only operation*/
