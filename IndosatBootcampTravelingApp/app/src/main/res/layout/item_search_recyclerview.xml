@@ -19,13 +19,14 @@
         android:layout_gravity="center"
         android:orientation="vertical">
 
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/ivItemPlaceImage"
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:layout_gravity="center"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/rightTopCorner"
             tools:src="@drawable/no_data" />
 
 

@@ -127,7 +127,7 @@ class DetailFragment : BaseFragment() {
                 lifecycleScope.launch {
                     if (data.placePicture != null) {
                         saveImage(
-                            coordinatorParent,
+                            binding.root,
                             data.placePicture!!
                         )
                     }

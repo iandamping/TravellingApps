@@ -98,7 +98,7 @@ class HomeFragment : BaseFragment(), HomeSliderListener {
 
     override fun activityCreated() {
         initData()
-        initRunningViewPager()
+        // initRunningViewPager()
     }
 
     private fun initRunningViewPager() {

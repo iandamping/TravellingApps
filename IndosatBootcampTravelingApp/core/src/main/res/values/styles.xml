@@ -5,4 +5,25 @@
         <item name="cornerSize">50%</item>
     </style>
 
+    <style name="rightTopCorner">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopRight">50dp</item>
+    </style>
+
+    <style name="onlyonecorner">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+        <item name="cornerSizeTopRight">0dp</item>
+    </style>
+
+    <style name="Widget.MyApp.MaterialCardView" parent="ShapeAppearanceOverlay.MyApp.MaterialCardView">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.MyApp.MaterialCardView</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay.MyApp.MaterialCardView" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+        <item name="cornerSizeTopRight">0dp</item>
+    </style>
+
 </resources>

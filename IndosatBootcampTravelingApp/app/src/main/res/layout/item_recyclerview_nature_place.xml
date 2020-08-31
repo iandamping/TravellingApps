@@ -19,7 +19,8 @@
         android:layout_gravity="center"
         android:orientation="vertical">
 
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
+            app:shapeAppearanceOverlay="@style/rightTopCorner"
             android:id="@+id/ivItemNaturePlaceImage"
             android:layout_width="match_parent"
             android:layout_height="150dp"
