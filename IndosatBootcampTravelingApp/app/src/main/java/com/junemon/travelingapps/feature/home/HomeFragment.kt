@@ -5,18 +5,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.ViewCompat
 import androidx.core.view.ViewGroupCompat
 import androidx.core.view.doOnPreDraw
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import com.google.gson.Gson
-import com.junemon.core.presentation.PresentationConstant.placeRvCallback
 import com.junemon.core.presentation.base.fragment.BaseFragment
 import com.junemon.core.presentation.di.factory.viewModelProvider
 import com.junemon.core.presentation.util.interfaces.LoadImageHelper
-import com.junemon.core.presentation.util.interfaces.RecyclerHelper
 import com.junemon.core.presentation.util.interfaces.ViewHelper
 import com.junemon.model.domain.PlaceCacheData
 import com.junemon.model.domain.Results
@@ -26,11 +23,11 @@ import com.junemon.travelingapps.R
 import com.junemon.travelingapps.databinding.FragmentHomeBinding
 import com.junemon.travelingapps.feature.home.recycleradapters.HomeCultureAdapter
 import com.junemon.travelingapps.feature.home.recycleradapters.HomeNatureAdapter
+import com.junemon.travelingapps.feature.home.recycleradapters.HomeRandomAdapter
 import com.junemon.travelingapps.feature.home.recycleradapters.HomeReligiousAdapter
 import com.junemon.travelingapps.feature.home.recycleradapters.horizontalRecyclerviewInitializer
 import com.junemon.travelingapps.vm.PlaceViewModel
 import kotlinx.android.synthetic.main.item_recyclerview_nature_place.*
-import kotlinx.android.synthetic.main.item_recyclerview_random.view.*
 import javax.inject.Inject
 
 /**
@@ -39,6 +36,7 @@ import javax.inject.Inject
  * Indonesia.
  */
 class HomeFragment : BaseFragment(),
+    HomeRandomAdapter.HomeRandomAdapterListener,
     HomeReligiousAdapter.HomeReligiousAdapterListener,
     HomeNatureAdapter.HomeNatureAdapterListener,
     HomeCultureAdapter.HomeCultureAdapterListener {
@@ -50,15 +48,13 @@ class HomeFragment : BaseFragment(),
     lateinit var loadingImageHelper: LoadImageHelper
 
     @Inject
-    lateinit var recyclerViewHelper: RecyclerHelper
-
-    @Inject
     lateinit var gson: Gson
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private lateinit var placeVm: PlaceViewModel
+    private lateinit var randomAdapter: HomeRandomAdapter
     private lateinit var natureAdapter: HomeNatureAdapter
     private lateinit var religiousAdapter: HomeReligiousAdapter
     private lateinit var cultureAdapter: HomeCultureAdapter
@@ -75,6 +71,7 @@ class HomeFragment : BaseFragment(),
     ): View? {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         placeVm = viewModelProvider(viewModelFactory)
+        randomAdapter = HomeRandomAdapter(this@HomeFragment)
         natureAdapter = HomeNatureAdapter(this@HomeFragment)
         religiousAdapter = HomeReligiousAdapter(this@HomeFragment)
         cultureAdapter = HomeCultureAdapter(this@HomeFragment)
@@ -110,6 +107,10 @@ class HomeFragment : BaseFragment(),
         rvPlaceReligiusType.apply {
             horizontalRecyclerviewInitializer()
             adapter = religiousAdapter
+        }
+        rvRandom.apply {
+            horizontalRecyclerviewInitializer()
+            adapter = randomAdapter
         }
 
         when {
@@ -203,44 +204,10 @@ class HomeFragment : BaseFragment(),
                 // Force a redraw in case the time zone has changed
                 this.notifyDataSetChanged()
             }
-
-            recyclerViewHelper.run {
-
-                binding.rvRandom.setUpHorizontalListAdapter(
-                    items = result.mapCacheToPresentation().take(pageSize),
-                    diffUtil = placeRvCallback,
-                    layoutResId = R.layout.item_recyclerview_random,
-                    bindHolder = {
-                        loadingImageHelper.run { ivItemRandomPlaceImage.loadWithGlide(it?.placePicture) }
-                        tvItemRandomPlaceName.text = it?.placeName
-                        tvItemRandomPlaceDistrict.text = it?.placeDistrict
-                        when {
-                            Build.VERSION.SDK_INT < 24 -> {
-                                ViewCompat.setTransitionName(
-                                    cvItemRandomContainer,
-                                    it?.placePicture
-                                )
-                            }
-                            Build.VERSION.SDK_INT > 24 -> {
-                                cvItemRandomContainer.transitionName = it?.placePicture
-                            }
-                        }
-                    }, itemClick = {
-                        setupExitEnterTransition()
-
-                        val toDetailFragment =
-                            HomeFragmentDirections.actionHomeFragmentToDetailFragment(
-                                gson.toJson(
-                                    this
-                                )
-                            )
-
-                        /**transition name must unique !*/
-                        val extras =
-                            FragmentNavigatorExtras(cvItemNatureContainer to this!!.placePicture!!)
-                        navigate(toDetailFragment, extras)
-                    }
-                )
+            randomAdapter.run {
+                submitList(result.mapCacheToPresentation().take(pageSize))
+                // Force a redraw in case the time zone has changed
+                this.notifyDataSetChanged()
             }
         }
     }
@@ -318,6 +285,21 @@ class HomeFragment : BaseFragment(),
     }
 
     override fun onCultureClicked(data: PlaceCachePresentation) {
+        setupExitEnterTransition()
+
+        val toDetailFragment =
+            HomeFragmentDirections.actionHomeFragmentToDetailFragment(
+                gson.toJson(
+                    data
+                )
+            )
+
+        val extras =
+            FragmentNavigatorExtras(cvItemNatureContainer to data.placePicture!!)
+        navigate(toDetailFragment, extras)
+    }
+
+    override fun onRandomClicked(data: PlaceCachePresentation) {
         setupExitEnterTransition()
 
         val toDetailFragment =
