@@ -68,13 +68,13 @@ abstract class BaseFragment : DaggerFragment() {
 
     protected fun setupExitEnterTransition() {
         enterTransition = MaterialFadeThrough().apply {
-            duration = resources.getInteger(R.integer.motion_duration_small).toLong()
+            duration = resources.getInteger(R.integer.motion_duration_xsmall).toLong()
         }
         exitTransition = Hold().apply {
-            duration = resources.getInteger(R.integer.motion_duration_small).toLong()
+            duration = resources.getInteger(R.integer.motion_duration_xsmall).toLong()
         }
         reenterTransition = MaterialElevationScale(true).apply {
-            duration = resources.getInteger(R.integer.motion_duration_small).toLong()
+            duration = resources.getInteger(R.integer.motion_duration_xsmall).toLong()
         }
 
         /* exitTransition = MaterialElevationScale(false).apply {

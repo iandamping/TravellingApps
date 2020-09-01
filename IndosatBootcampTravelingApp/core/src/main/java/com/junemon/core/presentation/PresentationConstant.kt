@@ -68,7 +68,7 @@ object PresentationConstant {
             oldItem: PlaceCachePresentation,
             newItem: PlaceCachePresentation
         ): Boolean {
-            return oldItem == newItem
+            return oldItem.localPlaceID == newItem.localPlaceID
         }
     }
 
@@ -84,7 +84,7 @@ object PresentationConstant {
             oldItem: PlaceCachePresentation,
             newItem: PlaceCachePresentation
         ): Boolean {
-            return oldItem == newItem
+            return oldItem.localPlaceID == newItem.localPlaceID
         }
     }
 }

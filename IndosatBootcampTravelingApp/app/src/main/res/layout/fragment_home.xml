@@ -93,19 +93,12 @@
 
             </com.facebook.shimmer.ShimmerFrameLayout>
 
-            <androidx.viewpager.widget.ViewPager
-                android:id="@+id/vpPlaceRandom"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvRandom"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
                 android:visibility="gone" />
 
-            <me.relex.circleindicator.CircleIndicator
-                android:id="@+id/indicator"
-                android:layout_width="wrap_content"
-                android:layout_height="24dp"
-                android:layout_gravity="center_horizontal"
-                app:ci_drawable="@drawable/dot_enable"
-                app:ci_drawable_unselected="@drawable/dot_disable" />
         </LinearLayout>
 
         <LinearLayout

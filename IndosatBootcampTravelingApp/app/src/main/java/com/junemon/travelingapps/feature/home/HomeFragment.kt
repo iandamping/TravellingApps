@@ -9,10 +9,8 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.ViewGroupCompat
 import androidx.core.view.doOnPreDraw
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.transition.MaterialFadeThrough
 import com.google.gson.Gson
 import com.junemon.core.presentation.PresentationConstant.placeRvCallback
 import com.junemon.core.presentation.base.fragment.BaseFragment
@@ -26,16 +24,13 @@ import com.junemon.model.presentation.PlaceCachePresentation
 import com.junemon.model.presentation.dto.mapCacheToPresentation
 import com.junemon.travelingapps.R
 import com.junemon.travelingapps.databinding.FragmentHomeBinding
-import com.junemon.travelingapps.feature.home.slideradapter.HomeSliderAdapter
-import com.junemon.travelingapps.feature.home.slideradapter.HomeSliderListener
+import com.junemon.travelingapps.feature.home.recycleradapters.HomeCultureAdapter
+import com.junemon.travelingapps.feature.home.recycleradapters.HomeNatureAdapter
+import com.junemon.travelingapps.feature.home.recycleradapters.HomeReligiousAdapter
+import com.junemon.travelingapps.feature.home.recycleradapters.horizontalRecyclerviewInitializer
 import com.junemon.travelingapps.vm.PlaceViewModel
-import kotlinx.android.synthetic.main.item_recyclerview_culture_place.*
-import kotlinx.android.synthetic.main.item_recyclerview_culture_place.view.*
 import kotlinx.android.synthetic.main.item_recyclerview_nature_place.*
-import kotlinx.android.synthetic.main.item_recyclerview_nature_place.view.*
-import kotlinx.android.synthetic.main.item_recyclerview_religius_place.*
-import kotlinx.android.synthetic.main.item_recyclerview_religius_place.view.*
-import kotlinx.coroutines.delay
+import kotlinx.android.synthetic.main.item_recyclerview_random.view.*
 import javax.inject.Inject
 
 /**
@@ -43,7 +38,10 @@ import javax.inject.Inject
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class HomeFragment : BaseFragment(), HomeSliderListener {
+class HomeFragment : BaseFragment(),
+    HomeReligiousAdapter.HomeReligiousAdapterListener,
+    HomeNatureAdapter.HomeNatureAdapterListener,
+    HomeCultureAdapter.HomeCultureAdapterListener {
 
     @Inject
     lateinit var viewHelper: ViewHelper
@@ -61,13 +59,14 @@ class HomeFragment : BaseFragment(), HomeSliderListener {
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private lateinit var placeVm: PlaceViewModel
-    private lateinit var viewAdapter: HomeSliderAdapter
+    private lateinit var natureAdapter: HomeNatureAdapter
+    private lateinit var religiousAdapter: HomeReligiousAdapter
+    private lateinit var cultureAdapter: HomeCultureAdapter
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
     private var pageSize: Int = 0
-    private var currentPage = 0
 
     override fun createView(
         inflater: LayoutInflater,
@@ -76,15 +75,15 @@ class HomeFragment : BaseFragment(), HomeSliderListener {
     ): View? {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         placeVm = viewModelProvider(viewModelFactory)
-        viewAdapter = HomeSliderAdapter(this, loadingImageHelper)
+        natureAdapter = HomeNatureAdapter(this@HomeFragment)
+        religiousAdapter = HomeReligiousAdapter(this@HomeFragment)
+        cultureAdapter = HomeCultureAdapter(this@HomeFragment)
         return binding.root
     }
 
     override fun viewCreated(view: View, savedInstanceState: Bundle?) {
         postponeEnterTransition()
         view.doOnPreDraw { startPostponedEnterTransition() }
-
-        placeVm.startRunningViewPager()
         binding.run {
             startAllShimmer()
             initView()
@@ -92,32 +91,27 @@ class HomeFragment : BaseFragment(), HomeSliderListener {
     }
 
     override fun destroyView() {
-        placeVm.stopRunningViewPager()
         _binding = null
     }
 
     override fun activityCreated() {
         initData()
-        // initRunningViewPager()
-    }
-
-    private fun initRunningViewPager() {
-        placeVm.setRunningForever.observe(viewLifecycleOwner, {
-            viewLifecycleOwner.lifecycleScope.launchWhenCreated {
-                while (it) {
-                    if (currentPage == pageSize) {
-                        currentPage = 0
-                    }
-                    delay(4000L)
-                    if (_binding != null) {
-                        binding.vpPlaceRandom.setCurrentItem(currentPage++, true)
-                    }
-                }
-            }
-        })
     }
 
     private fun FragmentHomeBinding.initView() {
+        rvPlaceCultureType.apply {
+            horizontalRecyclerviewInitializer()
+            adapter = cultureAdapter
+        }
+        rvPlaceNatureType.apply {
+            horizontalRecyclerviewInitializer()
+            adapter = natureAdapter
+        }
+        rvPlaceReligiusType.apply {
+            horizontalRecyclerviewInitializer()
+            adapter = religiousAdapter
+        }
+
         when {
             Build.VERSION.SDK_INT < 24 -> {
                 ViewGroupCompat.setTransitionGroup(rvPlaceCultureType, true)
@@ -162,78 +156,76 @@ class HomeFragment : BaseFragment(), HomeSliderListener {
         placeVm.getRemote().observe(viewLifecycleOwner, { result ->
             when (result) {
                 is Results.Success -> {
-                    binding.run {
-                        stopAllShimmer()
-                        initViewPager(result.data)
-                        initRecyclerView(result.data)
-                    }
-
+                    binding.stopAllShimmer()
+                    initRecyclerView(result.data)
                 }
                 is Results.Error -> {
                     binding.stopAllShimmer()
                 }
                 is Results.Loading -> {
-                    binding.run{
-                        if (!result.cache.isNullOrEmpty()) {
-                            stopAllShimmer()
-                            initViewPager(result.cache)
-                            initRecyclerView(result.cache)
-                        }
+                    if (!result.cache.isNullOrEmpty()) {
+                        binding.stopAllShimmer()
+                        initRecyclerView(result.cache)
                     }
                 }
             }
         })
     }
 
-    private fun FragmentHomeBinding.initViewPager(result: List<PlaceCacheData>?) {
-        ilegallStateCatching {
-            requireNotNull(result)
-            require(result.isNotEmpty())
+    private fun initRecyclerView(result: List<PlaceCacheData>?) {
+        universalCatching {
+            checkNotNull(result)
+            check(result.isNotEmpty())
 
             pageSize = if (result.size > 10) {
                 10
             } else result.size
 
-            viewAdapter.addData(result.mapCacheToPresentation().take(10))
-            vpPlaceRandom.adapter = viewAdapter
-            indicator.setViewPager(vpPlaceRandom)
-
-        }
-    }
-
-    private fun FragmentHomeBinding.initRecyclerView(result: List<PlaceCacheData>?) {
-        universalCatching {
-            checkNotNull(result)
-            check(result.isNotEmpty())
-            val religiData = result.mapCacheToPresentation()
-                .filter { it.placeType == "Wisata Religi" }
+            val religiData =
+                result.mapCacheToPresentation().filter { it.placeType == "Wisata Religi" }
             val natureData =
                 result.mapCacheToPresentation().filter { it.placeType == "Wisata Alam" }
-            val cultureData = result.mapCacheToPresentation()
-                .filter { it.placeType == "Wisata Budaya" }
+            val cultureData =
+                result.mapCacheToPresentation().filter { it.placeType == "Wisata Budaya" }
+
+            natureAdapter.run {
+                submitList(natureData)
+                // Force a redraw in case the time zone has changed
+                this.notifyDataSetChanged()
+            }
+            religiousAdapter.run {
+                submitList(religiData)
+                // Force a redraw in case the time zone has changed
+                this.notifyDataSetChanged()
+            }
+            cultureAdapter.run {
+                submitList(cultureData)
+                // Force a redraw in case the time zone has changed
+                this.notifyDataSetChanged()
+            }
 
             recyclerViewHelper.run {
 
-                rvPlaceNatureType.setUpHorizontalListAdapter(
-                    items = natureData, diffUtil = placeRvCallback,
+                binding.rvRandom.setUpHorizontalListAdapter(
+                    items = result.mapCacheToPresentation().take(pageSize),
+                    diffUtil = placeRvCallback,
+                    layoutResId = R.layout.item_recyclerview_random,
                     bindHolder = {
-                        loadingImageHelper.run { ivItemNaturePlaceImage.loadWithGlide(it?.placePicture) }
-                        tvItemNaturePlaceName.text = it?.placeName
-                        tvItemNaturePlaceDistrict.text = it?.placeDistrict
+                        loadingImageHelper.run { ivItemRandomPlaceImage.loadWithGlide(it?.placePicture) }
+                        tvItemRandomPlaceName.text = it?.placeName
+                        tvItemRandomPlaceDistrict.text = it?.placeDistrict
                         when {
                             Build.VERSION.SDK_INT < 24 -> {
                                 ViewCompat.setTransitionName(
-                                    cvItemNatureContainer,
+                                    cvItemRandomContainer,
                                     it?.placePicture
                                 )
                             }
                             Build.VERSION.SDK_INT > 24 -> {
-                                cvItemNatureContainer.transitionName = it?.placePicture
+                                cvItemRandomContainer.transitionName = it?.placePicture
                             }
                         }
-                    },
-                    layoutResId = R.layout.item_recyclerview_nature_place, itemClick = {
-
+                    }, itemClick = {
                         setupExitEnterTransition()
 
                         val toDetailFragment =
@@ -249,71 +241,6 @@ class HomeFragment : BaseFragment(), HomeSliderListener {
                         navigate(toDetailFragment, extras)
                     }
                 )
-                rvPlaceCultureType.setUpHorizontalListAdapter(
-                    items = cultureData, diffUtil = placeRvCallback,
-                    bindHolder = {
-                        loadingImageHelper.run { ivItemCulturePlaceImage.loadWithGlide(it?.placePicture) }
-                        tvItemCulturePlaceName.text = it?.placeName
-                        tvItemCulturePlaceDistrict.text = it?.placeDistrict
-                        when {
-                            Build.VERSION.SDK_INT < 24 -> {
-                                ViewCompat.setTransitionName(
-                                    cvItemCultureContainer,
-                                    it?.placePicture
-                                )
-                            }
-                            Build.VERSION.SDK_INT > 24 -> {
-                                cvItemCultureContainer.transitionName = it?.placePicture
-                            }
-                        }
-                    },
-                    layoutResId = R.layout.item_recyclerview_culture_place, itemClick = {
-                        setupExitEnterTransition()
-
-                        val toDetailFragment =
-                            HomeFragmentDirections.actionHomeFragmentToDetailFragment(
-                                gson.toJson(
-                                    this
-                                )
-                            )
-                        val extras =
-                            FragmentNavigatorExtras(cvItemCultureContainer to this!!.placePicture!!)
-                        navigate(toDetailFragment, extras)
-                    }
-                )
-                rvPlaceReligiusType.setUpHorizontalListAdapter(
-                    items = religiData, diffUtil = placeRvCallback,
-                    bindHolder = {
-                        loadingImageHelper.run { ivItemReligiusPlaceImage.loadWithGlide(it?.placePicture) }
-                        tvItemReligiusPlaceName.text = it?.placeName
-                        tvItemReligiusPlaceDistrict.text = it?.placeDistrict
-                        when {
-                            Build.VERSION.SDK_INT < 24 -> {
-                                ViewCompat.setTransitionName(
-                                    cvItemReligiusContainer,
-                                    it?.placePicture
-                                )
-                            }
-                            Build.VERSION.SDK_INT > 24 -> {
-                                cvItemReligiusContainer.transitionName = it?.placePicture
-                            }
-                        }
-
-                    },
-                    layoutResId = R.layout.item_recyclerview_religius_place, itemClick = {
-                        setupExitEnterTransition()
-
-                        val toDetailFragment =
-                            HomeFragmentDirections.actionHomeFragmentToDetailFragment(
-                                gson.toJson(
-                                    this
-                                )
-                            )
-                        val extras =
-                            FragmentNavigatorExtras(cvItemReligiusContainer to this!!.placePicture!!)
-                        navigate(toDetailFragment, extras)
-                    }
-                )
             }
         }
     }
@@ -325,7 +252,7 @@ class HomeFragment : BaseFragment(), HomeSliderListener {
             shimmerCultureType.gone()
             shimmerNatureType.gone()
             shimmerReligiusType.gone()
-            vpPlaceRandom.visible()
+            rvRandom.visible()
             rvPlaceCultureType.visible()
             rvPlaceNatureType.visible()
             rvPlaceReligiusType.visible()
@@ -360,13 +287,48 @@ class HomeFragment : BaseFragment(), HomeSliderListener {
         shimmerReligiusType.startShimmer()
     }
 
-    override fun onClickListener(view: View, data: PlaceCachePresentation) {
+    override fun onReligiousClicked(data: PlaceCachePresentation) {
         setupExitEnterTransition()
 
         val toDetailFragment =
-            HomeFragmentDirections.actionHomeFragmentToDetailFragment(gson.toJson(data))
+            HomeFragmentDirections.actionHomeFragmentToDetailFragment(
+                gson.toJson(
+                    data
+                )
+            )
+
         val extras =
-            FragmentNavigatorExtras(view to data.placePicture!!)
+            FragmentNavigatorExtras(cvItemNatureContainer to data.placePicture!!)
+        navigate(toDetailFragment, extras)
+    }
+
+    override fun onNatureClicked(data: PlaceCachePresentation) {
+        setupExitEnterTransition()
+
+        val toDetailFragment =
+            HomeFragmentDirections.actionHomeFragmentToDetailFragment(
+                gson.toJson(
+                    data
+                )
+            )
+
+        val extras =
+            FragmentNavigatorExtras(cvItemNatureContainer to data.placePicture!!)
+        navigate(toDetailFragment, extras)
+    }
+
+    override fun onCultureClicked(data: PlaceCachePresentation) {
+        setupExitEnterTransition()
+
+        val toDetailFragment =
+            HomeFragmentDirections.actionHomeFragmentToDetailFragment(
+                gson.toJson(
+                    data
+                )
+            )
+
+        val extras =
+            FragmentNavigatorExtras(cvItemNatureContainer to data.placePicture!!)
         navigate(toDetailFragment, extras)
     }
 }
