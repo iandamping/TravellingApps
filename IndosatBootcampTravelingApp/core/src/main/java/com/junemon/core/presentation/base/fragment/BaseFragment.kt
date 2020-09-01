@@ -49,6 +49,12 @@ abstract class BaseFragment : DaggerFragment() {
                 ?.let { navigate(destination, extraInfo) }
         }
 
+    protected fun navigate(destination: NavDirections) =
+        with(findNavController()) {
+            currentDestination?.getAction(destination.actionId)
+                ?.let { navigate(destination) }
+        }
+
     protected fun permissionDeniedSnackbar(view: View) {
         Snackbar.make(
             view,

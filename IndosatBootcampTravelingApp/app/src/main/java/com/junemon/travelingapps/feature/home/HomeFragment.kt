@@ -158,7 +158,7 @@ class HomeFragment : BaseFragment(),
             when (result) {
                 is Results.Success -> {
                     binding.stopAllShimmer()
-                    initRecyclerView(result.data)
+                    initRecyclerView(result.data.mapCacheToPresentation())
                 }
                 is Results.Error -> {
                     binding.stopAllShimmer()
@@ -166,14 +166,14 @@ class HomeFragment : BaseFragment(),
                 is Results.Loading -> {
                     if (!result.cache.isNullOrEmpty()) {
                         binding.stopAllShimmer()
-                        initRecyclerView(result.cache)
+                        initRecyclerView(result.cache?.mapCacheToPresentation())
                     }
                 }
             }
         })
     }
 
-    private fun initRecyclerView(result: List<PlaceCacheData>?) {
+    private fun initRecyclerView(result: List<PlaceCachePresentation>?) {
         universalCatching {
             checkNotNull(result)
             check(result.isNotEmpty())
@@ -182,12 +182,9 @@ class HomeFragment : BaseFragment(),
                 10
             } else result.size
 
-            val religiData =
-                result.mapCacheToPresentation().filter { it.placeType == "Wisata Religi" }
-            val natureData =
-                result.mapCacheToPresentation().filter { it.placeType == "Wisata Alam" }
-            val cultureData =
-                result.mapCacheToPresentation().filter { it.placeType == "Wisata Budaya" }
+            val religiData = result.filter { it.placeType == "Wisata Religi" }
+            val natureData = result.filter { it.placeType == "Wisata Alam" }
+            val cultureData = result.filter { it.placeType == "Wisata Budaya" }
 
             natureAdapter.run {
                 submitList(natureData)
@@ -205,7 +202,7 @@ class HomeFragment : BaseFragment(),
                 this.notifyDataSetChanged()
             }
             randomAdapter.run {
-                submitList(result.mapCacheToPresentation().take(pageSize))
+                submitList(result.take(pageSize))
                 // Force a redraw in case the time zone has changed
                 this.notifyDataSetChanged()
             }
