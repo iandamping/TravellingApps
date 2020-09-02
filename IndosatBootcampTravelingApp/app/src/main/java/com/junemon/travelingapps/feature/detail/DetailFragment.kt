@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.transition.MaterialContainerTransform
 import com.google.gson.Gson
@@ -98,6 +99,9 @@ class DetailFragment : BaseFragment() {
     }
 
     private fun FragmentDetailBinding.initView(data: PlaceCachePresentation) {
+        ivBack.setOnClickListener {
+            findNavController().navigateUp()
+        }
         loadImageHelper.run { ivDetailMovieImages.loadWithGlide(data.placePicture) }
         ivShare.setOnClickListener {
                 if (requestsGranted()) {

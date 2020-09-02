@@ -10,10 +10,25 @@
         <item name="cornerSizeTopRight">50dp</item>
     </style>
 
+    <style name="bottomCustomCorner">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeBottomLeft">70dp</item>
+        <item name="cornerSizeBottomRight">20dp</item>
+    </style>
+
     <style name="onlyonecorner">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
         <item name="cornerSizeTopRight">0dp</item>
+    </style>
+
+    <style name="allRounder">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopRight">20dp</item>
+        <item name="cornerSizeTopLeft">20dp</item>
+        <item name="cornerSizeBottomRight">20dp</item>
+        <item name="cornerSizeBottomLeft">20dp</item>
+
     </style>
 
     <style name="Widget.MyApp.MaterialCardView" parent="Widget.MaterialComponents.CardView">
