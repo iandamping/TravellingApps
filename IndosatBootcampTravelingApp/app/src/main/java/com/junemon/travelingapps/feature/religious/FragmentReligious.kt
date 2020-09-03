@@ -60,6 +60,8 @@ class FragmentReligious : BaseFragment(), HomeReligiousAdapter.HomeReligiousAdap
     }
 
     override fun viewCreated(view: View, savedInstanceState: Bundle?) {
+        postponeEnterTransition()
+        view.doOnPreDraw { startPostponedEnterTransition() }
         binding.initView()
     }
 

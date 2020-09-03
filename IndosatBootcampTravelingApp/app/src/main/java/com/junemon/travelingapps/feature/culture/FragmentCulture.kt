@@ -60,6 +60,8 @@ class FragmentCulture : BaseFragment(), HomeCultureAdapter.HomeCultureAdapterLis
     }
 
     override fun viewCreated(view: View, savedInstanceState: Bundle?) {
+        postponeEnterTransition()
+        view.doOnPreDraw { startPostponedEnterTransition() }
         binding.initView()
     }
 

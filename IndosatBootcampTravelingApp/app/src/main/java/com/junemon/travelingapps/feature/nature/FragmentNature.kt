@@ -59,6 +59,8 @@ class FragmentNature : BaseFragment(), HomeNatureAdapter.HomeNatureAdapterListen
     }
 
     override fun viewCreated(view: View, savedInstanceState: Bundle?) {
+        postponeEnterTransition()
+        view.doOnPreDraw { startPostponedEnterTransition() }
         binding.initView()
     }
 

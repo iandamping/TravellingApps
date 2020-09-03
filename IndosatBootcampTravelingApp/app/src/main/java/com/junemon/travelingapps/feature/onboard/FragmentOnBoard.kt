@@ -48,19 +48,9 @@ class FragmentOnBoard : BaseFragment() {
         }
 
         val tabTitle = arrayOf("Nature", "Culture", "Religious")
-        vpMainPage.adapter = OnBoardAdapter(this@FragmentOnBoard)
-        TabLayoutMediator(tabMainPage, vpMainPage) { tab, position ->
-            when (position) {
-                0 -> {
-                    tab.text = tabTitle[0]
-                }
-                1 -> {
-                    tab.text = tabTitle[1]
-                }
-                2 -> {
-                    tab.text = tabTitle[2]
-                }
-            }
-        }.attach()
+
+        tabMainPage.setupWithViewPager(vpMainPage)
+        vpMainPage.adapter = OnBoardAdapter(tabTitle,childFragmentManager)
+
     }
 }

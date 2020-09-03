@@ -10,6 +10,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/shapeableImageView"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:src="@color/warm"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/bottomLeftCorner" />
+
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cvSearch"
             android:layout_width="match_parent"
