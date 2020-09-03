@@ -4,8 +4,10 @@ import androidx.lifecycle.ViewModel
 import com.junemon.core.di.scope.FeatureScope
 import com.junemon.core.presentation.di.factory.ViewModelKey
 import com.junemon.travelingapps.feature.detail.DetailFragment
-import com.junemon.travelingapps.feature.home.HomeFragment
-import com.junemon.travelingapps.feature.pagination.PaginationFragment
+import com.junemon.travelingapps.feature.culture.FragmentCulture
+import com.junemon.travelingapps.feature.nature.FragmentNature
+import com.junemon.travelingapps.feature.onboard.FragmentOnBoard
+import com.junemon.travelingapps.feature.religious.FragmentReligious
 import com.junemon.travelingapps.feature.search.SearchFragment
 import com.junemon.travelingapps.vm.PlaceViewModel
 import dagger.Binds
@@ -23,19 +25,27 @@ abstract class PlaceModule {
 
     @FeatureScope
     @ContributesAndroidInjector
-    abstract fun contributeHomeFragment(): HomeFragment
-
-    @FeatureScope
-    @ContributesAndroidInjector
     abstract fun contributeDetailFragment(): DetailFragment
 
     @FeatureScope
     @ContributesAndroidInjector
-    abstract fun contributePaginationFragment(): PaginationFragment
+    abstract fun contributeSearchFragment(): SearchFragment
 
     @FeatureScope
     @ContributesAndroidInjector
-    abstract fun contributeSearchFragment(): SearchFragment
+    abstract fun contributeFragmentOnBoard(): FragmentOnBoard
+
+    @FeatureScope
+    @ContributesAndroidInjector
+    abstract fun contributeFragmentNature(): FragmentNature
+
+    @FeatureScope
+    @ContributesAndroidInjector
+    abstract fun contributeFragmentCulture(): FragmentCulture
+
+    @FeatureScope
+    @ContributesAndroidInjector
+    abstract fun contributeFragmentReligious(): FragmentReligious
 
     @Binds
     @IntoMap

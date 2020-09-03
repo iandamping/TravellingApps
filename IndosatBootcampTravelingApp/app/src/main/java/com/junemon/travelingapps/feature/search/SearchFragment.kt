@@ -82,7 +82,12 @@ class SearchFragment : BaseFragment() {
     override fun activityCreated() {
         placeVm.getCache().observe(viewLifecycleOwner, { result ->
             data = result.mapCacheToPresentation()
+            //init default data
+            placeVm.setSearchItem(data.toMutableList())
         })
+
+
+
     }
 
     private fun FragmentSearchBinding.initView() {
@@ -144,15 +149,15 @@ class SearchFragment : BaseFragment() {
                     diffUtil = placePaginationRvCallback,
                     layoutResId = R.layout.item_search_recyclerview,
                     gridSize = 2, bindHolder = {
-                        loadingImageHelper.run { ivItemPlaceImage.loadWithGlide(it.placePicture) }
-                        tvItemPlaceName.text = it.placeName
-                        tvItemPlaceDistrict.text = it.placeDistrict
+                        loadingImageHelper.run { ivItemSearchPlaceImage.loadWithGlide(it.placePicture) }
+                        tvItemSearchPlaceName.text = it.placeName
+                        tvItemSearchPlaceDistrict.text = it.placeDistrict
                         when {
                             Build.VERSION.SDK_INT < 24 -> {
-                                ViewCompat.setTransitionName(cvItemContainer, it.placePicture)
+                                ViewCompat.setTransitionName(cvItemSearchContainer, it.placePicture)
                             }
                             Build.VERSION.SDK_INT > 24 -> {
-                                cvItemContainer.transitionName = it.placePicture
+                                cvItemSearchContainer.transitionName = it.placePicture
                             }
                         }
                     }, itemClick = {
@@ -167,7 +172,7 @@ class SearchFragment : BaseFragment() {
                             )
 
                         /**transition name must unique !*/
-                        val extras = FragmentNavigatorExtras(cvItemContainer to this.placePicture!!)
+                        val extras = FragmentNavigatorExtras(cvItemSearchContainer to this.placePicture!!)
                         navigate(toDetailFragment, extras)
                     }
                 )

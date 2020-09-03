@@ -1,7 +1,8 @@
-package com.junemon.travelingapps.feature.home.recycleradapters
+package com.junemon.travelingapps.utils
 
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.junemon.core.presentation.util.classes.RecyclerHorizontalSnapHelper
 
 /**
@@ -9,7 +10,7 @@ import com.junemon.core.presentation.util.classes.RecyclerHorizontalSnapHelper
  * Github https://github.com/iandamping
  * Indonesia.
  */
-fun RecyclerView.horizontalRecyclerviewInitializer(){
+fun RecyclerView.horizontalRecyclerviewInitializer() {
     layoutManager = LinearLayoutManager(
         this.context, LinearLayoutManager.HORIZONTAL,
         false
@@ -17,5 +18,11 @@ fun RecyclerView.horizontalRecyclerviewInitializer(){
     if (this.onFlingListener == null) {
         RecyclerHorizontalSnapHelper()
             .attachToRecyclerView(this)
+    }
+}
+
+fun RecyclerView.staggeredVerticalRecyclerviewInitializer() {
+    layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL).apply {
+        gapStrategy = StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS
     }
 }

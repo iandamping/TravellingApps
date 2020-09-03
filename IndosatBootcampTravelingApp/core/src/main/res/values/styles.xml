@@ -10,6 +10,11 @@
         <item name="cornerSizeTopRight">50dp</item>
     </style>
 
+    <style name="bottomLeftCorner">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeBottomLeft">80dp</item>
+    </style>
+
     <style name="bottomCustomCorner">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSizeBottomLeft">70dp</item>
@@ -24,7 +29,7 @@
 
     <style name="allRounder">
         <item name="cornerFamily">rounded</item>
-        <item name="cornerSizeTopRight">20dp</item>
+        <item name="cornerSizeTopRight">50dp</item>
         <item name="cornerSizeTopLeft">20dp</item>
         <item name="cornerSizeBottomRight">20dp</item>
         <item name="cornerSizeBottomLeft">20dp</item>

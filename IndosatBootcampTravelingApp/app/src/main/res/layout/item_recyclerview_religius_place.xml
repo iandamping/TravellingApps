@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cvItemReligiusContainer"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="150dp"
+    android:layout_height="220dp"
     android:layout_marginLeft="8dp"
     android:layout_marginRight="8dp"
     android:layout_marginBottom="16dp"
@@ -13,17 +13,14 @@
     app:cardElevation="4dp"
     app:cardPreventCornerOverlap="false">
 
-    <LinearLayout
-        android:layout_width="150dp"
-        android:layout_height="220dp"
-        android:layout_gravity="center"
-        android:orientation="vertical">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <com.google.android.material.imageview.ShapeableImageView
-            app:shapeAppearanceOverlay="@style/rightTopCorner"
             android:id="@+id/ivItemReligiusPlaceImage"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
@@ -32,40 +29,30 @@
 
         <TextView
             android:id="@+id/tvItemReligiusPlaceName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/spacing_medium"
-            android:ellipsize="end"
-            android:fontFamily="@font/lato"
-            android:maxLines="1"
-            android:textColor="@color/black"
-            android:textSize="@dimen/letter_small"
-            tools:text="Islamic Center" />
-
-        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/spacing_medium"
-            android:orientation="horizontal">
+            android:fontFamily="@font/lato"
+            android:textColor="@color/white"
+            android:textSize="@dimen/letter_small"
+            app:layout_constraintBottom_toTopOf="@+id/tvItemReligiusPlaceDistrict"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="Islamic Center" />
 
-            <ImageView
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:layout_gravity="center"
-                app:srcCompat="@drawable/ic_location_on_black_24dp" />
+        <TextView
+            android:id="@+id/tvItemReligiusPlaceDistrict"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/lato"
+            android:textColor="@color/white"
+            android:textSize="@dimen/letter_xxsmall"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="Kota Yogyakarta, DIY" />
 
-            <TextView
-                android:id="@+id/tvItemReligiusPlaceDistrict"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:fontFamily="@font/lato"
-                android:textColor="@color/black"
-                android:textSize="@dimen/letter_xxsmall"
-                tools:text="Kota Yogyakarta, DIY" />
-
-        </LinearLayout>
-
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>

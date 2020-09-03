@@ -8,6 +8,7 @@
         android:id="@+id/coordinatorParent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/dawn"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -84,10 +85,10 @@
                 android:id="@+id/tvPlaceDetailType"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:textSize="@dimen/letter_large"
                 android:layout_margin="@dimen/spacing_large"
                 android:text="@{detailData.placeType}"
+                android:textSize="@dimen/letter_large"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvPlaceDetailName"

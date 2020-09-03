@@ -1,4 +1,4 @@
-package com.junemon.travelingapps.feature.home.viewholders
+package com.junemon.travelingapps.feature.nature
 
 import android.os.Build
 import androidx.core.view.ViewCompat

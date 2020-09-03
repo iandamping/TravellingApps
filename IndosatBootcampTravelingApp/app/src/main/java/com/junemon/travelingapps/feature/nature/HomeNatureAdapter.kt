@@ -1,4 +1,4 @@
-package com.junemon.travelingapps.feature.home.recycleradapters
+package com.junemon.travelingapps.feature.nature
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.ListAdapter
 import com.junemon.core.presentation.PresentationConstant
 import com.junemon.model.presentation.PlaceCachePresentation
 import com.junemon.travelingapps.databinding.ItemRecyclerviewNaturePlaceBinding
-import com.junemon.travelingapps.feature.home.viewholders.HomeNatureViewHolder
 
 /**
  * Created by Ian Damping on 01,September,2020

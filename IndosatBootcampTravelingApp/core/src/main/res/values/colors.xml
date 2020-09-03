@@ -9,6 +9,9 @@
     <color name="colorAccent">#D81B60</color>
     <color name="colorComment">#235EA7</color>
     <color name="colorTitle">#1554A1</color>
+    <color name="warm">#FAAC75</color>
+    <color name="dawn">#FDF4EE</color>
+    <color name="dark_brown">#776751</color>
     <color name="colorBackgroundET">#F1F6F7</color>
     <color name="color_white">#FCFCFC</color>
     <color name="dc_gray">#ff888888</color>
@@ -18,6 +21,7 @@
     <color name="text_button_upload">#0072FF</color>
     <color name="status_diolak">#F50D0D</color>
     <color name="black">#201F1F</color>
+    <color name="semi_black">#313131</color>
     <color name="text_blue">#0072FF</color>
     <color name="white">#FFFF</color>
     <color name="placeholder_bg">#dddddd</color>
