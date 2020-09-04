@@ -18,6 +18,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.Hold
 import com.google.android.material.transition.MaterialElevationScale
 import com.google.android.material.transition.MaterialFadeThrough
+import com.google.android.material.transition.MaterialSharedAxis
 import com.junemon.core.R
 import com.junemon.core.databinding.CustomLoadingBinding
 import com.junemon.core.presentation.layoutInflater
@@ -90,6 +91,15 @@ abstract class BaseFragment : DaggerFragment() {
          reenterTransition = MaterialElevationScale(true).apply {
              duration = resources.getInteger(R.integer.motion_duration_large).toLong()
          }*/
+    }
+
+    protected fun setupExitEnterAxisTransition(){
+        exitTransition = MaterialSharedAxis(MaterialSharedAxis.Z, true).apply {
+            duration = resources.getInteger(R.integer.motion_duration_large).toLong()
+        }
+        reenterTransition = MaterialSharedAxis(MaterialSharedAxis.Z, false).apply {
+            duration = resources.getInteger(R.integer.motion_duration_large).toLong()
+        }
     }
 
     private fun setBaseDialog(context: Context) {

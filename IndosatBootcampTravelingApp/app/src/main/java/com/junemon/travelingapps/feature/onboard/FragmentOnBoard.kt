@@ -4,9 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.doOnPreDraw
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.tabs.TabLayoutMediator
 import com.junemon.core.presentation.base.fragment.BaseFragment
 import com.junemon.travelingapps.databinding.FragmentOnboardBinding
 import com.junemon.travelingapps.feature.onboard.adapter.OnBoardAdapter
@@ -43,6 +41,8 @@ class FragmentOnBoard : BaseFragment() {
 
     private fun FragmentOnboardBinding.initView() {
         btnSearchMain.setOnClickListener {
+            setupExitEnterAxisTransition()
+
             findNavController()
                 .navigate(FragmentOnBoardDirections.actionFragmentOnBoardToSearchFragment())
         }
@@ -50,7 +50,6 @@ class FragmentOnBoard : BaseFragment() {
         val tabTitle = arrayOf("Nature", "Culture", "Religious")
 
         tabMainPage.setupWithViewPager(vpMainPage)
-        vpMainPage.adapter = OnBoardAdapter(tabTitle,childFragmentManager)
-
+        vpMainPage.adapter = OnBoardAdapter(tabTitle, childFragmentManager)
     }
 }

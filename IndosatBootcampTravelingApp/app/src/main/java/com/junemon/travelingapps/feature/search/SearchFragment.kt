@@ -12,6 +12,7 @@ import androidx.core.view.ViewGroupCompat
 import androidx.core.view.doOnPreDraw
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.FragmentNavigatorExtras
+import com.google.android.material.transition.MaterialSharedAxis
 import com.google.gson.Gson
 import com.junemon.core.presentation.PresentationConstant.placePaginationRvCallback
 import com.junemon.core.presentation.base.fragment.BaseFragment
@@ -55,6 +56,18 @@ class SearchFragment : BaseFragment() {
     private val binding get() = _binding!!
 
     private var data: List<PlaceCachePresentation> = mutableListOf()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        enterTransition = MaterialSharedAxis(MaterialSharedAxis.Z, true).apply {
+            duration = resources.getInteger(R.integer.motion_duration_large).toLong()
+        }
+        returnTransition = MaterialSharedAxis(MaterialSharedAxis.Z, false).apply {
+            duration = resources.getInteger(R.integer.motion_duration_large).toLong()
+        }
+    }
+
 
     override fun createView(
         inflater: LayoutInflater,
