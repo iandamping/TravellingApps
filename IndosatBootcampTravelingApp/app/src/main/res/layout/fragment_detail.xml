@@ -94,6 +94,18 @@
                 app:layout_constraintTop_toBottomOf="@+id/tvPlaceDetailName"
                 tools:text="overview" />
 
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/spacing_large"
+                android:text="Address"
+                android:textStyle="bold"
+                android:textSize="@dimen/letter_large"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvPlaceDetailPlace" />
+
 
             <com.junemon.core.presentation.util.classes.JustifyTextView
                 android:id="@+id/tvPlaceDetailAddress"
@@ -105,7 +117,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvPlaceDetailPlace"
+                app:layout_constraintTop_toBottomOf="@+id/textView1"
                 tools:text="alamat">
 
             </com.junemon.core.presentation.util.classes.JustifyTextView>

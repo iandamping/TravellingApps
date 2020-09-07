@@ -41,7 +41,7 @@ class SplashActivity : DaggerAppCompatActivity() {
 
         loadImageHelper.run {
             splashImage.loadWithGlide(
-                resources.getDrawable(R.drawable.samarinda_logo, null)
+                resources.getDrawable(R.drawable.ic_splash, null)
             )
         }
         runDelayed {
