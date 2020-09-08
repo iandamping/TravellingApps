@@ -1,18 +1,27 @@
 package com.junemon.travelingapps.feature.detail
 
-import android.content.Context
+import android.Manifest
+import android.graphics.Color
 import android.os.Bundle
-import android.os.StrictMode
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
+import com.google.android.material.transition.MaterialContainerTransform
 import com.google.gson.Gson
+import com.junemon.core.presentation.base.fragment.BaseFragment
+import com.junemon.core.presentation.util.interfaces.ImageHelper
+import com.junemon.core.presentation.util.interfaces.IntentHelper
+import com.junemon.core.presentation.util.interfaces.LoadImageHelper
+import com.junemon.core.presentation.util.interfaces.PermissionHelper
+import com.junemon.core.presentation.util.transition.themeColor
+import com.junemon.model.presentation.PlaceCachePresentation
 import com.junemon.travelingapps.R
 import com.junemon.travelingapps.databinding.FragmentDetailBinding
-import com.junemon.travelingapps.presentation.base.BaseFragment
-import com.junemon.travelingapps.presentation.model.PlaceCachePresentation
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 /**
  * Created by Ian Damping on 06,December,2019
@@ -20,44 +29,145 @@ import com.junemon.travelingapps.presentation.model.PlaceCachePresentation
  * Indonesia.
  */
 class DetailFragment : BaseFragment() {
-    private val gson = Gson()
-    private val passedData by lazy { gson.fromJson(DetailFragmentArgs.fromBundle(arguments!!).detailData, PlaceCachePresentation::class.java) }
+    @Inject
+    lateinit var loadImageHelper: LoadImageHelper
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        setBaseDialog()
-        // dont use this, but i had to
-        val builder = StrictMode.VmPolicy.Builder()
-        StrictMode.setVmPolicy(builder.build())
+    @Inject
+    lateinit var intentHelper: IntentHelper
+
+    @Inject
+    lateinit var imageHelper: ImageHelper
+
+    @Inject
+    lateinit var gson: Gson
+
+    @Inject
+    lateinit var permissionHelper: PermissionHelper
+
+    private val REQUEST_READ_WRITE_CODE_PERMISSIONS = 5
+    private val REQUIRED_READ_WRITE_PERMISSIONS = arrayOf(
+        Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE
+    )
+
+    private fun requestsGranted() =
+        permissionHelper.requestGranted(REQUIRED_READ_WRITE_PERMISSIONS)
+
+    private val args: DetailFragmentArgs by navArgs()
+
+    private val passedData by lazy {
+        gson.fromJson(
+            args.detailData,
+            PlaceCachePresentation::class.java
+        )
     }
 
-    override fun onCreateView(
+    private var _binding: FragmentDetailBinding? = null
+    private val binding get() = _binding!!
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        sharedElementEnterTransition = MaterialContainerTransform().apply {
+            drawingViewId = R.id.financialNavHostFragment
+            duration = resources.getInteger(R.integer.motion_duration_small).toLong()
+            scrimColor = Color.TRANSPARENT
+            setAllContainerColors(requireContext().themeColor(R.attr.colorSurface))
+        }
+        super.onCreate(savedInstanceState)
+    }
+
+    override fun createView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding: FragmentDetailBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_detail, container, false)
-        binding.apply {
-            lifecycleOwner = viewLifecycleOwner
-            detailData = passedData
-            initView(passedData)
-        }
+        _binding = FragmentDetailBinding.inflate(inflater, container, false)
         return binding.root
     }
 
+    override fun viewCreated(view: View, savedInstanceState: Bundle?) {
+        binding.run {
+            detailData = passedData
+            initView(passedData)
+            coordinatorParent.transitionName = passedData.placePicture
+        }
+    }
+
+    override fun destroyView() {
+        _binding = null
+    }
+
+    override fun activityCreated() {
+    }
+
     private fun FragmentDetailBinding.initView(data: PlaceCachePresentation) {
-        apply {
-            loadingImageHelper.run { ivDetailMovieImages.loadWithGlide(data.placePicture) }
-            ivShare.setOnClickListener {
-                intentHelper.run {
-                    this@DetailFragment.intentShareImageAndText(lifecycleScope, data.placeName, data.placeDetail, data.placePicture)
+        ivBack.setOnClickListener {
+            findNavController().navigateUp()
+        }
+        loadImageHelper.run { ivDetailMovieImages.loadWithGlide(data.placePicture) }
+        ivShare.setOnClickListener {
+                if (requestsGranted()) {
+                    lifecycleScope.launch {
+                        setDialogShow(false)
+                        intentHelper.intentShareImageAndText(
+                            data.placeName,
+                            data.placeDetail,
+                            data.placePicture
+                        ){
+                            setDialogShow(true)
+                            sharedImageIntent(it)
+                        }
+                    }
+                } else {
+                    permissionHelper.run {
+                        requestingPermission(
+                            REQUIRED_READ_WRITE_PERMISSIONS,
+                            REQUEST_READ_WRITE_CODE_PERMISSIONS
+                        )
+                    }
                 }
-            }
-            ivDownload.setOnClickListener {
-                imageHelper.run {
-                    this@DetailFragment.saveImage(lifecycleScope, coordinatorParent, data.placePicture)
+
+        }
+        ivDownload.setOnClickListener {
+            imageHelper.run {
+                lifecycleScope.launch {
+                    if (data.placePicture != null) {
+                        saveImage(
+                            binding.root,
+                            data.placePicture!!
+                        )
+                    }
+
                 }
+
             }
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        permissionHelper.run {
+            onRequestingPermissionsResult(
+                REQUEST_READ_WRITE_CODE_PERMISSIONS,
+                requestCode,
+                grantResults, {
+                    lifecycleScope.launch {
+                        setDialogShow(false)
+                        intentHelper.intentShareImageAndText(
+                            passedData.placeName,
+                            passedData.placeDetail,
+                            passedData.placePicture
+                        ){
+                            setDialogShow(true)
+                            sharedImageIntent(it)
+                        }
+                    }
+
+                }, {
+                    permissionDeniedSnackbar(binding.root)
+                })
         }
     }
 }

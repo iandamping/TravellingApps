@@ -20,7 +20,6 @@
     <string name="transition_name">transition from splash</string>
     <string name="tempat_favorit_mu_ada_disini">Tempat favorit mu ada disini</string>
 
-
     <string-array name="place_type_items">
         <item>Wisata Alam</item>
         <item>Wisata Budaya</item>
@@ -39,4 +38,7 @@
         <item>Sungai Kunjang</item>
         <item>Sungai Pinang</item>
     </string-array>
+
+
+    <string name="title_places">Feature Place</string>
 </resources>

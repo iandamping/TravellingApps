@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Wonderful Samarinda</string>
+    <string name="package_name">com.junemon.travelingapps.provider</string>
+    <string name="uploading_image">Uploading your awesome image</string>
+    <string name="downloading_image">Downloading your awesome image</string>
+    <string name="processing_image">Processing your awesome image</string>
+    <string name="removing_image">Removing your awesome image</string>
+    <string name="are_you_sure">"Are you sure want to delete ?"</string>
+    <string name="please_wait">Please wait a bit…</string>
+    <string name="lbl_brightness">BRIGHTNESS</string>
+    <string name="lbl_contrast">CONTRAST</string>
+    <string name="lbl_saturation">SATURATION</string>
+    <string name="tab_filters">FILTERS</string>
+    <string name="tab_edit">EDIT</string>
+    <string name="permission_not_granted">Permissions are not granted!</string>
+</resources>

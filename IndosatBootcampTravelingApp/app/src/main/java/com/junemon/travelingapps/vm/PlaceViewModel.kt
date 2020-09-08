@@ -1,41 +1,44 @@
 package com.junemon.travelingapps.vm
 
-import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.ian.app.helper.base.BaseViewModel
-import com.ian.app.helper.data.ResultToConsume
-import com.junemon.travelingapps.presentation.model.PlaceCachePresentation
-import com.junemon.travellingapps.domain.model.PlaceCacheData
-import com.junemon.travellingapps.domain.model.PlaceRemoteData
-import com.junemon.travellingapps.domain.usecase.PlaceUseCase
+import androidx.lifecycle.ViewModel
+import com.junemon.core.domain.usecase.PlaceUseCase
+import com.junemon.model.domain.PlaceCacheData
+import com.junemon.model.domain.Results
+import com.junemon.model.presentation.PlaceCachePresentation
+import javax.inject.Inject
 
-/**
- * Created by Ian Damping on 04,December,2019
- * Github https://github.com/iandamping
- * Indonesia.
- */
-class PlaceViewModel(private val repository: PlaceUseCase) : BaseViewModel() {
+class PlaceViewModel @Inject constructor(private val repository: PlaceUseCase) : ViewModel() {
 
-    private val _searchItem: MutableLiveData<MutableList<PlaceCachePresentation>> = MutableLiveData()
+    private val _setRunningForever: MutableLiveData<Boolean> = MutableLiveData()
+    val setRunningForever: LiveData<Boolean>
+        get() = _setRunningForever
+
+    private val _searchItem: MutableLiveData<MutableList<PlaceCachePresentation>> =
+        MutableLiveData()
 
     val searchItem: LiveData<MutableList<PlaceCachePresentation>>
-    get() = _searchItem
+        get() = _searchItem
 
     fun setSearchItem(data: MutableList<PlaceCachePresentation>) {
         this._searchItem.value = data
     }
 
-    fun getCache(): LiveData<ResultToConsume<List<PlaceCacheData>>> = repository.getCache()
+    fun startRunningViewPager() {
+        _setRunningForever.value = true
+    }
 
-    fun getSelectedTypeCache(placeType: String): LiveData<ResultToConsume<List<PlaceCacheData>>> = repository.getSelectedTypeCache(placeType)
+    fun stopRunningViewPager() {
+        _setRunningForever.value = false
+    }
+
+    fun getCache(): LiveData<List<PlaceCacheData>> = repository.getCache()
+
+    fun getRemote(): LiveData<Results<List<PlaceCacheData>>> = repository.getRemote()
+
+    fun getSelectedTypeCache(placeType: String): LiveData<List<PlaceCacheData>> =
+        repository.getSelectedTypeCache(placeType)
 
     suspend fun delete() = repository.delete()
-
-    fun uploadFirebaseData(
-        data: PlaceRemoteData,
-        imageUri: Uri?,
-        success: (Boolean) -> Unit,
-        failed: (Boolean, Throwable) -> Unit
-    ) = repository.uploadFirebaseData(data, imageUri, success, failed)
 }

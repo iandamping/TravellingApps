@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/onboard_navigation"
+    app:startDestination="@id/fragmentOnBoard">
+
+    <fragment
+        android:id="@+id/fragmentOnBoard"
+        android:name="com.junemon.travelingapps.feature.onboard.FragmentOnBoard"
+        android:label="FragmentOnBoard"
+        tools:layout="@layout/fragment_onboard">
+        <action
+            android:id="@+id/action_fragmentOnBoard_to_searchFragment"
+            app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_fragmentOnBoard_to_detailFragment"
+            app:destination="@id/detailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.junemon.travelingapps.feature.search.SearchFragment"
+        android:label="SearchFragment"
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_searchFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="com.junemon.travelingapps.feature.detail.DetailFragment"
+        android:label="DetailFragment"
+        tools:layout="@layout/fragment_detail">
+        <argument
+            android:name="detailData"
+            app:argType="string" />
+    </fragment>
+</navigation>

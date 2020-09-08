@@ -25,10 +25,14 @@
     # This rule will properly ProGuard all the model classes in
     # the package com.yourcompany.models. Modify to fit the structure
     # of your app.
-    -keepclassmembers class com.junemon.travelingapps.data.datasource.model.** {
+    -keepclassmembers class com.junemon.model.data.** {
       *;
     }
 
-    -keepclassmembers class com.junemon.travellingapps.domain.model.** {
+    -keepclassmembers class com.junemon.model.domain.** {
+      *;
+    }
+
+    -keepclassmembers class com.junemon.model.presentation.** {
       *;
     }

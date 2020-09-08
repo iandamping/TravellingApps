@@ -3,44 +3,57 @@ package com.junemon.travelingapps.activity
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import androidx.core.app.ActivityOptionsCompat
-import androidx.core.content.ContextCompat
+import android.view.Window
+import android.view.WindowManager
+import androidx.lifecycle.lifecycleScope
+import com.junemon.core.presentation.util.interfaces.LoadImageHelper
 import com.junemon.travelingapps.R
-import com.junemon.travelingapps.presentation.base.BaseActivity
+import com.junemon.travelingapps.databinding.ActivityMainBinding
+import com.junemon.travelingapps.databinding.ActivitySplashBinding
+import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_splash.*
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 /**
  * Created by Ian Damping on 09,December,2019
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class SplashActivity : BaseActivity() {
-    private var mDelayHandler: Handler? = null
+class SplashActivity : DaggerAppCompatActivity() {
+    private lateinit var binding: ActivitySplashBinding
+
+    @Inject
+    lateinit var loadImageHelper: LoadImageHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewHelper.run { this@SplashActivity.fullScreenAnimation() }
-        setContentView(R.layout.activity_splash)
-        loadingImageHelper.run {
-            splashImage.loadWithGlide(ContextCompat.getDrawable(this@SplashActivity, R.drawable.samarinda_logo)!!) }
-        mDelayHandler = Handler()
-        mDelayHandler!!.postDelayed(mRunnable, 3000L)
-    }
 
-    private val mRunnable: Runnable = Runnable {
-        if (!isFinishing) {
-            val activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                this, splashImage, getString(
-                    R.string.transition_name
-                )
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        this.window.setFlags(
+            WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN
+        )
+
+        binding = ActivitySplashBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        loadImageHelper.run {
+            splashImage.loadWithGlide(
+                resources.getDrawable(R.drawable.ic_splash, null)
             )
+        }
+        runDelayed {
             val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent, activityOptionsCompat.toBundle())
+            startActivity(intent)
         }
     }
 
-    public override fun onDestroy() {
-        super.onDestroy()
-        mDelayHandler?.removeCallbacks(mRunnable)
+    private fun runDelayed(call: () -> Unit) {
+        lifecycleScope.launch {
+            delay(500L)
+            call.invoke()
+        }
     }
 }

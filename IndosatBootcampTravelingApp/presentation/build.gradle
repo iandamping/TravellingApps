@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
@@ -22,7 +23,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-
 }
 
 dependencies {
@@ -38,14 +38,20 @@ dependencies {
     implementation 'com.karumi:dexter:5.0.0'
     implementation "org.jetbrains.anko:anko:$anko_version"
     implementation "org.jetbrains.anko:anko-design:$anko_version"
-    implementation "com.github.iandamping:RecyclerViewHelper:$recyclerhelper_version"
-    implementation "com.github.iandamping:CommonHelper:$commonHelper_version"
-    implementation "org.koin:koin-android-viewmodel:$koin_version"
-    implementation "com.google.firebase:firebase-storage:$firebaseStorageVer"
-    implementation "com.google.firebase:firebase-database:$firebaseDatabaseVer"
+
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutine_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine_version"
+
+
     implementation 'com.mikhaellopez:circularimageview:4.1.0'
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
+    //dagger
+    implementation "com.google.dagger:dagger:$dagger_version"
+    kapt "com.google.dagger:dagger-compiler:$dagger_version"
+    implementation "com.jakewharton.timber:timber:$timberVersion"
     implementation project(':domain')
+    implementation project(':model')
+    implementation project(':remote')
 
 }

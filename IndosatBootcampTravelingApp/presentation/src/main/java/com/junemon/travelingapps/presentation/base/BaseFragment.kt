@@ -5,32 +5,16 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import androidx.fragment.app.Fragment
 import com.airbnb.lottie.LottieAnimationView
-import com.ian.app.helper.interfaces.CommonHelperResult
-import com.ian.app.helper.interfaces.LoadImageResult
-import com.ian.app.helper.interfaces.ViewHelperResult
-import com.ian.recyclerviewhelper.interfaces.RecyclerviewHelper
 import com.junemon.travelingapps.presentation.R
-import com.junemon.travelingapps.presentation.util.interfaces.ImageHelperResult
-import com.junemon.travelingapps.presentation.util.interfaces.IntentHelperResult
-import com.junemon.travelingapps.presentation.util.interfaces.PermissionHelperResult
-import org.koin.core.KoinComponent
-import org.koin.core.inject
-import java.lang.Exception
+import timber.log.Timber
 
 /**
  * Created by Ian Damping on 04,December,2019
  * Github https://github.com/iandamping
  * Indonesia.
  */
-abstract class BaseFragment : Fragment(), KoinComponent {
+abstract class BaseFragment : Fragment() {
     private lateinit var alert: AlertDialog
-    protected val recyclerViewHelper: RecyclerviewHelper by inject()
-    protected val loadingImageHelper: LoadImageResult by inject()
-    protected val viewHelper: ViewHelperResult by inject()
-    protected val commonHelper: CommonHelperResult by inject()
-    protected val imageHelper: ImageHelperResult by inject()
-    protected val permissionHelper: PermissionHelperResult by inject()
-    protected val intentHelper: IntentHelperResult by inject()
 
     protected fun setBaseDialog() {
         val dialogBuilder = AlertDialog.Builder(context)
@@ -57,7 +41,7 @@ abstract class BaseFragment : Fragment(), KoinComponent {
         try {
             function.invoke()
         } catch (e: IllegalArgumentException) {
-            commonHelper.timberLogE(e.message)
+            Timber.e(e)
         }
     }
 
@@ -65,7 +49,7 @@ abstract class BaseFragment : Fragment(), KoinComponent {
         try {
             function.invoke()
         } catch (e: IllegalArgumentException) {
-            commonHelper.timberLogE(e.message)
+            Timber.e(e)
         }
     }
 
@@ -73,7 +57,7 @@ abstract class BaseFragment : Fragment(), KoinComponent {
         try {
             function.invoke()
         } catch (e: IllegalStateException) {
-            commonHelper.timberLogE(e.message)
+            // commonHelper.timberLogE(e.message)
         }
     }
 
@@ -81,7 +65,7 @@ abstract class BaseFragment : Fragment(), KoinComponent {
         try {
             function.invoke()
         } catch (e: Exception) {
-            commonHelper.timberLogE(e.message)
+            Timber.e(e)
         }
     }
 }
