@@ -81,24 +81,3 @@ class PlaceRepositoryImpl @Inject constructor(
         remoteDataSource.setFirebaseData(data, imageUri, success, failed)
     }
 }
-
-/**One shot operation*//*
-    override fun getRemoteOneShot(): Flow<Results<List<PlaceCacheData>>> {
-        return flow {
-            when (val remoteData = remoteDataSource.getFirebaseOneShotData()) {
-                is DataHelper.RemoteSourceError -> {
-                    emitAll(cacheDataSource.getCache().map {
-                        Results.Error(exception = remoteData.exception)
-                    })
-                }
-                is DataHelper.RemoteSourceValue -> {
-                    cacheDataSource.setCache(remoteData.data.mapRemoteToCacheDomain())
-                    emitAll(cacheDataSource.getCache().map { Results.Success(it) })
-                }
-            }
-        }.onStart {
-            cacheDataSource.getCache().map {
-                emit(Results.Loading(cache = it))
-            }
-        }
-    }*/
