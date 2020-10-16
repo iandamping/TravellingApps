@@ -9,13 +9,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.junemon.core.di.module.CameraXFileDirectory
 import com.junemon.core.presentation.base.fragment.BaseFragment
 import com.junemon.core.presentation.util.interfaces.LoadImageHelper
 import com.junemon.uploader.databinding.FragmentSelectImageBinding
 import com.junemon.uploader.vm.SharedViewModel
+import org.koin.android.ext.android.inject
+import org.koin.core.qualifier.named
 import java.io.File
-import javax.inject.Inject
 
 /**
  * Created by Ian Damping on 08,August,2020
@@ -26,12 +26,9 @@ class SelectImageFragment : BaseFragment() {
     private var _binding: FragmentSelectImageBinding? = null
     private val binding get() = _binding!!
 
-    @Inject
-    @CameraXFileDirectory
-    lateinit var cameraXDirectory: File
+    private val cameraXDirectory: File by inject(named("cameraX"))
+    private val loadingImageHelper: LoadImageHelper by inject()
 
-    @Inject
-    lateinit var loadingImageHelper: LoadImageHelper
     private val sharedVm: SharedViewModel by activityViewModels()
 
     override fun createView(

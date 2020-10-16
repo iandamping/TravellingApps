@@ -15,14 +15,14 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
-import com.junemon.core.di.module.CameraXFileDirectory
 import com.junemon.core.presentation.PresentationConstant.ANIMATION_FAST_MILLIS
 import com.junemon.core.presentation.PresentationConstant.ANIMATION_SLOW_MILLIS
 import com.junemon.core.presentation.base.fragment.BaseFragment
 import com.junemon.uploader.databinding.FragmentOpenCameraBinding
+import org.koin.android.ext.android.inject
+import org.koin.core.qualifier.named
 import timber.log.Timber
 import java.io.File
-import javax.inject.Inject
 
 /**
  * Created by Ian Damping on 07,August,2020
@@ -32,9 +32,7 @@ import javax.inject.Inject
 class OpenCameraFragment : BaseFragment() {
     private var lensFacing: Int = CameraSelector.LENS_FACING_BACK
 
-    @Inject
-    @CameraXFileDirectory
-    lateinit var cameraXDirectory: File
+    private val cameraXDirectory: File by inject(named("cameraX"))
 
     private var preview: Preview? = null
     private var imageCapture: ImageCapture? = null

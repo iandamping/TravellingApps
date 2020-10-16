@@ -1,7 +1,6 @@
 package com.junemon.core.presentation.base.fragment
 
 import android.app.AlertDialog
-import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -11,6 +10,7 @@ import android.os.StrictMode
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.findNavController
@@ -22,7 +22,6 @@ import com.google.android.material.transition.MaterialSharedAxis
 import com.junemon.core.R
 import com.junemon.core.databinding.CustomLoadingBinding
 import com.junemon.core.presentation.layoutInflater
-import dagger.android.support.DaggerFragment
 import org.jetbrains.anko.indeterminateProgressDialog
 import timber.log.Timber
 
@@ -31,7 +30,7 @@ import timber.log.Timber
  * Github https://github.com/iandamping
  * Indonesia.
  */
-abstract class BaseFragment : DaggerFragment() {
+abstract class BaseFragment : Fragment() {
     private var _binding: CustomLoadingBinding? = null
     private val binding get() = _binding!!
     private lateinit var alert: AlertDialog

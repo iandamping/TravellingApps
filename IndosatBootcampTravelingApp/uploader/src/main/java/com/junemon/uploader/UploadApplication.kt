@@ -1,8 +1,9 @@
 package com.junemon.uploader
 
-import com.junemon.uploader.di.DaggerUploadComponent
-import dagger.android.AndroidInjector
-import dagger.android.DaggerApplication
+import android.app.Application
+import com.junemon.uploader.di.module.injectData
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
 import timber.log.Timber
 
 /**
@@ -10,17 +11,18 @@ import timber.log.Timber
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class UploadApplication : DaggerApplication() {
+class UploadApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
         }
+
+        startKoin {
+            androidContext(this@UploadApplication)
+            injectData()
+        }
     }
 
-    override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
-        return DaggerUploadComponent.builder().create(this)
-    }
 }

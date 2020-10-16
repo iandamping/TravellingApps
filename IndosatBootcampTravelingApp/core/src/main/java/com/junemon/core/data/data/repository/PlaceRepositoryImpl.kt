@@ -18,7 +18,6 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
 
 /**
  * Created by Ian Damping on 04,December,2019
@@ -27,7 +26,7 @@ import javax.inject.Inject
  */
 @ExperimentalCoroutinesApi
 @FlowPreview
-class PlaceRepositoryImpl @Inject constructor(
+class PlaceRepositoryImpl (
     private val remoteDataSource: PlaceRemoteDataSource,
     private val cacheDataSource: PlaceCacheDataSource
 ) : PlaceRepository {

@@ -19,7 +19,6 @@ import com.bumptech.glide.RequestManager
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.storage.StorageReference
 import com.junemon.core.R
-import com.junemon.core.data.di.IoDispatcher
 import com.junemon.core.presentation.PresentationConstant.RequestOpenCamera
 import com.junemon.core.presentation.PresentationConstant.RequestSelectGalleryImage
 import com.junemon.core.presentation.util.interfaces.ImageHelper
@@ -32,16 +31,15 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.InputStream
-import javax.inject.Inject
 
 /**
  * Created by Ian Damping on 04,December,2019
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class ImageUtilImpl @Inject constructor(
+class ImageUtilImpl(
     private val storagePlaceReference: StorageReference,
-    @IoDispatcher val ioDispatcher: CoroutineDispatcher,
+    private val ioDispatcher: CoroutineDispatcher,
     private val requestManager: RequestManager,
     private val context: Context
 ) :

@@ -5,7 +5,6 @@ import android.content.Intent
 import com.firebase.ui.auth.AuthUI
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
-import com.junemon.core.data.di.IoDispatcher
 import com.junemon.core.remote.util.firebaseuser.AuthenticatedUserInfo
 import com.junemon.core.remote.util.firebaseuser.FirebaseUserInfo
 import com.junemon.model.domain.DataHelper
@@ -16,7 +15,6 @@ import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
 
 /**
  * Created by Ian Damping on 07,August,2020
@@ -25,8 +23,8 @@ import javax.inject.Inject
  */
 @ExperimentalCoroutinesApi
 @FlowPreview
-class ProfileRemoteHelperImpl @Inject constructor(
-    @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
+class ProfileRemoteHelperImpl (
+     private val ioDispatcher: CoroutineDispatcher,
     private val context: Context,
     private val mFirebaseAuth: FirebaseAuth
 ) : ProfileRemoteHelper {

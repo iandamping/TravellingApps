@@ -1,8 +1,9 @@
 package com.junemon.travelingapps
 
-import com.junemon.travelingapps.di.DaggerAppComponent
-import dagger.android.AndroidInjector
-import dagger.android.DaggerApplication
+import android.app.Application
+import com.junemon.travelingapps.di.module.injectData
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
 import timber.log.Timber
 
 /**
@@ -10,18 +11,19 @@ import timber.log.Timber
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class PlaceApplication : DaggerApplication() {
+class PlaceApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
 
+        startKoin {
+            androidContext(this@PlaceApplication)
+            injectData()
+        }
+
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
         }
-    }
-
-    override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
-        return DaggerAppComponent.builder().create(this)
     }
 
 }

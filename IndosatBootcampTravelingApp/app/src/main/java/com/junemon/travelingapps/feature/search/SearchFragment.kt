@@ -10,13 +10,11 @@ import android.widget.SearchView
 import androidx.core.view.ViewCompat
 import androidx.core.view.ViewGroupCompat
 import androidx.core.view.doOnPreDraw
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import com.google.android.material.transition.MaterialSharedAxis
 import com.google.gson.Gson
 import com.junemon.core.presentation.PresentationConstant.placePaginationRvCallback
 import com.junemon.core.presentation.base.fragment.BaseFragment
-import com.junemon.core.presentation.di.factory.viewModelProvider
 import com.junemon.core.presentation.util.interfaces.LoadImageHelper
 import com.junemon.core.presentation.util.interfaces.RecyclerHelper
 import com.junemon.core.presentation.util.interfaces.ViewHelper
@@ -27,7 +25,9 @@ import com.junemon.travelingapps.databinding.FragmentSearchBinding
 import com.junemon.travelingapps.vm.PlaceViewModel
 import kotlinx.android.synthetic.main.item_search_recyclerview.*
 import kotlinx.android.synthetic.main.item_search_recyclerview.view.*
-import javax.inject.Inject
+import org.koin.android.ext.android.inject
+import androidx.lifecycle.lifecycleScope as androidxLifecycleScope
+import org.koin.androidx.scope.lifecycleScope as koinLifecycleScope
 
 /**
  * Created by Ian Damping on 06,December,2019
@@ -35,22 +35,12 @@ import javax.inject.Inject
  * Indonesia.
  */
 class SearchFragment : BaseFragment() {
-    @Inject
-    lateinit var gson: Gson
 
-    @Inject
-    lateinit var viewHelper: ViewHelper
-
-    @Inject
-    lateinit var recyclerViewHelper: RecyclerHelper
-
-    @Inject
-    lateinit var loadingImageHelper: LoadImageHelper
-
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-
-    private lateinit var placeVm: PlaceViewModel
+    private val gson: Gson by inject()
+    private val viewHelper: ViewHelper by inject()
+    private val recyclerViewHelper: RecyclerHelper by inject()
+    private val loadingImageHelper: LoadImageHelper by inject()
+    private val placeVm: PlaceViewModel by koinLifecycleScope.inject()
 
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
@@ -75,7 +65,6 @@ class SearchFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
-        placeVm = viewModelProvider(viewModelFactory)
         return binding.root
     }
 

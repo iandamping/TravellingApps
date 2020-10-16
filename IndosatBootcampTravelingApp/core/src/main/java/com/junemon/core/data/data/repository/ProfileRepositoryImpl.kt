@@ -10,14 +10,13 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
 
 /**
  * Created by Ian Damping on 07,August,2020
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class ProfileRepositoryImpl @Inject constructor(private val remoteDataSource: ProfileRemoteDataSource) :
+class ProfileRepositoryImpl (private val remoteDataSource: ProfileRemoteDataSource) :
     ProfileRepository {
 
     override fun getUserProfile(): Flow<Results<AuthenticatedUserInfo>> {

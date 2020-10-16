@@ -5,9 +5,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.junemon.core.presentation.base.adapter.BaseKotlinListAdapter
 import com.junemon.core.presentation.util.interfaces.RecyclerHelper
-import javax.inject.Inject
 
-class RecyclerHelperImpl @Inject constructor() :
+class RecyclerHelperImpl :
     RecyclerHelper {
 
     override fun <T> RecyclerView.setUpVerticalListAdapter(

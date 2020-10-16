@@ -6,7 +6,6 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.StorageReference
-import com.junemon.core.data.di.DefaultDispatcher
 import com.junemon.model.data.PlaceRemoteEntity
 import com.junemon.model.data.dto.mapToRemoteDomain
 import com.junemon.model.domain.DataHelper
@@ -20,7 +19,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
 
 /**
  * Created by Ian Damping on 07,January,2020
@@ -30,8 +28,8 @@ import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 @FlowPreview
-class RemoteHelperImpl @Inject constructor(
-    @DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher,
+class RemoteHelperImpl (
+    private val defaultDispatcher: CoroutineDispatcher,
     private val storagePlaceReference: StorageReference,
     private val databasePlaceReference: DatabaseReference
 ) : RemoteHelper {

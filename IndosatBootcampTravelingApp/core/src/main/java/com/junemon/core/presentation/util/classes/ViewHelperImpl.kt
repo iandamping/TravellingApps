@@ -7,14 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.junemon.core.presentation.util.interfaces.ViewHelper
-import javax.inject.Inject
 
 /**
  * Created by Ian Damping on 07,January,2020
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class ViewHelperImpl @Inject constructor() : ViewHelper {
+class ViewHelperImpl : ViewHelper {
     override fun View.visible(animated: Boolean) {
         visibility = View.VISIBLE
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && animated) {

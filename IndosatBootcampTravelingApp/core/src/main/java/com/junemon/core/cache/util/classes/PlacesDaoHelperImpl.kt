@@ -4,14 +4,13 @@ import com.junemon.core.cache.db.PlaceDao
 import com.junemon.core.cache.model.PlaceDbEntity
 import com.junemon.core.cache.util.interfaces.PlacesDaoHelper
 import kotlinx.coroutines.flow.Flow
-import javax.inject.Inject
 
 /**
  * Created by Ian Damping on 06,January,2020
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class PlacesDaoHelperImpl @Inject constructor(private val placeDao: PlaceDao) : PlacesDaoHelper {
+class PlacesDaoHelperImpl(private val placeDao: PlaceDao) : PlacesDaoHelper {
 
     override fun loadAllPlace(): Flow<List<PlaceDbEntity>> {
         return placeDao.loadAllPlace()

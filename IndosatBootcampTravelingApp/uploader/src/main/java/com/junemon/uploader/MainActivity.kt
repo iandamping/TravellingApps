@@ -1,13 +1,13 @@
 package com.junemon.uploader
 
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.junemon.core.presentation.PresentationConstant
 import com.junemon.uploader.databinding.ActivityMainBinding
-import dagger.android.support.DaggerAppCompatActivity
 
 private const val IMMERSIVE_FLAG_TIMEOUT = 500L
 
-class MainActivity : DaggerAppCompatActivity() {
+class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 

@@ -7,9 +7,8 @@ import com.junemon.core.domain.usecase.PlaceUseCase
 import com.junemon.model.domain.PlaceCacheData
 import com.junemon.model.domain.Results
 import com.junemon.model.presentation.PlaceCachePresentation
-import javax.inject.Inject
 
-class PlaceViewModel @Inject constructor(private val repository: PlaceUseCase) : ViewModel() {
+class PlaceViewModel(private val repository: PlaceUseCase) : ViewModel() {
 
     private val _setRunningForever: MutableLiveData<Boolean> = MutableLiveData()
     val setRunningForever: LiveData<Boolean>

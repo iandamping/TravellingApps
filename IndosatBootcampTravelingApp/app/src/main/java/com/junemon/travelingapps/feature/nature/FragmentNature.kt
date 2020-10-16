@@ -11,9 +11,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import com.google.gson.Gson
 import com.junemon.core.presentation.base.fragment.BaseFragment
-import com.junemon.core.presentation.di.factory.viewModelProvider
-import com.junemon.core.presentation.util.interfaces.LoadImageHelper
-import com.junemon.core.presentation.util.interfaces.ViewHelper
 import com.junemon.model.domain.Results
 import com.junemon.model.presentation.PlaceCachePresentation
 import com.junemon.model.presentation.dto.mapCacheToPresentation
@@ -22,7 +19,8 @@ import com.junemon.travelingapps.feature.onboard.FragmentOnBoardDirections
 import com.junemon.travelingapps.utils.staggeredVerticalRecyclerviewInitializer
 import com.junemon.travelingapps.vm.PlaceViewModel
 import kotlinx.android.synthetic.main.item_recyclerview_nature_place.*
-import javax.inject.Inject
+import org.koin.android.ext.android.inject
+import org.koin.androidx.scope.lifecycleScope as koinLifecycleScope
 
 /**
  * Created by Ian Damping on 03,September,2020
@@ -32,20 +30,9 @@ import javax.inject.Inject
 class FragmentNature : BaseFragment(), HomeNatureAdapter.HomeNatureAdapterListener {
     private var _binding: FragmentNatureBinding? = null
     private val binding get() = _binding!!
-
-    @Inject
-    lateinit var viewHelper: ViewHelper
-
-    @Inject
-    lateinit var loadingImageHelper: LoadImageHelper
-
-    @Inject
-    lateinit var gson: Gson
-
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private val placeVm: PlaceViewModel by koinLifecycleScope.inject()
+    private val gson: Gson by inject()
     private lateinit var natureAdapter: HomeNatureAdapter
-    private lateinit var placeVm: PlaceViewModel
 
     override fun createView(
         inflater: LayoutInflater,
@@ -53,7 +40,6 @@ class FragmentNature : BaseFragment(), HomeNatureAdapter.HomeNatureAdapterListen
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentNatureBinding.inflate(inflater, container, false)
-        placeVm = viewModelProvider(viewModelFactory)
         natureAdapter = HomeNatureAdapter(this)
         return binding.root
     }

@@ -16,11 +16,8 @@ import android.widget.ArrayAdapter
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.junemon.core.presentation.base.fragment.BaseFragment
-import com.junemon.core.presentation.di.factory.viewModelProvider
 import com.junemon.core.presentation.util.interfaces.CommonHelper
 import com.junemon.core.presentation.util.interfaces.ImageHelper
 import com.junemon.core.presentation.util.interfaces.LoadImageHelper
@@ -33,9 +30,11 @@ import com.junemon.uploader.databinding.FragmentUploadBinding
 import com.junemon.uploader.vm.SharedViewModel
 import com.junemon.uploader.vm.UploadViewModel
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 import timber.log.Timber
-import javax.inject.Inject
 import kotlin.properties.Delegates
+import androidx.lifecycle.lifecycleScope as androidxLifecycleScope
+import org.koin.androidx.scope.lifecycleScope as koinLifecycleScope
 
 /**
  * Created by Ian Damping on 04,December,2019
@@ -43,20 +42,13 @@ import kotlin.properties.Delegates
  * Indonesia.
  */
 class UploadFragment : BaseFragment() {
-    @Inject
-    lateinit var viewHelper: ViewHelper
 
-    @Inject
-    lateinit var imageHelper: ImageHelper
-
-    @Inject
-    lateinit var commonHelper: CommonHelper
-
-    @Inject
-    lateinit var permissionHelper: PermissionHelper
-
-    @Inject
-    lateinit var loadingImageHelper: LoadImageHelper
+    private val viewHelper: ViewHelper by inject()
+    private val imageHelper: ImageHelper by inject()
+    private val commonHelper: CommonHelper by inject()
+    private val permissionHelper: PermissionHelper by inject()
+    private val loadingImageHelper: LoadImageHelper by inject()
+    private val uploadVm: UploadViewModel by koinLifecycleScope.inject()
 
     private var _binding: FragmentUploadBinding? = null
     private val binding get() = _binding!!
@@ -71,23 +63,20 @@ class UploadFragment : BaseFragment() {
 
     private val REQUEST_SIGN_IN_PERMISSIONS = 15
 
-    @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-
-    private lateinit var uploadVm: UploadViewModel
 
     private val sharedVm: SharedViewModel by activityViewModels()
 
-    private var selectedUriForFirebase :Uri? = null
-    private var bitmap :Bitmap? = null
+    private var selectedUriForFirebase: Uri? = null
+    private var bitmap: Bitmap? = null
     private var placeType by Delegates.notNull<String>()
     private var placeCity by Delegates.notNull<String>()
 
-    private fun requestCameraPermissionsGranted() = permissionHelper.requestCameraPermissionsGranted(REQUIRED_CAMERA_PERMISSIONS)
+    private fun requestCameraPermissionsGranted() =
+        permissionHelper.requestCameraPermissionsGranted(REQUIRED_CAMERA_PERMISSIONS)
 
-
-    private fun requestReadPermissionsGranted() =  permissionHelper.requestReadPermissionsGranted(REQUIRED_READ_PERMISSIONS)
-
+    private fun requestReadPermissionsGranted() =
+        permissionHelper.requestReadPermissionsGranted(REQUIRED_READ_PERMISSIONS)
 
     override fun createView(
         inflater: LayoutInflater,
@@ -95,7 +84,6 @@ class UploadFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentUploadBinding.inflate(inflater, container, false)
-        uploadVm = viewModelProvider(viewModelFactory)
         return binding.root
     }
 
@@ -246,7 +234,6 @@ class UploadFragment : BaseFragment() {
             etPlaceAddress.setText("")
             etPlaceDetail.setText("")
         }
-
     }
 
     private fun openGalleryAndCamera() {
@@ -269,7 +256,7 @@ class UploadFragment : BaseFragment() {
                         }
                         1 -> {
                             if (requestCameraPermissionsGranted()) {
-                                findNavController().navigate(UploadFragmentDirections.actionUploadFragmentToOpenCameraFragment())
+                                navigate(UploadFragmentDirections.actionUploadFragmentToOpenCameraFragment())
                             } else {
                                 permissionHelper.run {
                                     requestingPermission(
@@ -320,26 +307,36 @@ class UploadFragment : BaseFragment() {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         permissionHelper.run {
-            onRequestingPermissionsResult(REQUEST_CAMERA_CODE_PERMISSIONS,requestCode, grantResults,{
-                findNavController().navigate(UploadFragmentDirections.actionUploadFragmentToOpenCameraFragment())
-            },{
-                Snackbar.make(
-                    binding.root,
-                    getString(R.string.permission_not_granted),
-                    Snackbar.LENGTH_SHORT
-                ).show()
-            })
+            onRequestingPermissionsResult(
+                REQUEST_CAMERA_CODE_PERMISSIONS,
+                requestCode,
+                grantResults,
+                {
+                    navigate(UploadFragmentDirections.actionUploadFragmentToOpenCameraFragment())
+                },
+                {
+                    Snackbar.make(
+                        binding.root,
+                        getString(R.string.permission_not_granted),
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                })
 
 
-            onRequestingPermissionsResult(REQUEST_READ_CODE_PERMISSIONS,requestCode, grantResults,{
-                openImageFromGallery()
-            },{
-                Snackbar.make(
-                    binding.root,
-                    getString(R.string.permission_not_granted),
-                    Snackbar.LENGTH_SHORT
-                ).show()
-            })
+            onRequestingPermissionsResult(
+                REQUEST_READ_CODE_PERMISSIONS,
+                requestCode,
+                grantResults,
+                {
+                    openImageFromGallery()
+                },
+                {
+                    Snackbar.make(
+                        binding.root,
+                        getString(R.string.permission_not_granted),
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                })
         }
     }
 
@@ -350,20 +347,19 @@ class UploadFragment : BaseFragment() {
     }
 
     private fun fireSignIn() {
-        lifecycleScope.launch {
+        androidxLifecycleScope.launch {
             val signInIntent = uploadVm.initSignIn()
             startActivityForResult(signInIntent, REQUEST_SIGN_IN_PERMISSIONS)
         }
     }
 
     private fun fireSignOut() {
-        lifecycleScope.launch {
+        androidxLifecycleScope.launch {
             uploadVm.initLogout {
                 Timber.e("success logout")
             }
         }
     }
-
 
     private fun createBitmapFromUri(uri: Uri?): Bitmap? =
         if (uri != null) {

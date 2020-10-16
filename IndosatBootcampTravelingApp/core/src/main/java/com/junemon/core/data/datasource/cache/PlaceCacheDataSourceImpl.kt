@@ -6,14 +6,13 @@ import com.junemon.core.cache.util.interfaces.PlacesDaoHelper
 import com.junemon.model.domain.PlaceCacheData
 import com.junemon.core.data.data.datasource.PlaceCacheDataSource
 import kotlinx.coroutines.flow.Flow
-import javax.inject.Inject
 
 /**
  * Created by Ian Damping on 04,December,2019
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class PlaceCacheDataSourceImpl @Inject constructor(private val placeDao: PlacesDaoHelper) :
+class PlaceCacheDataSourceImpl(private val placeDao: PlacesDaoHelper) :
     PlaceCacheDataSource {
 
     override fun getCache(): Flow<List<PlaceCacheData>> {

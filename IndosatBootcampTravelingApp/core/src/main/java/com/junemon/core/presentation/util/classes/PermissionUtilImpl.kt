@@ -1,19 +1,17 @@
 package com.junemon.core.presentation.util.classes
 
-import android.app.Application
 import android.content.Context
 import android.content.pm.PackageManager
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.junemon.core.presentation.util.interfaces.PermissionHelper
-import javax.inject.Inject
 
 /**
  * Created by Ian Damping on 04,December,2019
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class PermissionUtilImpl @Inject constructor(private val context: Context) : PermissionHelper {
+class PermissionUtilImpl (private val context: Context) : PermissionHelper {
 
     override fun requestCameraPermissionsGranted(permissions: Array<String>) = permissions.all {
         ContextCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED

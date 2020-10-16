@@ -6,14 +6,13 @@ import com.junemon.core.remote.util.ProfileRemoteHelper
 import com.junemon.core.remote.util.firebaseuser.AuthenticatedUserInfo
 import com.junemon.model.domain.DataHelper
 import kotlinx.coroutines.flow.Flow
-import javax.inject.Inject
 
 /**
  * Created by Ian Damping on 07,August,2020
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class ProfileRemoteDataSourceImpl @Inject constructor(
+class ProfileRemoteDataSourceImpl(
     private val profileRemoteHelper: ProfileRemoteHelper
 ) : ProfileRemoteDataSource {
     override fun getUserProfile(): Flow<DataHelper<AuthenticatedUserInfo>> {

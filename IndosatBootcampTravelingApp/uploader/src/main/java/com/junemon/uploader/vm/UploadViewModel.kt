@@ -9,14 +9,13 @@ import com.junemon.core.domain.usecase.ProfileUseCase
 import com.junemon.core.remote.util.firebaseuser.AuthenticatedUserInfo
 import com.junemon.model.domain.PlaceRemoteData
 import com.junemon.model.domain.Results
-import javax.inject.Inject
 
 /**
  * Created by Ian Damping on 19,August,2020
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class UploadViewModel @Inject constructor(
+class UploadViewModel (
     private val repository: PlaceUseCase,
     private val profileRepo: ProfileUseCase
 ) : ViewModel() {

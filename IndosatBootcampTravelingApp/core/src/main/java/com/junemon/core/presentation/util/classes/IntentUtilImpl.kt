@@ -4,34 +4,28 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import androidx.core.app.ShareCompat
 import androidx.fragment.app.FragmentActivity
 import com.bumptech.glide.RequestManager
 import com.junemon.core.R
-import com.junemon.core.data.di.IoDispatcher
-import com.junemon.core.data.di.MainDispatcher
 import com.junemon.core.presentation.PresentationConstant
 import com.junemon.core.presentation.util.interfaces.IntentHelper
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
-import java.net.URL
-import javax.inject.Inject
 
 /**
  * Created by Ian Damping on 06,December,2019
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class IntentUtilImpl @Inject constructor(
-    @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
-    @IoDispatcher private val mainDispatcher: CoroutineDispatcher,
+class IntentUtilImpl (
+     private val ioDispatcher: CoroutineDispatcher,
+     private val mainDispatcher: CoroutineDispatcher,
     private val requestManager: RequestManager,
     private val context: Context
 ) : IntentHelper {

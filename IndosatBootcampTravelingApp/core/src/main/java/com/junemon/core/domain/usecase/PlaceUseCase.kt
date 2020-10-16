@@ -7,15 +7,13 @@ import com.junemon.core.domain.repository.PlaceRepository
 import com.junemon.model.domain.PlaceCacheData
 import com.junemon.model.domain.PlaceRemoteData
 import com.junemon.model.domain.Results
-import kotlinx.coroutines.flow.onStart
-import javax.inject.Inject
 
 /**
  * Created by Ian Damping on 04,December,2019
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class PlaceUseCase @Inject constructor(private val repository: PlaceRepository) {
+class PlaceUseCase(private val repository: PlaceRepository) {
 
     fun getCache(): LiveData<List<PlaceCacheData>> = repository.getCache().asLiveData()
 

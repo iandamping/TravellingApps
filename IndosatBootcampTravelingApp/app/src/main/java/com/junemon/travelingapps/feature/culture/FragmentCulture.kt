@@ -7,13 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.ViewGroupCompat
 import androidx.core.view.doOnPreDraw
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import com.google.gson.Gson
 import com.junemon.core.presentation.base.fragment.BaseFragment
-import com.junemon.core.presentation.di.factory.viewModelProvider
-import com.junemon.core.presentation.util.interfaces.LoadImageHelper
-import com.junemon.core.presentation.util.interfaces.ViewHelper
 import com.junemon.model.domain.Results
 import com.junemon.model.presentation.PlaceCachePresentation
 import com.junemon.model.presentation.dto.mapCacheToPresentation
@@ -22,7 +18,8 @@ import com.junemon.travelingapps.feature.onboard.FragmentOnBoardDirections
 import com.junemon.travelingapps.utils.staggeredVerticalRecyclerviewInitializer
 import com.junemon.travelingapps.vm.PlaceViewModel
 import kotlinx.android.synthetic.main.item_recyclerview_culture_place.*
-import javax.inject.Inject
+import org.koin.android.ext.android.inject
+import org.koin.androidx.scope.lifecycleScope as koinLifecycleScope
 
 /**
  * Created by Ian Damping on 03,September,2020
@@ -32,21 +29,10 @@ import javax.inject.Inject
 class FragmentCulture : BaseFragment(), HomeCultureAdapter.HomeCultureAdapterListener {
     private var _binding: FragmentCultureBinding? = null
     private val binding get() = _binding!!
-
-    @Inject
-    lateinit var viewHelper: ViewHelper
-
-    @Inject
-    lateinit var loadingImageHelper: LoadImageHelper
-
-    @Inject
-    lateinit var gson: Gson
-
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
+   private val gson: Gson by inject()
+    private val placeVm: PlaceViewModel by koinLifecycleScope.inject()
 
     private lateinit var cultureAdapter: HomeCultureAdapter
-    private lateinit var placeVm: PlaceViewModel
 
     override fun createView(
         inflater: LayoutInflater,
@@ -54,7 +40,6 @@ class FragmentCulture : BaseFragment(), HomeCultureAdapter.HomeCultureAdapterLis
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentCultureBinding.inflate(inflater, container, false)
-        placeVm = viewModelProvider(viewModelFactory)
         cultureAdapter = HomeCultureAdapter(this)
         return binding.root
     }

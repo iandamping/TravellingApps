@@ -2,30 +2,29 @@ package com.junemon.travelingapps.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import android.view.Window
 import android.view.WindowManager
-import androidx.lifecycle.lifecycleScope
+import androidx.appcompat.app.AppCompatActivity
 import com.junemon.core.presentation.util.interfaces.LoadImageHelper
 import com.junemon.travelingapps.R
-import com.junemon.travelingapps.databinding.ActivityMainBinding
 import com.junemon.travelingapps.databinding.ActivitySplashBinding
-import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_splash.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+import org.koin.android.ext.android.inject
+
+import androidx.lifecycle.lifecycleScope as androidxLifecycleScope
+import org.koin.androidx.scope.lifecycleScope as koinLifecycleScope
 
 /**
  * Created by Ian Damping on 09,December,2019
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class SplashActivity : DaggerAppCompatActivity() {
+class SplashActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySplashBinding
 
-    @Inject
-    lateinit var loadImageHelper: LoadImageHelper
+    private val  loadImageHelper: LoadImageHelper by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,7 +50,7 @@ class SplashActivity : DaggerAppCompatActivity() {
     }
 
     private fun runDelayed(call: () -> Unit) {
-        lifecycleScope.launch {
+        androidxLifecycleScope.launch {
             delay(500L)
             call.invoke()
         }

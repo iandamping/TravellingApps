@@ -1,16 +1,13 @@
 package com.junemon.travelingapps.activity
 
 import android.os.Bundle
-import android.view.Window
-import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.junemon.core.presentation.PresentationConstant.FLAGS_FULLSCREEN
 import com.junemon.travelingapps.databinding.ActivityMainBinding
-import dagger.android.support.DaggerAppCompatActivity
 
 private const val IMMERSIVE_FLAG_TIMEOUT = 500L
 
-class MainActivity : DaggerAppCompatActivity() {
+class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 

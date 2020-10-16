@@ -21,7 +21,7 @@ import com.junemon.model.presentation.PlaceCachePresentation
 import com.junemon.travelingapps.R
 import com.junemon.travelingapps.databinding.FragmentDetailBinding
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+import org.koin.android.ext.android.inject
 
 /**
  * Created by Ian Damping on 06,December,2019
@@ -29,20 +29,11 @@ import javax.inject.Inject
  * Indonesia.
  */
 class DetailFragment : BaseFragment() {
-    @Inject
-    lateinit var loadImageHelper: LoadImageHelper
-
-    @Inject
-    lateinit var intentHelper: IntentHelper
-
-    @Inject
-    lateinit var imageHelper: ImageHelper
-
-    @Inject
-    lateinit var gson: Gson
-
-    @Inject
-    lateinit var permissionHelper: PermissionHelper
+    private val loadImageHelper: LoadImageHelper by inject()
+    private val intentHelper: IntentHelper by inject()
+    private val imageHelper: ImageHelper by inject()
+    private val gson: Gson by inject()
+    private val permissionHelper: PermissionHelper by inject()
 
     private val REQUEST_READ_WRITE_CODE_PERMISSIONS = 5
     private val REQUIRED_READ_WRITE_PERMISSIONS = arrayOf(
