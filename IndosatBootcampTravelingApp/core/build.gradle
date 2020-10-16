@@ -101,8 +101,6 @@ dependencies {
 
     api "androidx.navigation:navigation-fragment-ktx:$navigationVer"
     api "androidx.navigation:navigation-ui-ktx:$navigationVer"
-    api "androidx.navigation:navigation-fragment-ktx:$navigationVer"
-    api "androidx.navigation:navigation-ui-ktx:$navigationVer"
 
 //    // Dependencies for local unit tests
 //    testImplementation "junit:junit:$junitVersion"
