@@ -1,8 +1,9 @@
 package com.junemon.travelingapps
 
-import com.junemon.travelingapps.di.DaggerAppComponent
-import dagger.android.AndroidInjector
-import dagger.android.DaggerApplication
+import android.app.Application
+import com.junemon.travelingapps.di.component.AppComponent
+import com.junemon.travelingapps.di.component.AppComponentProvider
+import com.junemon.travelingapps.di.component.DaggerAppComponent
 import timber.log.Timber
 
 /**
@@ -10,7 +11,7 @@ import timber.log.Timber
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class PlaceApplication : DaggerApplication() {
+class PlaceApplication : Application(), AppComponentProvider {
 
     override fun onCreate() {
         super.onCreate()
@@ -20,10 +21,9 @@ class PlaceApplication : DaggerApplication() {
         }
     }
 
-    override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
-        return DaggerAppComponent.builder().create(this)
+    override fun provideApplicationComponent(): AppComponent {
+        return DaggerAppComponent.factory().injectApplication(this)
     }
-
 }
 
 

@@ -48,8 +48,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ImageView
+            <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/ivPaginationImage"
+                app:shapeAppearanceOverlay="@style/allRounder"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
                 android:adjustViewBounds="true"
@@ -57,6 +58,7 @@
                 tools:src="@tools:sample/backgrounds/scenic" />
 
             <LinearLayout
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_alignBottom="@id/ivPaginationImage"
@@ -119,7 +121,7 @@
                 android:layout_gravity="top"
                 android:src="@drawable/ic_map_black_24dp" />
 
-            <com.junemon.core.presentation.util.classes.JustifyTextView
+            <com.junemon.travelingapps.util.classes.JustifyTextView
                 android:id="@+id/tvPaginationAddress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

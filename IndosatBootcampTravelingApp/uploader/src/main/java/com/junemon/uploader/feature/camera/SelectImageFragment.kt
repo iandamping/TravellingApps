@@ -10,9 +10,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.junemon.core.di.module.CameraXFileDirectory
-import com.junemon.core.presentation.base.fragment.BaseFragment
-import com.junemon.core.presentation.util.interfaces.LoadImageHelper
+import com.junemon.uploader.base.fragment.BaseFragment
 import com.junemon.uploader.databinding.FragmentSelectImageBinding
+import com.junemon.uploader.utility.interfaces.LoadImageHelper
 import com.junemon.uploader.vm.SharedViewModel
 import java.io.File
 import javax.inject.Inject

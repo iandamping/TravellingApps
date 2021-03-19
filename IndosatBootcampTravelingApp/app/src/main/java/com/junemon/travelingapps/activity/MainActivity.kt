@@ -6,16 +6,18 @@ import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.junemon.core.presentation.PresentationConstant.FLAGS_FULLSCREEN
 import com.junemon.travelingapps.databinding.ActivityMainBinding
+import com.junemon.travelingapps.di.injector.activityComponent
 import dagger.android.support.DaggerAppCompatActivity
 
 private const val IMMERSIVE_FLAG_TIMEOUT = 500L
 
-class MainActivity : DaggerAppCompatActivity() {
+class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        activityComponent().create().inject(this)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
     }

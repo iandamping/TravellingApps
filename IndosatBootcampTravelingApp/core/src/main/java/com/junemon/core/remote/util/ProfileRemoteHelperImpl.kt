@@ -5,7 +5,7 @@ import android.content.Intent
 import com.firebase.ui.auth.AuthUI
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
-import com.junemon.core.data.di.IoDispatcher
+import com.junemon.core.di.dispatcher.IoDispatcher
 import com.junemon.core.remote.util.firebaseuser.AuthenticatedUserInfo
 import com.junemon.core.remote.util.firebaseuser.FirebaseUserInfo
 import com.junemon.model.domain.DataHelper

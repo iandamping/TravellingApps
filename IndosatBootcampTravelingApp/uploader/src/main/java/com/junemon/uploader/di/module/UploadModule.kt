@@ -2,7 +2,7 @@ package com.junemon.uploader.di.module
 
 import androidx.lifecycle.ViewModel
 import com.junemon.core.di.scope.FeatureScope
-import com.junemon.core.presentation.di.factory.ViewModelKey
+import com.junemon.core.di.factory.ViewModelKey
 import com.junemon.uploader.feature.camera.OpenCameraFragment
 import com.junemon.uploader.feature.camera.SelectImageFragment
 import com.junemon.uploader.feature.upload.UploadFragment

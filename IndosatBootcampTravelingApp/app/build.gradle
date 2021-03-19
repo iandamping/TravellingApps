@@ -2,16 +2,19 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.google.gms.google-services'
-apply plugin: 'androidx.navigation.safeargs'
+apply plugin: 'androidx.navigation.safeargs.kotlin'
 apply plugin: 'kotlin-kapt'
 
+apply from: '../shared_dependencies.gradle'
+apply from: '../view_dependencies.gradle'
+
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.3"
+    compileSdkVersion 30
+    buildToolsVersion "30.0.2"
     defaultConfig {
         applicationId "com.junemon.travelingapps"
         minSdkVersion 21
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -26,11 +29,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    dataBinding {
-        enabled = true
-    }
-    viewBinding {
-        enabled = true
+    buildFeatures {
+        dataBinding true
+        viewBinding true
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -40,20 +41,10 @@ android {
         jvmTarget = "1.8"
     }
 
-
-
 }
 
 dependencies {
     implementation project(':core')
     implementation project(':model')
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    implementation "me.relex:circleindicator:1.2.2@aar"
-    implementation "androidx.activity:activity-ktx:1.1.0"
-    kapt "com.google.dagger:dagger-compiler:$dagger_version"
-    kapt 'com.google.dagger:dagger-android-processor:2.28.3'
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.4'
+
 }

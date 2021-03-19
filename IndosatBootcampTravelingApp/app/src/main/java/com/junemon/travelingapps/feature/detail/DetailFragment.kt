@@ -6,21 +6,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.MaterialContainerTransform
 import com.google.gson.Gson
-import com.junemon.core.presentation.base.fragment.BaseFragment
-import com.junemon.core.presentation.util.interfaces.ImageHelper
-import com.junemon.core.presentation.util.interfaces.IntentHelper
-import com.junemon.core.presentation.util.interfaces.LoadImageHelper
-import com.junemon.core.presentation.util.interfaces.PermissionHelper
-import com.junemon.core.presentation.util.transition.themeColor
+import com.junemon.travelingapps.util.interfaces.ImageHelper
+import com.junemon.travelingapps.util.interfaces.IntentHelper
+import com.junemon.travelingapps.util.interfaces.LoadImageHelper
+import com.junemon.travelingapps.util.interfaces.PermissionHelper
 import com.junemon.model.presentation.PlaceCachePresentation
 import com.junemon.travelingapps.R
+import com.junemon.travelingapps.base.BaseFragmentDataBinding
 import com.junemon.travelingapps.databinding.FragmentDetailBinding
-import kotlinx.coroutines.launch
+import com.junemon.travelingapps.di.injector.appComponent
+import com.junemon.travelingapps.util.clicks
+import com.junemon.travelingapps.util.transition.themeColor
 import javax.inject.Inject
 
 /**
@@ -28,7 +28,7 @@ import javax.inject.Inject
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class DetailFragment : BaseFragment() {
+class DetailFragment : BaseFragmentDataBinding<FragmentDetailBinding>() {
     @Inject
     lateinit var loadImageHelper: LoadImageHelper
 
@@ -61,9 +61,6 @@ class DetailFragment : BaseFragment() {
         )
     }
 
-    private var _binding: FragmentDetailBinding? = null
-    private val binding get() = _binding!!
-
     override fun onCreate(savedInstanceState: Bundle?) {
         sharedElementEnterTransition = MaterialContainerTransform().apply {
             drawingViewId = R.id.financialNavHostFragment
@@ -74,61 +71,41 @@ class DetailFragment : BaseFragment() {
         super.onCreate(savedInstanceState)
     }
 
-    override fun createView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentDetailBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
-    override fun viewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.run {
-            detailData = passedData
-            initView(passedData)
-            coordinatorParent.transitionName = passedData.placePicture
-        }
-    }
-
-    override fun destroyView() {
-        _binding = null
-    }
-
     override fun activityCreated() {
     }
 
     private fun FragmentDetailBinding.initView(data: PlaceCachePresentation) {
         ivBack.setOnClickListener {
-            findNavController().navigateUp()
+            navigateUp()
         }
-        loadImageHelper.run { ivDetailMovieImages.loadWithGlide(data.placePicture) }
+        with(loadImageHelper) { ivDetailMovieImages.loadWithGlide(data.placePicture) }
         ivShare.setOnClickListener {
-                if (requestsGranted()) {
-                    lifecycleScope.launch {
-                        setDialogShow(false)
-                        intentHelper.intentShareImageAndText(
-                            data.placeName,
-                            data.placeDetail,
-                            data.placePicture
-                        ){
-                            setDialogShow(true)
-                            sharedImageIntent(it)
-                        }
-                    }
-                } else {
-                    permissionHelper.run {
-                        requestingPermission(
-                            REQUIRED_READ_WRITE_PERMISSIONS,
-                            REQUEST_READ_WRITE_CODE_PERMISSIONS
-                        )
+            if (requestsGranted()) {
+                consumeSuspend {
+                    setDialogShow(false)
+                    intentHelper.intentShareImageAndText(
+                        data.placeName,
+                        data.placeDetail,
+                        data.placePicture
+                    ) {
+                        setDialogShow(true)
+                        sharedImageIntent(it)
                     }
                 }
+            } else {
+                with(permissionHelper) {
+                    requestingPermission(
+                        REQUIRED_READ_WRITE_PERMISSIONS,
+                        REQUEST_READ_WRITE_CODE_PERMISSIONS
+                    )
+                }
+            }
 
         }
-        ivDownload.setOnClickListener {
-            imageHelper.run {
-                lifecycleScope.launch {
+
+        clicks(ivDownload) {
+            with(imageHelper) {
+                consumeSuspend {
                     if (data.placePicture != null) {
                         saveImage(
                             binding.root,
@@ -148,18 +125,18 @@ class DetailFragment : BaseFragment() {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        permissionHelper.run {
+        with(permissionHelper) {
             onRequestingPermissionsResult(
                 REQUEST_READ_WRITE_CODE_PERMISSIONS,
                 requestCode,
                 grantResults, {
-                    lifecycleScope.launch {
+                    consumeSuspend {
                         setDialogShow(false)
                         intentHelper.intentShareImageAndText(
                             passedData.placeName,
                             passedData.placeDetail,
                             passedData.placePicture
-                        ){
+                        ) {
                             setDialogShow(true)
                             sharedImageIntent(it)
                         }
@@ -169,5 +146,28 @@ class DetailFragment : BaseFragment() {
                     permissionDeniedSnackbar(binding.root)
                 })
         }
+    }
+
+    private fun permissionDeniedSnackbar(view: View) {
+        Snackbar.make(
+            view,
+            getString(R.string.permission_not_granted),
+            Snackbar.LENGTH_SHORT
+        ).show()
+    }
+
+    override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentDetailBinding
+        get() = FragmentDetailBinding::inflate
+
+    override fun viewCreated() {
+        with(binding) {
+            detailData = passedData
+            initView(passedData)
+            coordinatorParent.transitionName = passedData.placePicture
+        }
+    }
+
+    override fun injectDagger() {
+        appComponent().getFragmentComponent().create().inject(this)
     }
 }

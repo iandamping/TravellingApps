@@ -18,7 +18,7 @@ import androidx.navigation.fragment.findNavController
 import com.junemon.core.di.module.CameraXFileDirectory
 import com.junemon.core.presentation.PresentationConstant.ANIMATION_FAST_MILLIS
 import com.junemon.core.presentation.PresentationConstant.ANIMATION_SLOW_MILLIS
-import com.junemon.core.presentation.base.fragment.BaseFragment
+import com.junemon.uploader.base.fragment.BaseFragment
 import com.junemon.uploader.databinding.FragmentOpenCameraBinding
 import timber.log.Timber
 import java.io.File

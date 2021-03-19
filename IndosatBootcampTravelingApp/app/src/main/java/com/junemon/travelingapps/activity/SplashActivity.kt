@@ -2,15 +2,14 @@ package com.junemon.travelingapps.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import android.view.Window
 import android.view.WindowManager
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import com.junemon.core.presentation.util.interfaces.LoadImageHelper
+import com.junemon.travelingapps.util.interfaces.LoadImageHelper
 import com.junemon.travelingapps.R
-import com.junemon.travelingapps.databinding.ActivityMainBinding
 import com.junemon.travelingapps.databinding.ActivitySplashBinding
-import dagger.android.support.DaggerAppCompatActivity
+import com.junemon.travelingapps.di.injector.activityComponent
 import kotlinx.android.synthetic.main.activity_splash.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -21,7 +20,7 @@ import javax.inject.Inject
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class SplashActivity : DaggerAppCompatActivity() {
+class SplashActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySplashBinding
 
     @Inject
@@ -29,6 +28,7 @@ class SplashActivity : DaggerAppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        activityComponent().create().inject(this)
 
         this.requestWindowFeature(Window.FEATURE_NO_TITLE)
         this.window.setFlags(

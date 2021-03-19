@@ -2,7 +2,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+    <data>
 
+        <variable
+            name="detailData"
+            type="com.junemon.model.presentation.PlaceCachePresentation" />
+
+    </data>
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/coordinatorParent"
@@ -94,7 +100,7 @@
                 tools:text="overview" />
 
 
-            <com.junemon.core.presentation.util.classes.JustifyTextView
+            <com.junemon.travelingapps.util.classes.JustifyTextView
                 android:id="@+id/tvPlaceDetailAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -107,7 +113,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/tvPlaceDetailPlace"
                 tools:text="alamat">
 
-            </com.junemon.core.presentation.util.classes.JustifyTextView>
+            </com.junemon.travelingapps.util.classes.JustifyTextView>
 
 
             <TextView
@@ -127,11 +133,5 @@
 
     </androidx.core.widget.NestedScrollView>
 
-    <data>
 
-        <variable
-            name="detailData"
-            type="com.junemon.model.presentation.PlaceCachePresentation" />
-
-    </data>
 </layout>

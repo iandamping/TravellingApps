@@ -6,7 +6,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.StorageReference
-import com.junemon.core.data.di.DefaultDispatcher
+import com.junemon.core.di.dispatcher.DefaultDispatcher
 import com.junemon.model.data.PlaceRemoteEntity
 import com.junemon.model.data.dto.mapToRemoteDomain
 import com.junemon.model.domain.DataHelper

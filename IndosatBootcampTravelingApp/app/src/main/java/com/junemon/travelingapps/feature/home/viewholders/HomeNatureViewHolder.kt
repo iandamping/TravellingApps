@@ -3,7 +3,7 @@ package com.junemon.travelingapps.feature.home.viewholders
 import android.os.Build
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import com.junemon.travelingapps.util.interfaces.LoadImageHelper
 import com.junemon.model.presentation.PlaceCachePresentation
 import com.junemon.travelingapps.databinding.ItemRecyclerviewNaturePlaceBinding
 
@@ -13,14 +13,15 @@ import com.junemon.travelingapps.databinding.ItemRecyclerviewNaturePlaceBinding
  * Indonesia.
  */
 class HomeNatureViewHolder(
-    private val binding: ItemRecyclerviewNaturePlaceBinding
+    private val binding: ItemRecyclerviewNaturePlaceBinding,
+    private val loadImageHelper: LoadImageHelper
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(data: PlaceCachePresentation) {
         binding.run {
             tvItemNaturePlaceName.text = data.placeName
             tvItemNaturePlaceDistrict.text = data.placeDistrict
-            Glide.with(ivItemNaturePlaceImage).load(data.placePicture).into(ivItemNaturePlaceImage)
+            with(loadImageHelper){ivItemNaturePlaceImage.loadWithGlide(data.placePicture)}
 
             when {
                 Build.VERSION.SDK_INT < 24 -> {

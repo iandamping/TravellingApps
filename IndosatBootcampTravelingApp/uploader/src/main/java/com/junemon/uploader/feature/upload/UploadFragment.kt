@@ -19,17 +19,17 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
-import com.junemon.core.presentation.base.fragment.BaseFragment
-import com.junemon.core.presentation.di.factory.viewModelProvider
-import com.junemon.core.presentation.util.interfaces.CommonHelper
-import com.junemon.core.presentation.util.interfaces.ImageHelper
-import com.junemon.core.presentation.util.interfaces.LoadImageHelper
-import com.junemon.core.presentation.util.interfaces.PermissionHelper
-import com.junemon.core.presentation.util.interfaces.ViewHelper
+import com.junemon.core.di.factory.viewModelProvider
 import com.junemon.model.domain.PlaceRemoteData
 import com.junemon.model.domain.Results
 import com.junemon.uploader.R
+import com.junemon.uploader.base.fragment.BaseFragment
 import com.junemon.uploader.databinding.FragmentUploadBinding
+import com.junemon.uploader.utility.interfaces.CommonHelper
+import com.junemon.uploader.utility.interfaces.ImageHelper
+import com.junemon.uploader.utility.interfaces.LoadImageHelper
+import com.junemon.uploader.utility.interfaces.PermissionHelper
+import com.junemon.uploader.utility.interfaces.ViewHelper
 import com.junemon.uploader.vm.SharedViewModel
 import com.junemon.uploader.vm.UploadViewModel
 import kotlinx.coroutines.launch
@@ -78,16 +78,16 @@ class UploadFragment : BaseFragment() {
 
     private val sharedVm: SharedViewModel by activityViewModels()
 
-    private var selectedUriForFirebase :Uri? = null
-    private var bitmap :Bitmap? = null
+    private var selectedUriForFirebase: Uri? = null
+    private var bitmap: Bitmap? = null
     private var placeType by Delegates.notNull<String>()
     private var placeCity by Delegates.notNull<String>()
 
-    private fun requestCameraPermissionsGranted() = permissionHelper.requestCameraPermissionsGranted(REQUIRED_CAMERA_PERMISSIONS)
+    private fun requestCameraPermissionsGranted() =
+        permissionHelper.requestCameraPermissionsGranted(REQUIRED_CAMERA_PERMISSIONS)
 
-
-    private fun requestReadPermissionsGranted() =  permissionHelper.requestReadPermissionsGranted(REQUIRED_READ_PERMISSIONS)
-
+    private fun requestReadPermissionsGranted() =
+        permissionHelper.requestReadPermissionsGranted(REQUIRED_READ_PERMISSIONS)
 
     override fun createView(
         inflater: LayoutInflater,
@@ -246,7 +246,6 @@ class UploadFragment : BaseFragment() {
             etPlaceAddress.setText("")
             etPlaceDetail.setText("")
         }
-
     }
 
     private fun openGalleryAndCamera() {
@@ -320,26 +319,36 @@ class UploadFragment : BaseFragment() {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         permissionHelper.run {
-            onRequestingPermissionsResult(REQUEST_CAMERA_CODE_PERMISSIONS,requestCode, grantResults,{
-                findNavController().navigate(UploadFragmentDirections.actionUploadFragmentToOpenCameraFragment())
-            },{
-                Snackbar.make(
-                    binding.root,
-                    getString(R.string.permission_not_granted),
-                    Snackbar.LENGTH_SHORT
-                ).show()
-            })
+            onRequestingPermissionsResult(
+                REQUEST_CAMERA_CODE_PERMISSIONS,
+                requestCode,
+                grantResults,
+                {
+                    findNavController().navigate(UploadFragmentDirections.actionUploadFragmentToOpenCameraFragment())
+                },
+                {
+                    Snackbar.make(
+                        binding.root,
+                        getString(R.string.permission_not_granted),
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                })
 
 
-            onRequestingPermissionsResult(REQUEST_READ_CODE_PERMISSIONS,requestCode, grantResults,{
-                openImageFromGallery()
-            },{
-                Snackbar.make(
-                    binding.root,
-                    getString(R.string.permission_not_granted),
-                    Snackbar.LENGTH_SHORT
-                ).show()
-            })
+            onRequestingPermissionsResult(
+                REQUEST_READ_CODE_PERMISSIONS,
+                requestCode,
+                grantResults,
+                {
+                    openImageFromGallery()
+                },
+                {
+                    Snackbar.make(
+                        binding.root,
+                        getString(R.string.permission_not_granted),
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                })
         }
     }
 
@@ -363,7 +372,6 @@ class UploadFragment : BaseFragment() {
             }
         }
     }
-
 
     private fun createBitmapFromUri(uri: Uri?): Bitmap? =
         if (uri != null) {

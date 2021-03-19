@@ -7,8 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
-import androidx.recyclerview.widget.DiffUtil
-import com.junemon.model.presentation.PlaceCachePresentation
 
 /**
  * Created by Ian Damping on 04,December,2019
@@ -56,42 +54,12 @@ object PresentationConstant {
         }
     }
 
-    val placeRvCallback = object : DiffUtil.ItemCallback<PlaceCachePresentation?>() {
-        override fun areItemsTheSame(
-            oldItem: PlaceCachePresentation,
-            newItem: PlaceCachePresentation
-        ): Boolean {
-            return oldItem.localPlaceID == newItem.localPlaceID
-        }
 
-        override fun areContentsTheSame(
-            oldItem: PlaceCachePresentation,
-            newItem: PlaceCachePresentation
-        ): Boolean {
-            return oldItem.localPlaceID == newItem.localPlaceID
-        }
-    }
-
-    val placePaginationRvCallback = object : DiffUtil.ItemCallback<PlaceCachePresentation>() {
-        override fun areItemsTheSame(
-            oldItem: PlaceCachePresentation,
-            newItem: PlaceCachePresentation
-        ): Boolean {
-            return oldItem.localPlaceID == newItem.localPlaceID
-        }
-
-        override fun areContentsTheSame(
-            oldItem: PlaceCachePresentation,
-            newItem: PlaceCachePresentation
-        ): Boolean {
-            return oldItem.localPlaceID == newItem.localPlaceID
-        }
-    }
 }
 
 inline val Context.layoutInflater: LayoutInflater
     get() = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
-internal fun ViewGroup.inflates(layout: Int): View {
+fun ViewGroup.inflates(layout: Int): View {
     return LayoutInflater.from(context).inflate(layout, this, false)
 }

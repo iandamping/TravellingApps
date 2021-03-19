@@ -3,7 +3,7 @@ package com.junemon.travelingapps.feature.home.viewholders
 import android.os.Build
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import com.junemon.travelingapps.util.interfaces.LoadImageHelper
 import com.junemon.model.presentation.PlaceCachePresentation
 import com.junemon.travelingapps.databinding.ItemRecyclerviewRandomBinding
 
@@ -13,15 +13,16 @@ import com.junemon.travelingapps.databinding.ItemRecyclerviewRandomBinding
  * Indonesia.
  */
 class HomeRandomViewHolder(
-    private val binding: ItemRecyclerviewRandomBinding
+    private val binding: ItemRecyclerviewRandomBinding,
+    private val loadImageHelper: LoadImageHelper
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(data: PlaceCachePresentation) {
         binding.run {
             tvItemRandomPlaceName.text = data.placeName
             tvItemRandomPlaceDistrict.text = data.placeDistrict
-            Glide.with(ivItemRandomPlaceImage).load(data.placePicture)
-                .into(ivItemRandomPlaceImage)
+            with(loadImageHelper){ivItemRandomPlaceImage.loadWithGlide(data.placePicture)}
+
 
             when {
                 Build.VERSION.SDK_INT < 24 -> {

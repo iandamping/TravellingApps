@@ -1,31 +1,28 @@
 package com.junemon.travelingapps.feature.home
 
 import android.os.Build
-import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.ViewGroupCompat
 import androidx.core.view.doOnPreDraw
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.FragmentNavigatorExtras
-import androidx.navigation.fragment.findNavController
 import com.google.gson.Gson
-import com.junemon.core.presentation.base.fragment.BaseFragment
-import com.junemon.core.presentation.di.factory.viewModelProvider
-import com.junemon.core.presentation.util.interfaces.LoadImageHelper
-import com.junemon.core.presentation.util.interfaces.ViewHelper
-import com.junemon.model.domain.PlaceCacheData
+import com.junemon.core.di.factory.viewModelProvider
+import com.junemon.travelingapps.util.interfaces.LoadImageHelper
 import com.junemon.model.domain.Results
 import com.junemon.model.presentation.PlaceCachePresentation
 import com.junemon.model.presentation.dto.mapCacheToPresentation
 import com.junemon.travelingapps.R
+import com.junemon.travelingapps.base.BaseFragmentViewBinding
 import com.junemon.travelingapps.databinding.FragmentHomeBinding
+import com.junemon.travelingapps.di.injector.appComponent
 import com.junemon.travelingapps.feature.home.recycleradapters.HomeCultureAdapter
 import com.junemon.travelingapps.feature.home.recycleradapters.HomeNatureAdapter
 import com.junemon.travelingapps.feature.home.recycleradapters.HomeRandomAdapter
 import com.junemon.travelingapps.feature.home.recycleradapters.HomeReligiousAdapter
-import com.junemon.travelingapps.feature.home.recycleradapters.horizontalRecyclerviewInitializer
+import com.junemon.travelingapps.util.horizontalRecyclerviewInitializer
+import com.junemon.travelingapps.util.interfaces.ViewHelper
 import com.junemon.travelingapps.vm.PlaceViewModel
 import kotlinx.android.synthetic.main.item_recyclerview_nature_place.*
 import javax.inject.Inject
@@ -35,7 +32,7 @@ import javax.inject.Inject
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class HomeFragment : BaseFragment(),
+class HomeFragment : BaseFragmentViewBinding<FragmentHomeBinding>(),
     HomeRandomAdapter.HomeRandomAdapterListener,
     HomeReligiousAdapter.HomeReligiousAdapterListener,
     HomeNatureAdapter.HomeNatureAdapterListener,
@@ -54,41 +51,25 @@ class HomeFragment : BaseFragment(),
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private lateinit var placeVm: PlaceViewModel
-    private lateinit var randomAdapter: HomeRandomAdapter
-    private lateinit var natureAdapter: HomeNatureAdapter
-    private lateinit var religiousAdapter: HomeReligiousAdapter
-    private lateinit var cultureAdapter: HomeCultureAdapter
-
-    private var _binding: FragmentHomeBinding? = null
-    private val binding get() = _binding!!
+    @Inject
+    lateinit var randomAdapter: HomeRandomAdapter
+    @Inject
+    lateinit var natureAdapter: HomeNatureAdapter
+    @Inject
+    lateinit var religiousAdapter: HomeReligiousAdapter
+    @Inject
+    lateinit var cultureAdapter: HomeCultureAdapter
 
     private var pageSize: Int = 0
 
-    override fun createView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+    override fun viewCreated() {
         placeVm = viewModelProvider(viewModelFactory)
-        randomAdapter = HomeRandomAdapter(this@HomeFragment)
-        natureAdapter = HomeNatureAdapter(this@HomeFragment)
-        religiousAdapter = HomeReligiousAdapter(this@HomeFragment)
-        cultureAdapter = HomeCultureAdapter(this@HomeFragment)
-        return binding.root
-    }
-
-    override fun viewCreated(view: View, savedInstanceState: Bundle?) {
         postponeEnterTransition()
-        view.doOnPreDraw { startPostponedEnterTransition() }
-        binding.run {
+        with(binding) {
             startAllShimmer()
             initView()
+            root.doOnPreDraw { startPostponedEnterTransition() }
         }
-    }
-
-    override fun destroyView() {
-        _binding = null
     }
 
     override fun activityCreated() {
@@ -133,23 +114,23 @@ class HomeFragment : BaseFragment(),
         }
 
         lnSeeAllPlaceCultureType.setOnClickListener {
-            findNavController().navigate(
+            navigate(
                 HomeFragmentDirections.actionHomeFragmentToPaginationFragment(getString(R.string.place_culture))
             )
         }
         lnSeeAllPlaceNatureType.setOnClickListener {
-            findNavController().navigate(
+            navigate(
                 HomeFragmentDirections.actionHomeFragmentToPaginationFragment(getString(R.string.place_nature))
             )
         }
         lnSeeAllPlaceReligiusType.setOnClickListener {
-            findNavController().navigate(
+            navigate(
                 HomeFragmentDirections.actionHomeFragmentToPaginationFragment(getString(R.string.place_religi))
             )
         }
         btnSearchMain.setOnClickListener {
-            findNavController()
-                .navigate(HomeFragmentDirections.actionHomeFragmentToSearchFragment())
+
+            navigate(HomeFragmentDirections.actionHomeFragmentToSearchFragment())
         }
     }
 
@@ -309,5 +290,12 @@ class HomeFragment : BaseFragment(),
         val extras =
             FragmentNavigatorExtras(cvItemNatureContainer to data.placePicture!!)
         navigate(toDetailFragment, extras)
+    }
+
+    override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentHomeBinding
+        get() = FragmentHomeBinding::inflate
+
+    override fun injectDagger() {
+        appComponent().getHomeComponent().provideListener(this,this,this,this).inject(this)
     }
 }

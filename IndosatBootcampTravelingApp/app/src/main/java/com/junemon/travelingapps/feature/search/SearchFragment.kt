@@ -2,30 +2,24 @@ package com.junemon.travelingapps.feature.search
 
 import android.annotation.SuppressLint
 import android.os.Build
-import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
-import androidx.core.view.ViewCompat
 import androidx.core.view.ViewGroupCompat
 import androidx.core.view.doOnPreDraw
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import com.google.gson.Gson
-import com.junemon.core.presentation.PresentationConstant.placePaginationRvCallback
-import com.junemon.core.presentation.base.fragment.BaseFragment
-import com.junemon.core.presentation.di.factory.viewModelProvider
-import com.junemon.core.presentation.util.interfaces.LoadImageHelper
-import com.junemon.core.presentation.util.interfaces.RecyclerHelper
-import com.junemon.core.presentation.util.interfaces.ViewHelper
+import com.junemon.core.di.factory.viewModelProvider
 import com.junemon.model.presentation.PlaceCachePresentation
 import com.junemon.model.presentation.dto.mapCacheToPresentation
-import com.junemon.travelingapps.R
+import com.junemon.travelingapps.base.BaseFragmentViewBinding
 import com.junemon.travelingapps.databinding.FragmentSearchBinding
+import com.junemon.travelingapps.di.injector.appComponent
+import com.junemon.travelingapps.util.gridRecyclerviewInitializer
+import com.junemon.travelingapps.util.interfaces.ViewHelper
 import com.junemon.travelingapps.vm.PlaceViewModel
 import kotlinx.android.synthetic.main.item_search_recyclerview.*
-import kotlinx.android.synthetic.main.item_search_recyclerview.view.*
 import javax.inject.Inject
 
 /**
@@ -33,7 +27,8 @@ import javax.inject.Inject
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class SearchFragment : BaseFragment() {
+class SearchFragment : BaseFragmentViewBinding<FragmentSearchBinding>(),
+    SearchAdapter.SearchAdapterListener {
     @Inject
     lateinit var gson: Gson
 
@@ -41,51 +36,27 @@ class SearchFragment : BaseFragment() {
     lateinit var viewHelper: ViewHelper
 
     @Inject
-    lateinit var recyclerViewHelper: RecyclerHelper
-
-    @Inject
-    lateinit var loadingImageHelper: LoadImageHelper
+    lateinit var searchAdapter: SearchAdapter
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private lateinit var placeVm: PlaceViewModel
 
-    private var _binding: FragmentSearchBinding? = null
-    private val binding get() = _binding!!
-
     private var data: List<PlaceCachePresentation> = mutableListOf()
 
-    override fun createView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentSearchBinding.inflate(inflater, container, false)
-        placeVm = viewModelProvider(viewModelFactory)
-        return binding.root
-    }
-
-    override fun viewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.run {
-            initData()
-            initView()
-        }
-        postponeEnterTransition()
-        view.doOnPreDraw { startPostponedEnterTransition() }
-    }
-
-    override fun destroyView() {
-        _binding = null
-    }
-
     override fun activityCreated() {
+        initData()
         placeVm.getCache().observe(viewLifecycleOwner, { result ->
             data = result.mapCacheToPresentation()
         })
     }
 
     private fun FragmentSearchBinding.initView() {
+        rvSearchPlace.apply {
+            gridRecyclerviewInitializer(2)
+            adapter = searchAdapter
+        }
         when {
             Build.VERSION.SDK_INT < 24 -> {
                 ViewGroupCompat.setTransitionGroup(rvSearchPlace, true)
@@ -136,42 +107,42 @@ class SearchFragment : BaseFragment() {
         }
     }
 
-    private fun FragmentSearchBinding.initData() {
+    private fun initData() {
         placeVm.searchItem.observe(viewLifecycleOwner, {
-            recyclerViewHelper.run {
-                rvSearchPlace.setUpVerticalGridAdapter(
-                    items = it,
-                    diffUtil = placePaginationRvCallback,
-                    layoutResId = R.layout.item_search_recyclerview,
-                    gridSize = 2, bindHolder = {
-                        loadingImageHelper.run { ivItemPlaceImage.loadWithGlide(it.placePicture) }
-                        tvItemPlaceName.text = it.placeName
-                        tvItemPlaceDistrict.text = it.placeDistrict
-                        when {
-                            Build.VERSION.SDK_INT < 24 -> {
-                                ViewCompat.setTransitionName(cvItemContainer, it.placePicture)
-                            }
-                            Build.VERSION.SDK_INT > 24 -> {
-                                cvItemContainer.transitionName = it.placePicture
-                            }
-                        }
-                    }, itemClick = {
-
-                        setupExitEnterTransition()
-
-                        val toDetailFragment =
-                            SearchFragmentDirections.actionSearchFragmentToDetailFragment(
-                                gson.toJson(
-                                    this
-                                )
-                            )
-
-                        /**transition name must unique !*/
-                        val extras = FragmentNavigatorExtras(cvItemContainer to this.placePicture!!)
-                        navigate(toDetailFragment, extras)
-                    }
-                )
-            }
+            searchAdapter.submitList(it)
         })
+    }
+
+    override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentSearchBinding
+        get() = FragmentSearchBinding::inflate
+
+    override fun viewCreated() {
+        postponeEnterTransition()
+        placeVm = viewModelProvider(viewModelFactory)
+
+        with(binding) {
+            initView()
+            root.doOnPreDraw { startPostponedEnterTransition() }
+        }
+    }
+
+    override fun onClicked(data: PlaceCachePresentation) {
+
+        setupExitEnterTransition()
+
+        val toDetailFragment =
+            SearchFragmentDirections.actionSearchFragmentToDetailFragment(
+                gson.toJson(
+                    data
+                )
+            )
+
+        /**transition name must unique !*/
+        val extras = FragmentNavigatorExtras(cvItemContainer to data.placePicture!!)
+        navigate(toDetailFragment, extras)
+    }
+
+    override fun injectDagger() {
+        appComponent().getSearchComponent().provideListener(this).inject(this)
     }
 }

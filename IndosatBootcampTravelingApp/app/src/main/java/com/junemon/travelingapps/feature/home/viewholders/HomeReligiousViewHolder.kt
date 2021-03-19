@@ -3,7 +3,7 @@ package com.junemon.travelingapps.feature.home.viewholders
 import android.os.Build
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import com.junemon.travelingapps.util.interfaces.LoadImageHelper
 import com.junemon.model.presentation.PlaceCachePresentation
 import com.junemon.travelingapps.databinding.ItemRecyclerviewReligiusPlaceBinding
 
@@ -13,16 +13,15 @@ import com.junemon.travelingapps.databinding.ItemRecyclerviewReligiusPlaceBindin
  * Indonesia.
  */
 class HomeReligiousViewHolder(
-    private val binding: ItemRecyclerviewReligiusPlaceBinding
+    private val binding: ItemRecyclerviewReligiusPlaceBinding,
+    private val loadImageHelper: LoadImageHelper
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(data: PlaceCachePresentation) {
         binding.run {
             tvItemReligiusPlaceName.text = data.placeName
             tvItemReligiusPlaceDistrict.text = data.placeDistrict
-            Glide.with(ivItemReligiusPlaceImage).load(data.placePicture)
-                .into(ivItemReligiusPlaceImage)
-
+            with(loadImageHelper){ivItemReligiusPlaceImage.loadWithGlide(data.placePicture)}
             when {
                 Build.VERSION.SDK_INT < 24 -> {
                     ViewCompat.setTransitionName(
