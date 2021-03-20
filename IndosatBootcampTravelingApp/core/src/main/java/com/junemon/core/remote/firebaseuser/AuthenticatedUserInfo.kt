@@ -1,4 +1,4 @@
-package com.junemon.core.remote.util.firebaseuser
+package com.junemon.core.remote.firebaseuser
 
 
 interface AuthenticatedUserInfo {

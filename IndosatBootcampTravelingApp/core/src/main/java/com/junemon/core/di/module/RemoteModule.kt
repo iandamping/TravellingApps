@@ -1,4 +1,4 @@
-package com.junemon.core.remote.di
+package com.junemon.core.di.module
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference

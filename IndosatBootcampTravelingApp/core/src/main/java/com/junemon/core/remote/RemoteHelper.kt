@@ -1,4 +1,4 @@
-package com.junemon.core.remote.util
+package com.junemon.core.remote
 
 import android.net.Uri
 import com.junemon.model.domain.DataHelper
@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.Flow
  */
 interface RemoteHelper {
 
-    fun getFirebaseData(): Flow<DataHelper<List<PlaceRemoteData>>>
+    suspend fun getFirebaseData(): Flow<DataHelper<List<PlaceRemoteData>>>
 
     suspend fun getFirebaseOneShotData(): DataHelper<List<PlaceRemoteData>>
 

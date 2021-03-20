@@ -1,15 +1,15 @@
 package com.junemon.travelingapps.di.component
 
-import com.junemon.core.di.factory.ViewModelModule
+import com.junemon.core.di.module.ViewModelModule
 import com.junemon.core.di.module.CoroutineModule
 import com.junemon.core.di.module.CoroutineScopeModule
 import com.junemon.core.di.module.DataModule
 import com.junemon.core.di.module.DatabaseHelperModule
 import com.junemon.core.di.module.DatabaseModule
 import com.junemon.core.di.module.GlideModule
-import com.junemon.core.domain.di.DomainModule
-import com.junemon.core.remote.di.RemoteHelperModule
-import com.junemon.core.remote.di.RemoteModule
+import com.junemon.core.di.module.UseCaseModule
+import com.junemon.core.di.module.RemoteHelperModule
+import com.junemon.core.di.module.RemoteModule
 import com.junemon.travelingapps.PlaceApplication
 import com.junemon.travelingapps.di.module.ActivitySubModule
 import com.junemon.travelingapps.di.module.AppViewModelModule
@@ -39,7 +39,7 @@ import javax.inject.Singleton
         DatabaseModule::class,
         CoroutineModule::class,
         DataModule::class,
-        DomainModule::class,
+        UseCaseModule::class,
         RemoteModule::class,
         DatabaseHelperModule::class,
         RemoteHelperModule::class,

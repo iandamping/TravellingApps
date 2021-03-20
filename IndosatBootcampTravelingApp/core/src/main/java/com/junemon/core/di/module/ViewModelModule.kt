@@ -1,4 +1,4 @@
-package com.junemon.core.di.factory
+package com.junemon.core.di.module
 
 import androidx.lifecycle.ViewModelProvider
 import com.junemon.core.di.factory.ViewModelFactory
@@ -11,7 +11,7 @@ import dagger.Module
  * Indonesia.
  */
 @Module
-abstract class ViewModelModule {
+interface ViewModelModule {
     @Binds
-    abstract fun bindViewModelFactory(factory: ViewModelFactory):ViewModelProvider.Factory
+    fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
 }

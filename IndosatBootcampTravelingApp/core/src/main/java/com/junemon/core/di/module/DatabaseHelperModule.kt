@@ -11,8 +11,8 @@ import dagger.Module
  * Indonesia.
  */
 @Module
-abstract class DatabaseHelperModule {
+interface DatabaseHelperModule {
 
     @Binds
-    abstract fun bindsPlaceDaoHelper(placesDaoHelper: PlacesDaoHelperImpl): PlacesDaoHelper
+    fun bindsPlaceDaoHelper(placesDaoHelper: PlacesDaoHelperImpl): PlacesDaoHelper
 }

@@ -2,8 +2,8 @@ package com.junemon.core.data.datasource.remote
 
 import android.content.Intent
 import com.junemon.core.data.data.datasource.ProfileRemoteDataSource
-import com.junemon.core.remote.util.ProfileRemoteHelper
-import com.junemon.core.remote.util.firebaseuser.AuthenticatedUserInfo
+import com.junemon.core.remote.ProfileRemoteHelper
+import com.junemon.core.remote.firebaseuser.AuthenticatedUserInfo
 import com.junemon.model.domain.DataHelper
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject

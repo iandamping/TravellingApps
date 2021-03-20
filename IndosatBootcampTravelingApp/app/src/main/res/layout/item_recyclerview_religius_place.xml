@@ -20,7 +20,6 @@
         android:orientation="vertical">
 
         <com.google.android.material.imageview.ShapeableImageView
-            app:shapeAppearanceOverlay="@style/rightTopCorner"
             android:id="@+id/ivItemReligiusPlaceImage"
             android:layout_width="match_parent"
             android:layout_height="150dp"

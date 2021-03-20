@@ -1,4 +1,4 @@
-package com.junemon.core.remote.util
+package com.junemon.core.remote
 
 import android.content.Context
 import android.content.Intent
@@ -6,8 +6,8 @@ import com.firebase.ui.auth.AuthUI
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.junemon.core.di.dispatcher.IoDispatcher
-import com.junemon.core.remote.util.firebaseuser.AuthenticatedUserInfo
-import com.junemon.core.remote.util.firebaseuser.FirebaseUserInfo
+import com.junemon.core.remote.firebaseuser.AuthenticatedUserInfo
+import com.junemon.core.remote.firebaseuser.FirebaseUserInfo
 import com.junemon.model.domain.DataHelper
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi

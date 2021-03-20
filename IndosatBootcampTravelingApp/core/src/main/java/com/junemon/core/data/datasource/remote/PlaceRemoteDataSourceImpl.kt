@@ -2,8 +2,7 @@ package com.junemon.core.data.datasource.remote
 
 import android.net.Uri
 import com.junemon.model.domain.PlaceRemoteData
-import com.junemon.model.domain.Results
-import com.junemon.core.remote.util.RemoteHelper
+import com.junemon.core.remote.RemoteHelper
 import com.junemon.core.data.data.datasource.PlaceRemoteDataSource
 import com.junemon.model.domain.DataHelper
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -25,7 +24,7 @@ class PlaceRemoteDataSourceImpl @Inject constructor(
         return remoteHelper.getFirebaseOneShotData()
     }
     /**Observing operation*/
-    override fun getFirebaseData(): Flow<DataHelper<List<PlaceRemoteData>>> {
+    override suspend fun getFirebaseData(): Flow<DataHelper<List<PlaceRemoteData>>> {
         return remoteHelper.getFirebaseData()
     }
 

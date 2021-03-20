@@ -1,8 +1,8 @@
-package com.junemon.core.remote.util
+package com.junemon.core.remote
 
 import android.content.Intent
-import com.junemon.core.remote.util.firebaseuser.AuthenticatedUserInfo
-import com.junemon.core.remote.util.firebaseuser.FirebaseUserInfo
+import com.junemon.core.remote.firebaseuser.AuthenticatedUserInfo
+import com.junemon.core.remote.firebaseuser.FirebaseUserInfo
 import com.junemon.model.domain.DataHelper
 import kotlinx.coroutines.flow.Flow
 

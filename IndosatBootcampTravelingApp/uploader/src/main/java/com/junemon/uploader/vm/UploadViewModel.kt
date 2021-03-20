@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.junemon.core.domain.usecase.PlaceUseCase
 import com.junemon.core.domain.usecase.ProfileUseCase
-import com.junemon.core.remote.util.firebaseuser.AuthenticatedUserInfo
+import com.junemon.core.remote.firebaseuser.AuthenticatedUserInfo
 import com.junemon.model.domain.PlaceRemoteData
 import com.junemon.model.domain.Results
 import javax.inject.Inject

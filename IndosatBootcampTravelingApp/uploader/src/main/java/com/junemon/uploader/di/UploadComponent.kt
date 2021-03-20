@@ -6,10 +6,10 @@ import com.junemon.core.di.module.CoroutineModule
 import com.junemon.core.di.module.DataModule
 import com.junemon.core.di.module.CameraXModule
 import com.junemon.core.di.module.GlideModule
-import com.junemon.core.domain.di.DomainModule
-import com.junemon.core.di.factory.ViewModelModule
-import com.junemon.core.remote.di.RemoteHelperModule
-import com.junemon.core.remote.di.RemoteModule
+import com.junemon.core.di.module.UseCaseModule
+import com.junemon.core.di.module.ViewModelModule
+import com.junemon.core.di.module.RemoteHelperModule
+import com.junemon.core.di.module.RemoteModule
 import com.junemon.uploader.UploadApplication
 import com.junemon.uploader.di.module.ActivityBindingModule
 import com.junemon.uploader.di.module.AppModule
@@ -33,7 +33,7 @@ import javax.inject.Singleton
         DatabaseModule::class,
         CoroutineModule::class,
         DataModule::class,
-        DomainModule::class,
+        UseCaseModule::class,
         RemoteModule::class,
         DatabaseHelperModule::class,
         RemoteHelperModule::class,

@@ -16,7 +16,7 @@ interface PlaceRemoteDataSource {
 
     suspend fun getFirebaseOneShotData(): DataHelper<List<PlaceRemoteData>>
 
-    fun getFirebaseData(): Flow<DataHelper<List<PlaceRemoteData>>>
+    suspend fun getFirebaseData(): Flow<DataHelper<List<PlaceRemoteData>>>
 
     fun setFirebaseData(data: PlaceRemoteData, imageUri: Uri?, success: (Boolean) -> Unit, failed: (Boolean, Throwable) -> Unit)
 }

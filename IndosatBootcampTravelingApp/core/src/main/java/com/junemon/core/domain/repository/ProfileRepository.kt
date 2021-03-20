@@ -1,7 +1,7 @@
 package com.junemon.core.domain.repository
 
 import android.content.Intent
-import com.junemon.core.remote.util.firebaseuser.AuthenticatedUserInfo
+import com.junemon.core.remote.firebaseuser.AuthenticatedUserInfo
 import com.junemon.model.domain.Results
 import kotlinx.coroutines.flow.Flow
 

@@ -11,3 +11,4 @@ sealed class DataHelper<out T>{
     data class RemoteSourceError(val exception: Exception) : DataHelper<Nothing>()
     object RemoteSourceLoading : DataHelper<Nothing>()
 }
+

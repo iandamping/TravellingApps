@@ -19,7 +19,7 @@ import dagger.Module
  * Indonesia.
  */
 @Module
-abstract class DataModule {
+interface DataModule {
 
     @Binds
     abstract fun bindsPlaceRemoteDataSource(remoteDataSource: PlaceRemoteDataSourceImpl): PlaceRemoteDataSource
