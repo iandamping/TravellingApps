@@ -40,8 +40,8 @@ class SplashActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         loadImageHelper.run {
-            splashImage.loadWithGlide(
-                resources.getDrawable(R.drawable.samarinda_logo, null)
+            binding.splashImage.loadWithGlide(
+                resources.getDrawable(R.drawable.ic_samarinda, null)
             )
         }
         runDelayed {
