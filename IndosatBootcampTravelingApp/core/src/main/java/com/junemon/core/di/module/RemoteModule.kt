@@ -20,25 +20,21 @@ import dagger.Provides
 object RemoteModule {
 
     @Provides
-    @JvmStatic
     fun provideGson(): Gson {
         return Gson()
     }
 
     @Provides
-    @JvmStatic
     fun provideFirebaseDatabase(): DatabaseReference {
         return FirebaseDatabase.getInstance().reference.child(placeNode)
     }
 
     @Provides
-    @JvmStatic
     fun provideFirebaseStorage(): StorageReference {
         return FirebaseStorage.getInstance().getReferenceFromUrl(firebaseStorageUrl)
     }
 
     @Provides
-    @JvmStatic
     fun provideFirebaseAuth(): FirebaseAuth {
         return FirebaseAuth.getInstance()
     }

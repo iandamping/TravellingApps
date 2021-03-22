@@ -17,7 +17,6 @@ import javax.inject.Singleton
 object DatabaseModule {
 
     @Provides
-    @JvmStatic
     @Singleton
     fun provideDb(app: Context): PlaceDatabase {
         return Room
@@ -27,7 +26,6 @@ object DatabaseModule {
     }
 
     @Provides
-    @JvmStatic
     fun provideGameDao(db: PlaceDatabase): PlaceDao {
         return db.placeDao()
     }
