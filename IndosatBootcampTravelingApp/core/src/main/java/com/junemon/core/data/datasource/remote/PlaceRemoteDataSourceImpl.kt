@@ -24,7 +24,7 @@ class PlaceRemoteDataSourceImpl @Inject constructor(
         return remoteHelper.getFirebaseOneShotData()
     }
     /**Observing operation*/
-    override suspend fun getFirebaseData(): Flow<DataHelper<List<PlaceRemoteData>>> {
+    override fun getFirebaseData(): Flow<DataHelper<List<PlaceRemoteData>>> {
         return remoteHelper.getFirebaseData()
     }
 

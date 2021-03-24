@@ -40,7 +40,7 @@ class RemoteHelperImpl @Inject constructor(
 ) : RemoteHelper {
 
     /**observing operation*/
-    override suspend fun getFirebaseData(): Flow<DataHelper<List<PlaceRemoteData>>> {
+    override fun getFirebaseData(): Flow<DataHelper<List<PlaceRemoteData>>> {
         return databasePlaceReference.valueEventFlow().map { value ->
             when(value){
                 is PushFirebase.Changed ->{

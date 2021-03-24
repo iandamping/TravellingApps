@@ -28,7 +28,8 @@ suspend fun DatabaseReference.singleValueEvent(): PushFirebase =
         addListenerForSingleValueEvent(valueEventListener) // Subscribe to the event
     }
 
-suspend fun DatabaseReference.valueEventFlow(): Flow<PushFirebase> = callbackFlow {
+
+ fun DatabaseReference.valueEventFlow(): Flow<PushFirebase> = callbackFlow {
     val valueEventListener = object : ValueEventListener {
         override fun onDataChange(snapshot: DataSnapshot): Unit =
             sendBlocking(PushFirebase.Changed(snapshot))
