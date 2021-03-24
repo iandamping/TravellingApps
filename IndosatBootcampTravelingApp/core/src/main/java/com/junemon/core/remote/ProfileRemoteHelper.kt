@@ -4,6 +4,7 @@ import android.content.Intent
 import com.junemon.core.remote.firebaseuser.AuthenticatedUserInfo
 import com.junemon.core.remote.firebaseuser.FirebaseUserInfo
 import com.junemon.model.domain.DataHelper
+import com.junemon.model.domain.FirebaseLoginDataHelper
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -13,7 +14,7 @@ import kotlinx.coroutines.flow.Flow
  */
 interface ProfileRemoteHelper {
 
-    fun getUserProfile(): Flow<DataHelper<AuthenticatedUserInfo>>
+    fun getUserProfile(): Flow<FirebaseLoginDataHelper<AuthenticatedUserInfo>>
 
     suspend fun initSignIn(): Intent
 

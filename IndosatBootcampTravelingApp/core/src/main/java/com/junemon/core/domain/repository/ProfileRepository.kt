@@ -3,6 +3,7 @@ package com.junemon.core.domain.repository
 import android.content.Intent
 import com.junemon.core.remote.firebaseuser.AuthenticatedUserInfo
 import com.junemon.model.domain.Results
+import com.junemon.model.domain.UserResult
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -11,7 +12,7 @@ import kotlinx.coroutines.flow.Flow
  * Indonesia.
  */
 interface ProfileRepository {
-    fun getUserProfile(): Flow<Results<AuthenticatedUserInfo>>
+    fun getUserProfile(): Flow<UserResult<AuthenticatedUserInfo>>
 
     suspend fun initSignIn(): Intent
 

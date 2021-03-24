@@ -20,8 +20,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.junemon.core.di.factory.viewModelProvider
+import com.junemon.model.domain.FirebaseLoginDataHelper
 import com.junemon.model.domain.PlaceRemoteData
 import com.junemon.model.domain.Results
+import com.junemon.model.domain.UserResult
 import com.junemon.uploader.R
 import com.junemon.uploader.base.fragment.BaseFragment
 import com.junemon.uploader.databinding.FragmentUploadBinding
@@ -109,33 +111,26 @@ class UploadFragment : BaseFragment() {
 
     override fun activityCreated() {
         uploadVm.getUserProfile().observe(viewLifecycleOwner, { userResult ->
-            when (userResult) {
-                is Results.Success -> {
-                    if (userResult.data.getDisplayName() == null) {
-                        viewHelper.run {
-                            binding.toolbarUpload.gone(true)
-                        }
-                        fireSignIn()
-                    } else {
-
-                        binding.run {
-                            viewHelper.run {
-                                binding.toolbarUpload.visible(true)
-                            }
-                            loadingImageHelper.run {
-                                ivUserProfile.loadWithGlide(userResult.data.getPhotoUrl())
-                            }
-                            tvUserName.text = userResult.data.getDisplayName()
-                            btnLogout.setOnClickListener {
-                                fireSignOut()
-                            }
-                        }
+            if (userResult is UserResult.Success){
+                binding.run {
+                    viewHelper.run {
+                        binding.toolbarUpload.visible(true)
+                    }
+                    loadingImageHelper.run {
+                        ivUserProfile.loadWithGlide(userResult.data.getPhotoUrl())
+                    }
+                    tvUserName.text = userResult.data.getDisplayName()
+                    btnLogout.setOnClickListener {
+                        fireSignOut()
                     }
                 }
-                is Results.Error -> {
-                    Timber.e("name ${userResult.exception}")
+            } else{
+                viewHelper.run {
+                    binding.toolbarUpload.gone(true)
                 }
+                fireSignIn()
             }
+
         })
 
         sharedVm.passedUri.observe(viewLifecycleOwner, {

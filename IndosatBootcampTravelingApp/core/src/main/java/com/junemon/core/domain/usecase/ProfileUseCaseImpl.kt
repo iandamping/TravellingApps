@@ -6,6 +6,7 @@ import androidx.lifecycle.asLiveData
 import com.junemon.core.domain.repository.ProfileRepository
 import com.junemon.core.remote.firebaseuser.AuthenticatedUserInfo
 import com.junemon.model.domain.Results
+import com.junemon.model.domain.UserResult
 import javax.inject.Inject
 
 /**
@@ -15,7 +16,7 @@ import javax.inject.Inject
  */
 class ProfileUseCaseImpl @Inject constructor(private val repository: ProfileRepository):ProfileUseCase {
 
-    override fun getUserProfile(): LiveData<Results<AuthenticatedUserInfo>> = repository.getUserProfile().asLiveData()
+    override fun getUserProfile(): LiveData<UserResult<AuthenticatedUserInfo>> = repository.getUserProfile().asLiveData()
 
     override suspend fun initSignIn(): Intent = repository.initSignIn()
 

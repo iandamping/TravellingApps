@@ -9,6 +9,7 @@ import com.junemon.core.domain.usecase.ProfileUseCase
 import com.junemon.core.remote.firebaseuser.AuthenticatedUserInfo
 import com.junemon.model.domain.PlaceRemoteData
 import com.junemon.model.domain.Results
+import com.junemon.model.domain.UserResult
 import javax.inject.Inject
 
 /**
@@ -28,7 +29,7 @@ class UploadViewModel @Inject constructor(
         failed: (Boolean, Throwable) -> Unit
     ) = repository.uploadFirebaseData(data, imageUri, success, failed)
 
-    fun getUserProfile(): LiveData<Results<AuthenticatedUserInfo>> = profileRepo.getUserProfile()
+    fun getUserProfile(): LiveData<UserResult<AuthenticatedUserInfo>> = profileRepo.getUserProfile()
 
     suspend fun initSignIn(): Intent = profileRepo.initSignIn()
 

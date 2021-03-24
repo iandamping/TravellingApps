@@ -1,5 +1,6 @@
 package com.junemon.core.remote.util
 
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -8,6 +9,7 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.channels.sendBlocking
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 
@@ -37,5 +39,15 @@ suspend fun DatabaseReference.valueEventFlow(): Flow<PushFirebase> = callbackFlo
     addValueEventListener(valueEventListener)
     awaitClose {
         removeEventListener(valueEventListener)
+    }
+}
+
+fun FirebaseAuth.valueEventProfileFlow(): Flow<FirebaseAuth> = channelFlow {
+    val profileListener = FirebaseAuth.AuthStateListener {
+        channel.offer(it)
+    }
+    addAuthStateListener(profileListener)
+    awaitClose {
+        removeAuthStateListener(profileListener)
     }
 }

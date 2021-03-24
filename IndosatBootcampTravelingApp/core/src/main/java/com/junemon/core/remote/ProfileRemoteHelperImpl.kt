@@ -8,13 +8,18 @@ import com.google.firebase.auth.FirebaseAuth
 import com.junemon.core.di.dispatcher.IoDispatcher
 import com.junemon.core.remote.firebaseuser.AuthenticatedUserInfo
 import com.junemon.core.remote.firebaseuser.FirebaseUserInfo
+import com.junemon.core.remote.util.valueEventProfileFlow
 import com.junemon.model.domain.DataHelper
+import com.junemon.model.domain.FirebaseLoginDataHelper
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
+import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -31,26 +36,15 @@ class ProfileRemoteHelperImpl @Inject constructor(
     private val mFirebaseAuth: FirebaseAuth
 ) : ProfileRemoteHelper {
 
-    private var isListening = false
 
-    // Channel that keeps track of User Authentication
-    private val channel = ConflatedBroadcastChannel<DataHelper<AuthenticatedUserInfo>>()
-
-    private val listener: ((FirebaseAuth) -> Unit) = { auth ->
-
-        if (!channel.isClosedForSend) {
-            channel.offer(DataHelper.RemoteSourceValue(FirebaseUserInfo(auth.currentUser)))
-        } else {
-            unregisterListener()
+    override fun getUserProfile(): Flow<FirebaseLoginDataHelper<AuthenticatedUserInfo>> {
+        return mFirebaseAuth.valueEventProfileFlow().map { auth ->
+            if (auth.currentUser != null) {
+                FirebaseLoginDataHelper.RemoteSourceValue(FirebaseUserInfo(auth.currentUser))
+            } else {
+                FirebaseLoginDataHelper.RemoteSourceError(Exception("User not login"))
+            }
         }
-    }
-
-    override fun getUserProfile(): Flow<DataHelper<AuthenticatedUserInfo>> {
-        if (!isListening) {
-            mFirebaseAuth.addAuthStateListener(listener)
-            isListening = true
-        }
-        return channel.asFlow()
     }
 
     override suspend fun initSignIn(): Intent {
@@ -79,7 +73,4 @@ class ProfileRemoteHelperImpl @Inject constructor(
         }
     }
 
-    private fun unregisterListener() {
-        mFirebaseAuth.removeAuthStateListener(listener)
-    }
 }
