@@ -59,15 +59,11 @@ class PlaceRepositoryImpl @Inject constructor(
     }
 
     override fun getCache(): Flow<List<PlaceCacheData>> {
-        return flow {
-            cacheDataSource.getCache().collect { emit(it) }
-        }
+        return cacheDataSource.getCache()
     }
 
     override fun getSelectedTypeCache(placeType: String): Flow<List<PlaceCacheData>> {
-        return flow {
-            cacheDataSource.getSelectedTypeCache(placeType).collect { emit(it) }
-        }
+        return cacheDataSource.getSelectedTypeCache(placeType)
     }
 
     override suspend fun delete() {

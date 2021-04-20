@@ -10,16 +10,16 @@ import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.MaterialContainerTransform
 import com.google.gson.Gson
-import com.junemon.travelingapps.util.interfaces.ImageHelper
-import com.junemon.travelingapps.util.interfaces.IntentHelper
-import com.junemon.travelingapps.util.interfaces.LoadImageHelper
-import com.junemon.travelingapps.util.interfaces.PermissionHelper
 import com.junemon.model.presentation.PlaceCachePresentation
 import com.junemon.travelingapps.R
 import com.junemon.travelingapps.base.BaseFragmentDataBinding
 import com.junemon.travelingapps.databinding.FragmentDetailBinding
 import com.junemon.travelingapps.di.injector.appComponent
 import com.junemon.travelingapps.util.clicks
+import com.junemon.travelingapps.util.interfaces.ImageHelper
+import com.junemon.travelingapps.util.interfaces.IntentHelper
+import com.junemon.travelingapps.util.interfaces.LoadImageHelper
+import com.junemon.travelingapps.util.interfaces.PermissionHelper
 import com.junemon.travelingapps.util.transition.themeColor
 import javax.inject.Inject
 
@@ -28,21 +28,13 @@ import javax.inject.Inject
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class DetailFragment : BaseFragmentDataBinding<FragmentDetailBinding>() {
-    @Inject
-    lateinit var loadImageHelper: LoadImageHelper
-
-    @Inject
-    lateinit var intentHelper: IntentHelper
-
-    @Inject
-    lateinit var imageHelper: ImageHelper
-
-    @Inject
-    lateinit var gson: Gson
-
-    @Inject
-    lateinit var permissionHelper: PermissionHelper
+class DetailFragment @Inject constructor(
+    private val loadImageHelper: LoadImageHelper,
+    private val intentHelper: IntentHelper,
+    private val imageHelper: ImageHelper,
+    private val gson: Gson,
+    private val permissionHelper: PermissionHelper
+) : BaseFragmentDataBinding<FragmentDetailBinding>() {
 
     private val REQUEST_READ_WRITE_CODE_PERMISSIONS = 5
     private val REQUIRED_READ_WRITE_PERMISSIONS = arrayOf(
@@ -168,6 +160,6 @@ class DetailFragment : BaseFragmentDataBinding<FragmentDetailBinding>() {
     }
 
     override fun injectDagger() {
-        appComponent().getFragmentComponent().create().inject(this)
+        // appComponent().getFragmentComponent().create()
     }
 }

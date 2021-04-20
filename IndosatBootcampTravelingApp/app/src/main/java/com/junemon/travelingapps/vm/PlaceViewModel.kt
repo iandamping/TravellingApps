@@ -15,13 +15,13 @@ class PlaceViewModel @Inject constructor(private val repository: PlaceUseCase) :
     val setRunningForever: LiveData<Boolean>
         get() = _setRunningForever
 
-    private val _searchItem: MutableLiveData<MutableList<PlaceCachePresentation>> =
+    private val _searchItem: MutableLiveData<List<PlaceCachePresentation>> =
         MutableLiveData()
 
-    val searchItem: LiveData<MutableList<PlaceCachePresentation>>
+    val searchItem: LiveData<List<PlaceCachePresentation>>
         get() = _searchItem
 
-    fun setSearchItem(data: MutableList<PlaceCachePresentation>) {
+    fun setSearchItem(data: List<PlaceCachePresentation>) {
         this._searchItem.value = data
     }
 

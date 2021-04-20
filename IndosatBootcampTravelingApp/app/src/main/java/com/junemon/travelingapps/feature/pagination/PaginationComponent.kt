@@ -6,7 +6,7 @@ import dagger.Subcomponent
 @Subcomponent
 interface PaginationComponent {
 
-    fun inject(fragment: PaginationFragment)
+    // fun inject(fragment: PaginationFragment)
 
     @Subcomponent.Factory
     interface Factory {

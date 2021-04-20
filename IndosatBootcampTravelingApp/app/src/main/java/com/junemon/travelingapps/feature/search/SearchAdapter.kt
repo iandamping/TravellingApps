@@ -14,7 +14,7 @@ import javax.inject.Inject
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class SearchAdapter @Inject constructor(
+class SearchAdapter(
     private val listener: SearchAdapterListener,
     private val loadImageHelper: LoadImageHelper
 ) : ListAdapter<PlaceCachePresentation, SearchViewHolder>(placePaginationRvCallback) {

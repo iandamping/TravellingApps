@@ -18,7 +18,7 @@ import javax.inject.Inject
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class PaginationAdapter @Inject constructor(
+class PaginationAdapter (
     private val listener: PaginationAdapterrListener,
     private val permissionHelper: PermissionHelper,
     private val loadImageHelper: LoadImageHelper,

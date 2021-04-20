@@ -15,7 +15,7 @@ import javax.inject.Inject
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class HomeRandomAdapter  @Inject constructor(
+class HomeRandomAdapter(
     private val listener: HomeRandomAdapterListener,
     private val loadImageHelper: LoadImageHelper
 ) : ListAdapter<PlaceCachePresentation, HomeRandomViewHolder>(placeRvCallback) {

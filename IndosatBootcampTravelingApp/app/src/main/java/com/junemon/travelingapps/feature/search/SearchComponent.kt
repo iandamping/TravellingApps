@@ -10,7 +10,7 @@ import dagger.Subcomponent
  */
 @Subcomponent
 interface SearchComponent {
-    fun inject(fragment: SearchFragment)
+    // fun inject(fragment: SearchFragment)
 
     @Subcomponent.Factory
     interface Factory {

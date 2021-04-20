@@ -26,7 +26,6 @@
             android:layout_gravity="center"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
-            app:shapeAppearanceOverlay="@style/rightTopCorner"
             tools:src="@drawable/no_data" />
 
 

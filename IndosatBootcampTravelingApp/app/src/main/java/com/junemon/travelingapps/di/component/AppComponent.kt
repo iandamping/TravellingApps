@@ -14,8 +14,10 @@ import com.junemon.travelingapps.PlaceApplication
 import com.junemon.travelingapps.di.module.ActivitySubModule
 import com.junemon.travelingapps.di.module.AppViewModelModule
 import com.junemon.travelingapps.di.module.ContextModule
+import com.junemon.travelingapps.di.module.FragmentFactoryModule
 import com.junemon.travelingapps.di.module.FragmentSubModule
 import com.junemon.travelingapps.di.module.PresentationModule
+import com.junemon.travelingapps.feature.detail.DetailFragmentComponent
 import com.junemon.travelingapps.feature.home.HomeComponent
 import com.junemon.travelingapps.feature.pagination.PaginationComponent
 import com.junemon.travelingapps.feature.search.SearchComponent
@@ -44,6 +46,7 @@ import javax.inject.Singleton
         DatabaseHelperModule::class,
         RemoteHelperModule::class,
         PresentationModule::class,
+        FragmentFactoryModule::class,
         CoroutineScopeModule::class,
         GlideModule::class]
 )
@@ -57,7 +60,7 @@ interface AppComponent {
 
     fun getHomeComponent(): HomeComponent.Factory
 
-    fun getFragmentComponent():FragmentComponent.Factory
+    fun getFragmentComponent(): DetailFragmentComponent.Factory
 
     @Component.Factory
     interface Factory {
