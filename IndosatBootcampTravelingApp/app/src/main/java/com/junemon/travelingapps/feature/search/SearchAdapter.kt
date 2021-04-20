@@ -3,11 +3,10 @@ package com.junemon.travelingapps.feature.search
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
-import com.junemon.travelingapps.util.interfaces.LoadImageHelper
 import com.junemon.model.presentation.PlaceCachePresentation
 import com.junemon.travelingapps.databinding.ItemSearchRecyclerviewBinding
+import com.junemon.travelingapps.util.interfaces.LoadImageHelper
 import com.junemon.travelingapps.util.placePaginationRvCallback
-import javax.inject.Inject
 
 /**
  * Created by Ian Damping on 19,March,2021

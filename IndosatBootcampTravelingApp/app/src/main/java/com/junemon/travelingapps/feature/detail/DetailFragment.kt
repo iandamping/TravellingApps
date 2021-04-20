@@ -1,26 +1,21 @@
 package com.junemon.travelingapps.feature.detail
 
 import android.Manifest
-import android.graphics.Color
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.transition.MaterialContainerTransform
 import com.google.gson.Gson
 import com.junemon.model.presentation.PlaceCachePresentation
 import com.junemon.travelingapps.R
 import com.junemon.travelingapps.base.BaseFragmentDataBinding
 import com.junemon.travelingapps.databinding.FragmentDetailBinding
-import com.junemon.travelingapps.di.injector.appComponent
 import com.junemon.travelingapps.util.clicks
 import com.junemon.travelingapps.util.interfaces.ImageHelper
 import com.junemon.travelingapps.util.interfaces.IntentHelper
 import com.junemon.travelingapps.util.interfaces.LoadImageHelper
 import com.junemon.travelingapps.util.interfaces.PermissionHelper
-import com.junemon.travelingapps.util.transition.themeColor
 import javax.inject.Inject
 
 /**
@@ -148,6 +143,4 @@ class DetailFragment @Inject constructor(
         }
     }
 
-    override fun injectDagger() {
-    }
 }

@@ -1,7 +1,6 @@
 package com.junemon.travelingapps.di.module
 
 import com.junemon.travelingapps.di.component.ActivityComponent
-import com.junemon.travelingapps.feature.pagination.PaginationComponent
 import dagger.Module
 
 /**

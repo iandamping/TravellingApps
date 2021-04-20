@@ -3,9 +3,9 @@ package com.junemon.travelingapps.feature.search
 import android.os.Build
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.junemon.travelingapps.util.interfaces.LoadImageHelper
 import com.junemon.model.presentation.PlaceCachePresentation
 import com.junemon.travelingapps.databinding.ItemSearchRecyclerviewBinding
+import com.junemon.travelingapps.util.interfaces.LoadImageHelper
 
 /**
  * Created by Ian Damping on 19,March,2021

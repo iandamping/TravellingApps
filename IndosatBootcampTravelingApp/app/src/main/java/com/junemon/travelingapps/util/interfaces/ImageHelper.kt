@@ -36,7 +36,7 @@ interface ImageHelper {
 
     fun decodeSampledBitmapFromFile(imageFile: File): Bitmap
 
-    fun bitmapToFile( bitmap: Bitmap?): File
+    fun bitmapToFile(bitmap: Bitmap?): File
 
     fun createImageFileFromPhoto(uri: (Uri) -> Unit): File
 }

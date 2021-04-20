@@ -1,15 +1,11 @@
 package com.junemon.travelingapps.di.module
 
 import android.content.Context
-import android.os.Environment
 import com.junemon.travelingapps.R
 import com.junemon.travelingapps.di.qualifier.DefaultCameraFileDirectory
 import dagger.Module
 import dagger.Provides
 import java.io.File
-import java.text.SimpleDateFormat
-import java.util.*
-import javax.inject.Singleton
 
 /**
  * Created by Ian Damping on 07,August,2020
@@ -35,6 +31,5 @@ object SaveImageModule {
         return File(
             cameraXDir, PHOTO_FILE
         )
-
     }
 }

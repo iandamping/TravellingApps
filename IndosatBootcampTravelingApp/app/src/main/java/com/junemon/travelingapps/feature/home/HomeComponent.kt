@@ -4,7 +4,6 @@ import com.junemon.travelingapps.feature.home.recycleradapters.HomeCultureAdapte
 import com.junemon.travelingapps.feature.home.recycleradapters.HomeNatureAdapter
 import com.junemon.travelingapps.feature.home.recycleradapters.HomeRandomAdapter
 import com.junemon.travelingapps.feature.home.recycleradapters.HomeReligiousAdapter
-import com.junemon.travelingapps.feature.pagination.PaginationComponent
 import dagger.BindsInstance
 import dagger.Subcomponent
 

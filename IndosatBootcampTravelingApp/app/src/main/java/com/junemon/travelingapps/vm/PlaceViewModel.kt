@@ -16,8 +16,7 @@ class PlaceViewModel @Inject constructor(private val repository: PlaceUseCase) :
     private val _navigateEvent: MutableLiveData<Event<NavDirections>> = MutableLiveData()
     val navigateEvent: LiveData<Event<NavDirections>> = _navigateEvent
 
-
-    fun setNavigate(direction: NavDirections){
+    fun setNavigate(direction: NavDirections) {
         _navigateEvent.value = Event(direction)
     }
 
@@ -37,5 +36,4 @@ class PlaceViewModel @Inject constructor(private val repository: PlaceUseCase) :
 
     fun getSelectedTypeCache(placeType: String): LiveData<List<PlaceCacheData>> =
         repository.getSelectedTypeCache(placeType)
-
 }

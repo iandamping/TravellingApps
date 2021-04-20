@@ -25,7 +25,7 @@ import kotlinx.coroutines.flow.onEach
  * Github https://github.com/iandamping
  * Indonesia.
  */
-fun RecyclerView.horizontalRecyclerviewInitializer(){
+fun RecyclerView.horizontalRecyclerviewInitializer() {
     layoutManager = LinearLayoutManager(
         this.context, LinearLayoutManager.HORIZONTAL,
         false
@@ -49,7 +49,6 @@ fun RecyclerView.gridRecyclerviewInitializer(size: Int) {
     )
 }
 
-
 fun <T> Fragment.observeEvent(data: LiveData<Event<T>>, onBound: ((T) -> Unit)) {
     data.observe(this.viewLifecycleOwner, EventObserver {
         onBound.invoke(it)
@@ -62,17 +61,21 @@ fun <T> Fragment.observe(data: LiveData<T>, onBound: ((T) -> Unit)) {
     }
 }
 
-fun Fragment.clicks(view: View, duration: Long = 300, isUsingThrottle:Boolean = true,onBound: () -> Unit) {
-    if (isUsingThrottle){
+fun Fragment.clicks(
+    view: View,
+    duration: Long = 300,
+    isUsingThrottle: Boolean = true,
+    onBound: () -> Unit
+) {
+    if (isUsingThrottle) {
         view.clickListener().throttleFirst(duration).onEach {
             onBound.invoke()
         }.launchIn(this.viewLifecycleOwner.lifecycleScope)
-    } else{
+    } else {
         view.setOnClickListener {
             onBound.invoke()
         }
     }
-
 }
 
 @FlowPreview

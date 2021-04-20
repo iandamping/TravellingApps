@@ -6,6 +6,7 @@ import com.junemon.travelingapps.PlaceApplication
 
 fun FragmentActivity.activityComponent() =
     (application as PlaceApplication).provideApplicationComponent().getActivityComponent()
+
 //
 // fun Service.serviceComponent() =
 //     (application as MainApplication).provideApplicationComponent().getServiceComponent()

@@ -3,10 +3,10 @@ package com.junemon.travelingapps.feature.home.recycleradapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
-import com.junemon.travelingapps.util.interfaces.LoadImageHelper
 import com.junemon.model.presentation.PlaceCachePresentation
 import com.junemon.travelingapps.databinding.ItemRecyclerviewNaturePlaceBinding
 import com.junemon.travelingapps.feature.home.viewholders.HomeNatureViewHolder
+import com.junemon.travelingapps.util.interfaces.LoadImageHelper
 import com.junemon.travelingapps.util.placeRvCallback
 import javax.inject.Inject
 
@@ -31,7 +31,7 @@ class HomeNatureAdapter @Inject constructor(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
-            ),loadImageHelper
+            ), loadImageHelper
         )
     }
 

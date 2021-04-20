@@ -42,7 +42,8 @@ abstract class BaseFragmentViewBinding<out VB : ViewBinding> : BaseFragment() {
 
     protected fun navigate(destination: NavDirections) = baseNavigate(destination)
 
-    protected fun navigate(destination: NavDirections,extraInfo: FragmentNavigator.Extras) = baseNavigate(destination,extraInfo)
+    protected fun navigate(destination: NavDirections, extraInfo: FragmentNavigator.Extras) =
+        baseNavigate(destination, extraInfo)
 
     protected fun navigateUp() =
         with(findNavController()) {
@@ -60,10 +61,7 @@ abstract class BaseFragmentViewBinding<out VB : ViewBinding> : BaseFragment() {
 
     abstract fun activityCreated()
 
-    abstract fun injectDagger()
-
     override fun onAttach(context: Context) {
-        injectDagger()
         super.onAttach(context)
         setBaseDialog(context)
     }
@@ -118,7 +116,6 @@ abstract class BaseFragmentViewBinding<out VB : ViewBinding> : BaseFragment() {
         reenterTransition = MaterialElevationScale(true).apply {
             duration = resources.getInteger(R.integer.motion_duration_xsmall).toLong()
         }
-
     }
 
     fun setDialogShow(status: Boolean) {
@@ -133,6 +130,5 @@ abstract class BaseFragmentViewBinding<out VB : ViewBinding> : BaseFragment() {
 
     protected fun onBackPressed(action: () -> Unit) = backPressed(action)
 
-    protected fun shareImageIntent(intent: Intent)  = sharedImageIntent(intent)
-
+    protected fun shareImageIntent(intent: Intent) = sharedImageIntent(intent)
 }

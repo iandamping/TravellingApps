@@ -3,9 +3,9 @@ package com.junemon.travelingapps.feature.home.viewholders
 import android.os.Build
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.junemon.travelingapps.util.interfaces.LoadImageHelper
 import com.junemon.model.presentation.PlaceCachePresentation
 import com.junemon.travelingapps.databinding.ItemRecyclerviewNaturePlaceBinding
+import com.junemon.travelingapps.util.interfaces.LoadImageHelper
 
 /**
  * Created by Ian Damping on 31,August,2020
@@ -21,7 +21,7 @@ class HomeNatureViewHolder(
         binding.run {
             tvItemNaturePlaceName.text = data.placeName
             tvItemNaturePlaceDistrict.text = data.placeDistrict
-            with(loadImageHelper){ivItemNaturePlaceImage.loadWithGlide(data.placePicture)}
+            with(loadImageHelper) { ivItemNaturePlaceImage.loadWithGlide(data.placePicture) }
 
             when {
                 Build.VERSION.SDK_INT < 24 -> {

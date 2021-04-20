@@ -82,7 +82,7 @@ class SearchFragment @Inject constructor(
     }
 
     private fun initData() {
-        placeVm.getCache().observe(viewLifecycleOwner){
+        placeVm.getCache().observe(viewLifecycleOwner) {
             searchAdapter.submitList(it.mapCacheToPresentation())
         }
         placeVm.searchItem.observe(viewLifecycleOwner, {
@@ -92,7 +92,7 @@ class SearchFragment @Inject constructor(
                     binding.rvSearchPlace.gone()
                 }
             } else {
-                with(searchAdapter){
+                with(searchAdapter) {
                     submitList(it)
                     notifyDataSetChanged()
                 }
@@ -124,6 +124,4 @@ class SearchFragment @Inject constructor(
         placeVm.setNavigate(toDetailFragment)
     }
 
-    override fun injectDagger() {
-    }
 }

@@ -4,10 +4,8 @@ import android.os.Build
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.ViewGroupCompat
-import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.FragmentNavigatorExtras
 import com.google.gson.Gson
 import com.junemon.model.domain.Results
 import com.junemon.model.presentation.PlaceCachePresentation
@@ -17,7 +15,6 @@ import com.junemon.travelingapps.base.BaseFragmentViewBinding
 import com.junemon.travelingapps.databinding.FragmentHomeBinding
 import com.junemon.travelingapps.feature.home.recycleradapters.HomeCultureAdapter
 import com.junemon.travelingapps.feature.home.recycleradapters.HomeNatureAdapter
-import com.junemon.travelingapps.feature.home.recycleradapters.HomeRandomAdapter
 import com.junemon.travelingapps.feature.home.recycleradapters.HomeReligiousAdapter
 import com.junemon.travelingapps.util.clicks
 import com.junemon.travelingapps.util.horizontalRecyclerviewInitializer
@@ -25,7 +22,6 @@ import com.junemon.travelingapps.util.interfaces.LoadImageHelper
 import com.junemon.travelingapps.util.interfaces.ViewHelper
 import com.junemon.travelingapps.util.observeEvent
 import com.junemon.travelingapps.vm.PlaceViewModel
-import kotlinx.android.synthetic.main.item_recyclerview_nature_place.*
 import javax.inject.Inject
 
 /**
@@ -38,7 +34,7 @@ class HomeFragment @Inject constructor(
     private val loadingImageHelper: LoadImageHelper,
     private val gson: Gson,
     private val viewModelFactory: ViewModelProvider.Factory
-    ) : BaseFragmentViewBinding<FragmentHomeBinding>(),
+) : BaseFragmentViewBinding<FragmentHomeBinding>(),
     HomeReligiousAdapter.HomeReligiousAdapterListener,
     HomeNatureAdapter.HomeNatureAdapterListener,
     HomeCultureAdapter.HomeCultureAdapterListener {
@@ -109,16 +105,28 @@ class HomeFragment @Inject constructor(
         }
 
         clicks(lnSeeAllPlaceCultureType) {
-            placeVm.setNavigate(HomeFragmentDirections.actionHomeFragmentToPaginationFragment(getString(R.string.place_culture)))
+            placeVm.setNavigate(
+                HomeFragmentDirections.actionHomeFragmentToPaginationFragment(
+                    getString(R.string.place_culture)
+                )
+            )
         }
         clicks(lnSeeAllPlaceNatureType) {
-            placeVm.setNavigate(HomeFragmentDirections.actionHomeFragmentToPaginationFragment(getString(R.string.place_nature)))
+            placeVm.setNavigate(
+                HomeFragmentDirections.actionHomeFragmentToPaginationFragment(
+                    getString(R.string.place_nature)
+                )
+            )
         }
         clicks(lnSeeAllPlaceReligiusType) {
-            placeVm.setNavigate(HomeFragmentDirections.actionHomeFragmentToPaginationFragment(getString(R.string.place_religi)))
+            placeVm.setNavigate(
+                HomeFragmentDirections.actionHomeFragmentToPaginationFragment(
+                    getString(R.string.place_religi)
+                )
+            )
         }
         clicks(btnSearchMain) {
-           placeVm.setNavigate(HomeFragmentDirections.actionHomeFragmentToSearchFragment())
+            placeVm.setNavigate(HomeFragmentDirections.actionHomeFragmentToSearchFragment())
         }
     }
 
@@ -231,10 +239,7 @@ class HomeFragment @Inject constructor(
         placeVm.setNavigate(toDetailFragment)
     }
 
-
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentHomeBinding
         get() = FragmentHomeBinding::inflate
 
-    override fun injectDagger() {
-    }
 }

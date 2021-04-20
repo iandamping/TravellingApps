@@ -4,12 +4,12 @@ import android.Manifest
 import android.os.Build
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.junemon.model.presentation.PlaceCachePresentation
+import com.junemon.travelingapps.databinding.ItemPaginationRecyclerviewBinding
 import com.junemon.travelingapps.util.interfaces.ImageHelper
 import com.junemon.travelingapps.util.interfaces.IntentHelper
 import com.junemon.travelingapps.util.interfaces.LoadImageHelper
 import com.junemon.travelingapps.util.interfaces.PermissionHelper
-import com.junemon.model.presentation.PlaceCachePresentation
-import com.junemon.travelingapps.databinding.ItemPaginationRecyclerviewBinding
 import kotlinx.coroutines.CoroutineScope
 
 /**

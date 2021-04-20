@@ -6,11 +6,10 @@ import android.view.Window
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import com.junemon.travelingapps.util.interfaces.LoadImageHelper
 import com.junemon.travelingapps.R
 import com.junemon.travelingapps.databinding.ActivitySplashBinding
 import com.junemon.travelingapps.di.injector.activityComponent
-import kotlinx.android.synthetic.main.activity_splash.*
+import com.junemon.travelingapps.util.interfaces.LoadImageHelper
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject

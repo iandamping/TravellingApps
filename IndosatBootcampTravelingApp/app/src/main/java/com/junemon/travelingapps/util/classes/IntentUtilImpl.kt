@@ -110,8 +110,6 @@ class IntentUtilImpl @Inject constructor(
                     }
                 }
             }
-
-
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -123,7 +121,6 @@ class IntentUtilImpl @Inject constructor(
         activity.startActivity(openURL)
     }
 }
-
 
 /*
 runBlocking {

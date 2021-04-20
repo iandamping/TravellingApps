@@ -46,7 +46,8 @@ import com.google.android.material.shape.ShapeAppearanceModel
 import com.google.android.material.shape.Shapeable
 import com.junemon.core.R
 
-@Px private const val BITMAP_PADDING_BOTTOM = 1
+@Px
+private const val BITMAP_PADDING_BOTTOM = 1
 private const val PROP_BOUNDS = "materialContainerTransition:bounds"
 private const val PROP_SHAPE_APPEARANCE = "materialContainerTransition:shapeAppearance"
 private const val PROP_BACKGROUND_BOUNDS = "materialContainerTransition:backgroundBounds"
@@ -198,18 +199,19 @@ class MaterialContainerTransition(
             endView.descendantBackgroundColor()
         )
 
-        return ObjectAnimator.ofFloat(dr, MaterialContainerTransitionDrawable.PROGRESS, 0f, 1f).apply {
-            doOnStart {
-                dr.setBounds(0, 0, drawIn.width, drawIn.height)
-                drawIn.overlay.add(dr)
-                // Hide the view during the transition
-                drawIn.forEach { it.alpha = 0f }
+        return ObjectAnimator.ofFloat(dr, MaterialContainerTransitionDrawable.PROGRESS, 0f, 1f)
+            .apply {
+                doOnStart {
+                    dr.setBounds(0, 0, drawIn.width, drawIn.height)
+                    drawIn.overlay.add(dr)
+                    // Hide the view during the transition
+                    drawIn.forEach { it.alpha = 0f }
+                }
+                doOnEnd {
+                    drawIn.forEach { it.alpha = 1f }
+                    drawIn.overlay.remove(dr)
+                }
             }
-            doOnEnd {
-                drawIn.forEach { it.alpha = 1f }
-                drawIn.overlay.remove(dr)
-            }
-        }
     }
 }
 
@@ -266,13 +268,14 @@ private class MaterialContainerTransitionDrawable(
     // The fading out of the outgoing element
     private val alphaOutStartPoint = 0.0F
     private val alphaOutEndPoint = 0.3F
+
     //The fading in of the incoming element
     private val alphaInStartPoint = 0.3F
     private val alphaInEndPoint = 1.0F
+
     // The corner shape animation of the container
     private val shapeStartPoint = 0.0F
     private val shapeEndPoint = 0.8F
-
 
     // Transition is driven by setting this property [0–1]
     private var progress = 0f
@@ -308,7 +311,6 @@ private class MaterialContainerTransitionDrawable(
                 invalidateSelf()
             }
         }
-
 
     init {
         // Avoid the state where draw is called before progress is set for the first time and
@@ -417,7 +419,6 @@ private class MaterialContainerTransitionDrawable(
                     imagePaint
                 )
             }
-
         }
     }
 

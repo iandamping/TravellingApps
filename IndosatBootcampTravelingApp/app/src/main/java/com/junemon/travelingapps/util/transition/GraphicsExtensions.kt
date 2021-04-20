@@ -57,7 +57,7 @@ fun Canvas.withAlpha(
     block: Canvas.() -> Unit
 ) {
     boundsRectF.set(bounds)
-    val checkpoint  = saveLayerAlpha(boundsRectF, (alpha * 255).roundToInt())
+    val checkpoint = saveLayerAlpha(boundsRectF, (alpha * 255).roundToInt())
     block()
     restoreToCount(checkpoint)
 }

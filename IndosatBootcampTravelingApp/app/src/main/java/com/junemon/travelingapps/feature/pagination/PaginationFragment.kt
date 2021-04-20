@@ -1,20 +1,15 @@
 package com.junemon.travelingapps.feature.pagination
 
-import android.os.Build
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.view.ViewGroupCompat
-import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.navArgs
 import com.google.gson.Gson
 import com.junemon.model.presentation.PlaceCachePresentation
 import com.junemon.model.presentation.dto.mapCacheToPresentation
 import com.junemon.travelingapps.base.BaseFragmentViewBinding
 import com.junemon.travelingapps.databinding.FragmentPaginationBinding
-import com.junemon.travelingapps.di.injector.appComponent
 import com.junemon.travelingapps.util.interfaces.ImageHelper
 import com.junemon.travelingapps.util.interfaces.IntentHelper
 import com.junemon.travelingapps.util.interfaces.LoadImageHelper
@@ -22,7 +17,6 @@ import com.junemon.travelingapps.util.interfaces.PermissionHelper
 import com.junemon.travelingapps.util.observeEvent
 import com.junemon.travelingapps.util.verticalRecyclerviewInitializer
 import com.junemon.travelingapps.vm.PlaceViewModel
-import kotlinx.android.synthetic.main.item_pagination_recyclerview.*
 import kotlinx.coroutines.CoroutineScope
 import javax.inject.Inject
 
@@ -90,6 +84,4 @@ class PaginationFragment @Inject constructor(
         placeVm.setNavigate(toDetailFragment)
     }
 
-    override fun injectDagger() {
-    }
 }

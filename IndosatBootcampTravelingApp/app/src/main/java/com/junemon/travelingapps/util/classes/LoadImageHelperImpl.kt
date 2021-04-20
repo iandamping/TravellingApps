@@ -17,7 +17,7 @@ import javax.inject.Inject
 class LoadImageHelperImpl @Inject constructor(
     @MainDispatcher private val mainDispatcher: CoroutineDispatcher,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
-    private val glideInstance:Glide,
+    private val glideInstance: Glide,
     private val requestManager: RequestManager,
     private val requestOptions: RequestOptions
 ) :
@@ -52,11 +52,11 @@ class LoadImageHelperImpl @Inject constructor(
         requestManager.load(file).into(this)
     }
 
-    override suspend fun clearMemory() = withContext(mainDispatcher){
+    override suspend fun clearMemory() = withContext(mainDispatcher) {
         glideInstance.clearMemory()
     }
 
-    override suspend fun clearDiskCache()  = withContext(ioDispatcher){
+    override suspend fun clearDiskCache() = withContext(ioDispatcher) {
         glideInstance.clearDiskCache()
     }
 }

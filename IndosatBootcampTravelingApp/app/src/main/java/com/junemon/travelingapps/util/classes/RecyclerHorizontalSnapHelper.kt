@@ -11,7 +11,10 @@ class RecyclerHorizontalSnapHelper : LinearSnapHelper() {
     private var mVerticalHelper: OrientationHelper? = null
     private var mHorizontalHelper: OrientationHelper? = null
 
-    override fun calculateDistanceToFinalSnap(@NonNull layoutManager: RecyclerView.LayoutManager, @NonNull targetView: View): IntArray {
+    override fun calculateDistanceToFinalSnap(
+        @NonNull layoutManager: RecyclerView.LayoutManager,
+        @NonNull targetView: View
+    ): IntArray {
         val out = IntArray(2)
 
         if (layoutManager.canScrollHorizontally()) {

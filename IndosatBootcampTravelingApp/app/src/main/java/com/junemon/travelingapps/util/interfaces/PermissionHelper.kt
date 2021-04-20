@@ -1,6 +1,5 @@
 package com.junemon.travelingapps.util.interfaces
 
-import android.content.Intent
 import androidx.fragment.app.Fragment
 
 /**
@@ -10,23 +9,22 @@ import androidx.fragment.app.Fragment
  */
 interface PermissionHelper {
 
-    fun requestCameraPermissionsGranted(permissions:Array<String>):Boolean
+    fun requestCameraPermissionsGranted(permissions: Array<String>): Boolean
 
-    fun requestReadPermissionsGranted(permissions:Array<String>):Boolean
+    fun requestReadPermissionsGranted(permissions: Array<String>): Boolean
 
-    fun requestGranted(permissions:Array<String>):Boolean
+    fun requestGranted(permissions: Array<String>): Boolean
 
     fun Fragment.onRequestingPermissionsResult(
-        permissionCode:Int,
+        permissionCode: Int,
         requestCode: Int,
         grantResults: IntArray,
-        permissionGranted:() ->Unit = {},
-        permissionDenied:()->Unit = {}
+        permissionGranted: () -> Unit = {},
+        permissionDenied: () -> Unit = {}
     )
 
     fun Fragment.requestingPermission(
-        permissions:Array<String>,
+        permissions: Array<String>,
         requestCode: Int
     )
-
 }

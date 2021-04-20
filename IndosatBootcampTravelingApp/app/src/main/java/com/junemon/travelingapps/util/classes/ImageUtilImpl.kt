@@ -22,7 +22,6 @@ import com.junemon.core.R
 import com.junemon.core.di.dispatcher.IoDispatcher
 import com.junemon.core.presentation.PresentationConstant.RequestOpenCamera
 import com.junemon.core.presentation.PresentationConstant.RequestSelectGalleryImage
-import com.junemon.travelingapps.di.qualifier.DefaultCameraFileDirectory
 import com.junemon.travelingapps.util.interfaces.ImageHelper
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
@@ -112,9 +111,7 @@ class ImageUtilImpl @Inject constructor(
         } catch (e: Throwable) {
             e.printStackTrace()
         }
-
     }
-
 
     override suspend fun saveImage(openingSnackbarFromViews: View, imageUrl: String) {
         try {
