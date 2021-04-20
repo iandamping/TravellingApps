@@ -1,15 +1,12 @@
 package com.junemon.travelingapps.feature.search
 
 import android.annotation.SuppressLint
-import android.os.Build
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.SearchView
-import androidx.core.view.ViewGroupCompat
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.FragmentNavigatorExtras
 import com.google.gson.Gson
 import com.junemon.model.presentation.PlaceCachePresentation
 import com.junemon.model.presentation.dto.mapCacheToPresentation
@@ -18,8 +15,8 @@ import com.junemon.travelingapps.databinding.FragmentSearchBinding
 import com.junemon.travelingapps.util.gridRecyclerviewInitializer
 import com.junemon.travelingapps.util.interfaces.LoadImageHelper
 import com.junemon.travelingapps.util.interfaces.ViewHelper
+import com.junemon.travelingapps.util.observeEvent
 import com.junemon.travelingapps.vm.PlaceViewModel
-import kotlinx.android.synthetic.main.item_search_recyclerview.*
 import javax.inject.Inject
 
 /**
@@ -41,20 +38,19 @@ class SearchFragment @Inject constructor(
 
     override fun activityCreated() {
         initData()
+        obvserveNavigation()
+    }
+
+    private fun obvserveNavigation() {
+        observeEvent(placeVm.navigateEvent) {
+            navigate(it)
+        }
     }
 
     private fun FragmentSearchBinding.initView() {
         rvSearchPlace.apply {
             gridRecyclerviewInitializer(2)
             adapter = searchAdapter
-        }
-        when {
-            Build.VERSION.SDK_INT < 24 -> {
-                ViewGroupCompat.setTransitionGroup(rvSearchPlace, true)
-            }
-            Build.VERSION.SDK_INT > 24 -> {
-                rvSearchPlace.isTransitionGroup = true
-            }
         }
 
         searchViews.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
@@ -67,7 +63,7 @@ class SearchFragment @Inject constructor(
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                if (!newText.isNullOrEmpty()){
+                if (!newText.isNullOrEmpty()) {
                     searchPlace(newText)
                 }
                 return false
@@ -86,6 +82,9 @@ class SearchFragment @Inject constructor(
     }
 
     private fun initData() {
+        placeVm.getCache().observe(viewLifecycleOwner){
+            searchAdapter.submitList(it.mapCacheToPresentation())
+        }
         placeVm.searchItem.observe(viewLifecycleOwner, {
             if (it.isEmpty()) {
                 with(viewHelper) {
@@ -93,7 +92,10 @@ class SearchFragment @Inject constructor(
                     binding.rvSearchPlace.gone()
                 }
             } else {
-                searchAdapter.submitList(it)
+                with(searchAdapter){
+                    submitList(it)
+                    notifyDataSetChanged()
+                }
                 with(viewHelper) {
                     binding.lnSearchFailed.gone()
                     binding.rvSearchPlace.visible()
@@ -106,7 +108,6 @@ class SearchFragment @Inject constructor(
         get() = FragmentSearchBinding::inflate
 
     override fun viewCreated() {
-        postponeEnterTransition()
         with(binding) {
             initView()
             root.doOnPreDraw { startPostponedEnterTransition() }
@@ -114,22 +115,15 @@ class SearchFragment @Inject constructor(
     }
 
     override fun onClicked(data: PlaceCachePresentation) {
-
-        setupExitEnterTransition()
-
         val toDetailFragment =
             SearchFragmentDirections.actionSearchFragmentToDetailFragment(
                 gson.toJson(
                     data
                 )
             )
-
-        /**transition name must unique !*/
-        val extras = FragmentNavigatorExtras(cvItemContainer to data.placePicture!!)
-        navigate(toDetailFragment, extras)
+        placeVm.setNavigate(toDetailFragment)
     }
 
     override fun injectDagger() {
-        // appComponent().getSearchComponent().provideListener(this)
     }
 }

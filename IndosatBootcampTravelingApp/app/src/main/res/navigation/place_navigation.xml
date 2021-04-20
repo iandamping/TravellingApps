@@ -14,15 +14,20 @@
         <action
             android:id="@+id/action_homeFragment_to_detailFragment"
             app:destination="@id/detailFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:popEnterAnim="@anim/slide_in_left"
             />
         <action
             android:id="@+id/action_homeFragment_to_paginationFragment"
             app:destination="@id/paginationFragment"
+             app:enterAnim="@anim/slide_in_left"
+            app:popEnterAnim="@anim/slide_in_left"
              />
         <action
             android:id="@+id/action_homeFragment_to_searchFragment"
             app:destination="@id/searchFragment"
-             />
+             app:enterAnim="@anim/slide_in_left"
+            app:popEnterAnim="@anim/slide_in_left" />
     </fragment>
 
     <fragment
@@ -44,7 +49,9 @@
             app:argType="string" />
         <action
             android:id="@+id/action_paginationFragment_to_detailFragment"
-            app:destination="@id/detailFragment" />
+            app:destination="@id/detailFragment"
+             app:enterAnim="@anim/slide_in_left"
+            app:popEnterAnim="@anim/slide_in_left"/>
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -53,7 +60,9 @@
         tools:layout="@layout/fragment_search">
         <action
             android:id="@+id/action_searchFragment_to_detailFragment"
-            app:destination="@id/detailFragment" />
+            app:destination="@id/detailFragment"
+             app:enterAnim="@anim/slide_in_left"
+            app:popEnterAnim="@anim/slide_in_left"/>
     </fragment>
 
 </navigation>

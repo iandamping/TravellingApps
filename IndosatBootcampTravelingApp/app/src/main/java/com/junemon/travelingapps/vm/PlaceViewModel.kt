@@ -3,7 +3,9 @@ package com.junemon.travelingapps.vm
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.navigation.NavDirections
 import com.junemon.core.domain.usecase.PlaceUseCase
+import com.junemon.core.presentation.Event
 import com.junemon.model.domain.PlaceCacheData
 import com.junemon.model.domain.Results
 import com.junemon.model.presentation.PlaceCachePresentation
@@ -11,9 +13,13 @@ import javax.inject.Inject
 
 class PlaceViewModel @Inject constructor(private val repository: PlaceUseCase) : ViewModel() {
 
-    private val _setRunningForever: MutableLiveData<Boolean> = MutableLiveData()
-    val setRunningForever: LiveData<Boolean>
-        get() = _setRunningForever
+    private val _navigateEvent: MutableLiveData<Event<NavDirections>> = MutableLiveData()
+    val navigateEvent: LiveData<Event<NavDirections>> = _navigateEvent
+
+
+    fun setNavigate(direction: NavDirections){
+        _navigateEvent.value = Event(direction)
+    }
 
     private val _searchItem: MutableLiveData<List<PlaceCachePresentation>> =
         MutableLiveData()
@@ -25,14 +31,6 @@ class PlaceViewModel @Inject constructor(private val repository: PlaceUseCase) :
         this._searchItem.value = data
     }
 
-    fun startRunningViewPager() {
-        _setRunningForever.value = true
-    }
-
-    fun stopRunningViewPager() {
-        _setRunningForever.value = false
-    }
-
     fun getCache(): LiveData<List<PlaceCacheData>> = repository.getCache()
 
     fun getRemote(): LiveData<Results<List<PlaceCacheData>>> = repository.getRemote()
@@ -40,5 +38,4 @@ class PlaceViewModel @Inject constructor(private val repository: PlaceUseCase) :
     fun getSelectedTypeCache(placeType: String): LiveData<List<PlaceCacheData>> =
         repository.getSelectedTypeCache(placeType)
 
-    suspend fun delete() = repository.delete()
 }

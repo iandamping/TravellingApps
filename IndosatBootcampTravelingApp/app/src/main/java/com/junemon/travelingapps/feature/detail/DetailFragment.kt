@@ -53,25 +53,15 @@ class DetailFragment @Inject constructor(
         )
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        sharedElementEnterTransition = MaterialContainerTransform().apply {
-            drawingViewId = R.id.financialNavHostFragment
-            duration = resources.getInteger(R.integer.motion_duration_small).toLong()
-            scrimColor = Color.TRANSPARENT
-            setAllContainerColors(requireContext().themeColor(R.attr.colorSurface))
-        }
-        super.onCreate(savedInstanceState)
-    }
-
     override fun activityCreated() {
     }
 
     private fun FragmentDetailBinding.initView(data: PlaceCachePresentation) {
-        ivBack.setOnClickListener {
+        clicks(ivBack) {
             navigateUp()
         }
         with(loadImageHelper) { ivDetailMovieImages.loadWithGlide(data.placePicture) }
-        ivShare.setOnClickListener {
+        clicks(ivShare) {
             if (requestsGranted()) {
                 consumeSuspend {
                     setDialogShow(false)
@@ -155,11 +145,9 @@ class DetailFragment @Inject constructor(
         with(binding) {
             detailData = passedData
             initView(passedData)
-            coordinatorParent.transitionName = passedData.placePicture
         }
     }
 
     override fun injectDagger() {
-        // appComponent().getFragmentComponent().create()
     }
 }

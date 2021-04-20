@@ -19,6 +19,7 @@ import com.junemon.travelingapps.util.interfaces.ImageHelper
 import com.junemon.travelingapps.util.interfaces.IntentHelper
 import com.junemon.travelingapps.util.interfaces.LoadImageHelper
 import com.junemon.travelingapps.util.interfaces.PermissionHelper
+import com.junemon.travelingapps.util.observeEvent
 import com.junemon.travelingapps.util.verticalRecyclerviewInitializer
 import com.junemon.travelingapps.vm.PlaceViewModel
 import kotlinx.android.synthetic.main.item_pagination_recyclerview.*
@@ -53,6 +54,13 @@ class PaginationFragment @Inject constructor(
     }
 
     override fun activityCreated() {
+        obvserveNavigation()
+    }
+
+    private fun obvserveNavigation() {
+        observeEvent(placeVm.navigateEvent) {
+            navigate(it)
+        }
     }
 
     private fun FragmentPaginationBinding.initView(type: String) {
@@ -69,32 +77,19 @@ class PaginationFragment @Inject constructor(
         get() = FragmentPaginationBinding::inflate
 
     override fun viewCreated() {
-        postponeEnterTransition()
         with(binding) {
             initView(paginationType)
-            when {
-                Build.VERSION.SDK_INT < 24 -> {
-                    ViewGroupCompat.setTransitionGroup(rvPagination, true)
-                }
-                Build.VERSION.SDK_INT > 24 -> {
-                    rvPagination.isTransitionGroup = true
-                }
-            }
-            root.doOnPreDraw { startPostponedEnterTransition() }
         }
     }
 
     override fun onClicked(data: PlaceCachePresentation) {
-        setupExitEnterTransition()
         val toDetailFragment =
             PaginationFragmentDirections.actionPaginationFragmentToDetailFragment(
                 gson.toJson(data)
             )
-        val extras = FragmentNavigatorExtras(cvItemContainer to data.placePicture!!)
-        navigate(toDetailFragment, extras)
+        placeVm.setNavigate(toDetailFragment)
     }
 
     override fun injectDagger() {
-        // appComponent().getPaginationComponent().provideListener(this)
     }
 }

@@ -68,46 +68,13 @@
 
         </androidx.appcompat.widget.Toolbar>
 
-        <LinearLayout
-            android:id="@+id/slider"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintTop_toBottomOf="@+id/toolbarHome">
-
-            <com.facebook.shimmer.ShimmerFrameLayout
-                android:id="@+id/shimmerSlider"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:orientation="vertical">
-
-                    <include layout="@layout/item_viewpager_shimmer" />
-
-                </LinearLayout>
-
-            </com.facebook.shimmer.ShimmerFrameLayout>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvRandom"
-                android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:visibility="gone" />
-
-        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/lnPlaceNatureType"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/slider"
             android:orientation="vertical"
-            app:layout_constraintTop_toBottomOf="@+id/slider">
+            app:layout_constraintTop_toBottomOf="@+id/toolbarHome">
 
             <LinearLayout
                 android:layout_width="match_parent"
