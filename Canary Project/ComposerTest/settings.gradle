@@ -1,4 +1,0 @@
-rootProject.name='ComposerTest'
-include ':app'
-include ':data'
-include ':domain'
