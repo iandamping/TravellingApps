@@ -1,35 +1,25 @@
 package com.junemon.core.domain.usecase
 
-import android.net.Uri
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.asLiveData
-import com.junemon.core.domain.repository.PlaceRepository
-import com.junemon.model.domain.PlaceCacheData
-import com.junemon.model.domain.PlaceRemoteData
-import com.junemon.model.domain.Results
-import kotlinx.coroutines.flow.onStart
-import javax.inject.Inject
+import com.junemon.core.domain.common.UsecaseHelper
+import com.junemon.core.domain.model.BorneoPlaces
+import com.junemon.core.domain.model.FavoriteBorneoPlace
+import kotlinx.coroutines.flow.Flow
 
-/**
- * Created by Ian Damping on 04,December,2019
- * Github https://github.com/iandamping
- * Indonesia.
- */
-class PlaceUseCase @Inject constructor(private val repository: PlaceRepository) {
+interface PlaceUseCase {
 
-    fun getCache(): LiveData<List<PlaceCacheData>> = repository.getCache().asLiveData()
+    fun getData(): Flow<UsecaseHelper<List<BorneoPlaces>>>
 
-    fun getRemote(): LiveData<Results<List<PlaceCacheData>>> = repository.getRemote().asLiveData()
+    fun getDataByType(type: String): Flow<UsecaseHelper<List<BorneoPlaces>>>
 
-    fun getSelectedTypeCache(placeType: String): LiveData<List<PlaceCacheData>> =
-        repository.getSelectedTypeCache(placeType).asLiveData()
+    fun getDataById(id: Int): Flow<UsecaseHelper<BorneoPlaces>>
 
-    suspend fun delete() = repository.delete()
+    fun getFavoriteData(): Flow<UsecaseHelper<List<FavoriteBorneoPlace>>>
 
-    fun uploadFirebaseData(
-        data: PlaceRemoteData,
-        imageUri: Uri?,
-        success: (Boolean) -> Unit,
-        failed: (Boolean, Throwable) -> Unit
-    ) = repository.uploadFirebaseData(data, imageUri, success, failed)
+    suspend fun saveFavoritePlace(data: BorneoPlaces)
+
+    suspend fun deleteFavoritePlace(id:Int)
+
+    fun loadSharedPreferenceFilter(): Flow<String>
+
+    suspend fun setSharedPreferenceFilter(data: String)
 }

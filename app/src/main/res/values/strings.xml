@@ -20,6 +20,17 @@
     <string name="transition_name">transition from splash</string>
     <string name="tempat_favorit_mu_ada_disini">Tempat favorit mu ada disini</string>
 
+    <string name="borneo">Borneo</string>
+    <string name="beautiful_place">Beautiful Places</string>
+    <string name="search_place">Search places</string>
+    <string name="clear_search">clear search</string>
+    <string name="filter_place">filter places</string>
+    <string name="detail_image">image of %1$s</string>
+    <string name="similar_place">Similar Places</string>
+    <string name="no_data_available">No data available</string>
+    <string name="filter_place_dialog">Filter your destination</string>
+
+
     <string-array name="place_type_items">
         <item>Wisata Alam</item>
         <item>Wisata Budaya</item>

@@ -1,3 +1,2 @@
-include ':uploader'
 include ':app', ':model', ':core'
 rootProject.name='TravelingApps'

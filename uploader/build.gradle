@@ -6,13 +6,12 @@ apply plugin: 'androidx.navigation.safeargs'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.3"
+    compileSdkVersion 33
 
     defaultConfig {
         applicationId "com.junemon.uploader"
         minSdkVersion 21
-        targetSdkVersion 29
+        targetSdkVersion 33
         versionCode 1
         versionName "1.0"
 
